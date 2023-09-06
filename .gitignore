@@ -16,4 +16,7 @@
 # ignore all .pdf files in the doc/ directory and any of its subdirectories
 # doc/**/*.pdf
 
-img/*
+#######################
+
+# comment out if not in use
+# img/*
