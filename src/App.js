@@ -7,7 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Register from "./pages/Register";
 import { ToastContainer } from "react-toastify"; // notification app
 import "react-toastify/dist/ReactToastify.css"; // notification app css
-
+import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
 
 function App() {
   return (

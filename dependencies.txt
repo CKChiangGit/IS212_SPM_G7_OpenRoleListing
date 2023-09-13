@@ -5,6 +5,7 @@ npm install -D tailwindcss
 npm i react-router react-router-dom
 npm install -D @tailwindcss/forms
 npm install firebase
-npm i react-icons
-npm i react-toastify
+npm i react-icons # hide password icon
+npm i react-toastify # notification component
 npm i react-scripts
+npm i --save moment react-moment  # component that shows how long something was posted
