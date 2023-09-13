@@ -7,3 +7,4 @@ npm install -D @tailwindcss/forms
 npm install firebase
 npm i react-icons
 npm i react-toastify
+npm i react-scripts
