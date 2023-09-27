@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 
+
 const sequelize = new Sequelize({
     dialect: 'mysql',
     username: 'root',
@@ -9,16 +10,22 @@ const sequelize = new Sequelize({
     port: '3306',
 });
 
-// // Function to test Connection with Database
-// async function testDatabaseConnection() {
-//   try {
-//     await sequelize.authenticate();
-//     console.log('Connection has been established successfully.');
-//   } catch (error) {
-//     console.error('Unable to connect to the database:', error);
-//   }
-// }
+// Authenticate the Sequelize instance
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connection has been established successfully.');
+    })
+    .catch((error) => {
+        console.error('Unable to connect to the database:', error);
+    });
 
-// testDatabaseConnection();
+// Sync Sequelize models with the database
+sequelize.sync()
+    .then(() => {
+        console.log('Database and models synchronized.');
+    })
+    .catch((error) => {
+        console.error('Error syncing database and models:', error);
+    });
 
 module.exports = sequelize;
