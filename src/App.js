@@ -5,9 +5,10 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Register from "./pages/Register";
+import CreateRole from "./pages/CreateRole";
 import { ToastContainer } from "react-toastify"; // notification app
 import "react-toastify/dist/ReactToastify.css"; // notification app css
-import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
+// import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
             
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="create-role" element={<PrivateRoute />}>
+              <Route path="/create-role" element={<CreateRole />} />
+            </Route>
         </Routes>
       </Router>
       <ToastContainer

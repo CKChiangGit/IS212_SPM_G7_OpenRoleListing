@@ -9,3 +9,6 @@ npm i react-icons # hide password icon
 npm i react-toastify # notification component
 npm i react-scripts
 npm i --save moment react-moment  # component that shows how long something was posted
+npm i sequelize
+npm install mysql2
+npm install express --save
