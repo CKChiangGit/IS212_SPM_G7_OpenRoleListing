@@ -8,9 +8,10 @@ import { stringify } from 'postcss';
 export default function CreateRole() {
 
     const [formData, setFormData] = useState({
-        type: "rent",
-        name: "",
-        description: "",
+        role_id: "",
+        role_name: "",
+        role_description: "",
+        role_status: "",
         // bedrooms: 1,
         // bathrooms: 1,
         // parking: false,
@@ -25,10 +26,10 @@ export default function CreateRole() {
         // images: {},
       });
       const {
-        type,
-        name,
-        description,
-        bedrooms,
+        role_id,
+        role_name,
+        role_description,
+        role_status,
         bathrooms,
         parking,
         address,
@@ -42,49 +43,54 @@ export default function CreateRole() {
       } = formData;
 
     function onChange(e) {
-        // let boolean = null;
-        // if (e.target.value === "true") {
-        //   boolean = true;
-        // }
-        // if (e.target.value === "false") {
-        //   boolean = false;
-        // }
-        // // Files
-        // if (e.target.files) {
-        //   setFormData((prevState) => ({
-        //     ...prevState,
-        //     images: e.target.files,
-        //   }));
-        // }
-        // // Text/Boolean/Number
-        // if (!e.target.files) {
-        //   setFormData((prevState) => ({
-        //     ...prevState,
-        //     [e.target.id]: boolean ?? e.target.value,
-        //   }));
-        // }
+        let boolean = null;
+        if (e.target.value === "true") {
+          boolean = true;
+        }
+        if (e.target.value === "false") {
+          boolean = false;
+        }
+        // Files
+        if (e.target.files) {
+          setFormData((prevState) => ({
+            ...prevState,
+            images: e.target.files,
+          }));
+        }
+        // Text/Boolean/Number
+        if (!e.target.files) {
+          setFormData((prevState) => ({
+            ...prevState,
+            [e.target.id]: boolean ?? e.target.value,
+          }));
+        }
       }
 
-    // send data to backend testing
-    const testData = {
-        "role_id": 1,
-        "role_name": "test_role",
-        "role_description": "test_role_desc",
-        "role_status": "active"
-    }
+    // //  send data to backend testing
+    // const testData = {
+    //     "role_id": 4,
+    //     "role_name": "test_role",
+    //     "role_description": "test_role_desc",
+    //     "role_status": "active"
+    // }
+    // const testData = {
+    //     role_id: 2,
+    //     role_name: "test_role",
+    //     role_description: "test_role_desc",
+    //     role_status: "active"
+    // }
     
     // send data to backend
-    // const config = {
-    //     baseURL: 'http://localhost:5000',
-    // };
+    const config = {
+        baseURL: 'http://localhost:5000',
+    };
 
     async function handleSubmit(e) {
         e.preventDefault()
         try {
             // console log json stringify testData
-            console.log(JSON.stringify(testData))
-            // const response = await axios.post('/role_details', testData, config)
-            const response = await axios.post('http://localhost:5000/role_details', testData)
+            console.log(JSON.stringify(formData))
+            const response = await axios.post('/role_details', formData, config)
             console.log(response.data);
         } catch (error) {
             console.error(`Error error ${error.message}`); // this is the error
@@ -134,12 +140,23 @@ export default function CreateRole() {
                         rent
                     </button>
                 </div> */}
-
                 <p className="text-lg mt-6 font-semibold">Role Name</p>
                 <input
                     type="text"
-                    id="name"
-                    value={name}
+                    id="role_id"
+                    value={role_id}
+                    onChange={onChange}
+                    placeholder="ID"
+                    maxLength="32"
+                    minLength="4"
+                    required
+                    className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600"
+                />
+                <p className="text-lg mt-6 font-semibold">Role Name</p>
+                <input
+                    type="text"
+                    id="role_name"
+                    value={role_name}
                     onChange={onChange}
                     placeholder="Name"
                     maxLength="32"
@@ -150,10 +167,22 @@ export default function CreateRole() {
                 <p className="text-lg mt-6 font-semibold">Role Description</p>
                 <input
                     type="text"
-                    id="description"
-                    value={description}
+                    id="role_description"
+                    value={role_description}
                     onChange={onChange}
                     placeholder="Description"
+                    maxLength="32"
+                    minLength="4"
+                    required
+                    className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600"
+                />
+                <p className="text-lg mt-6 font-semibold">Role Status</p>
+                <input
+                    type="text"
+                    id="role_status"
+                    value={role_status}
+                    onChange={onChange}
+                    placeholder="status"
                     maxLength="32"
                     minLength="4"
                     required
