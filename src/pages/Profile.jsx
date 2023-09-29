@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, updateProfile } from "firebase/auth";
 import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "../firebase"
@@ -8,6 +8,8 @@ import ListingItem from "../components/ListingItem";
 // import Table from 'react-bootstrap/Table';
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
+import { RiChatNewFill } from "react-icons/ri";
+
 
 
 export default function Profile() {
@@ -71,8 +73,34 @@ export default function Profile() {
         fetchRoleList()
 
         console.log(JSON.stringify(tableData1) + " is defaultTableData")
-      }, [auth.currentUser.uid])
-      console.log(listings)
+    }, [auth.currentUser.uid])
+    console.log(listings)
+
+
+    //   // connection to ConnectionManger.js
+    //   const { register, handleSubmit } = useForm();
+    //   const [error, setError] = useState('');
+    //   const [loading, setLoading] = useState(false);
+    //   const { currentUser } = useAuth();
+    //   const history = useHistory();
+    //   const BASE_URL = "mysql://root:@localhost:3306/spm"
+    
+    //   const onSubmit = async (data) => {
+    //     try {
+    //       setLoading(true);
+    //       setError('');
+    //       const response = await axios.post(`${BASE_URL}/listings`, {
+    //         ...data,
+    //         userId: currentUser.uid,
+    //       });
+    //       console.log(response.data);
+    //       history.push('/');
+    //     } catch (error) {
+    //       console.error(error);
+    //       setError('Failed to create listing');
+    //     }
+    //     setLoading(false);
+    //   };
 
     return (
         <div>
@@ -83,7 +111,7 @@ export default function Profile() {
                 <div className="w-full md:w-[50%] mt-6 px-3">
                     <form action="">
                         {/* name input */}
-                        <label>
+                        <label className="w-full">
                             Username
                             <input type="text" 
                                 id="name" 
@@ -95,7 +123,7 @@ export default function Profile() {
                         
 
                         {/* email input */}
-                        <label>
+                        <label className="w-full">
                             Email
                             <input type="email" 
                                 id="email"
@@ -123,6 +151,17 @@ export default function Profile() {
                         </div>
                         
                     </form>
+
+                    <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
+                        <Link 
+                            to="/create-role"
+                            className="flex justify-center items-center"
+                        >
+                            <RiChatNewFill className="mr-2 text-3xl bg-blue-500 rounded-full p-1 border-2"/>
+                            Create role
+                        </Link>
+                        
+                    </button>
                 </div>
             </section>
 

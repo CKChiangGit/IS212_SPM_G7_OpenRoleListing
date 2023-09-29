@@ -10,6 +10,11 @@ body{
     background-color: #FDF0F4;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
 /* 
 =================
 For sortable table
