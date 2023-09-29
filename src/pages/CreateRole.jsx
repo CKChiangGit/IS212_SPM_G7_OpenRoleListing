@@ -1,5 +1,9 @@
 import React from 'react'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import axios from 'axios'; // for making http requests to ConnectionManager.js
+import { stringify } from 'postcss';
+// import api from './api/posts'
 
 export default function CreateRole() {
 
@@ -60,6 +64,42 @@ export default function CreateRole() {
         //   }));
         // }
       }
+
+    // send data to backend testing
+    const testData = {
+        "role_id": 1,
+        "role_name": "test_role",
+        "role_description": "test_role_desc",
+        "role_status": "active"
+    }
+    
+    // send data to backend
+    // const config = {
+    //     baseURL: 'http://localhost:5000',
+    // };
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        try {
+            // console log json stringify testData
+            console.log(JSON.stringify(testData))
+            // const response = await axios.post('/role_details', testData, config)
+            const response = await axios.post('http://localhost:5000/role_details', testData)
+            console.log(response.data);
+        } catch (error) {
+            console.error(`Error error ${error.message}`); // this is the error
+        }
+    }
+
+    // // checkcingigngg
+    // async function handleSubmit() {
+    //     try {
+    //       const response = await axios.get('http://localhost:5000/role_details');
+    //       console.log(response.data);
+    //     } catch (error) {
+    //       console.error(`Error ${error.message}`);
+    //     }
+    // }
 
     return (
         <main className="max-w-md px-2 mx-auto">
@@ -174,7 +214,7 @@ export default function CreateRole() {
                 <button
                     type="submit"
                     className="my-6 w-full px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                    >
+                    onClick={handleSubmit}>
                     Create Role
                 </button>
             </form>

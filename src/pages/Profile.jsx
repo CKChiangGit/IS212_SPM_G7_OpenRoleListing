@@ -9,7 +9,6 @@ import ListingItem from "../components/ListingItem";
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
-// import axios from 'axios'; // for making http requests to ConnectionManager.js
 
 
 
@@ -74,8 +73,8 @@ export default function Profile() {
         fetchRoleList()
 
         console.log(JSON.stringify(tableData1) + " is defaultTableData")
-      }, [auth.currentUser.uid])
-      console.log(listings)
+    }, [auth.currentUser.uid])
+    console.log(listings)
 
 
     //   // connection to ConnectionManger.js
