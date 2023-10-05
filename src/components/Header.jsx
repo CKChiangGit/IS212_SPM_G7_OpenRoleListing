@@ -1,6 +1,7 @@
 import { React, useEffect, useState }  from 'react'
 import {useLocation, useNavigate} from "react-router-dom"
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
+// import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default function Header() {
     const location = useLocation()
@@ -9,17 +10,30 @@ export default function Header() {
     const navigate = useNavigate()
 
     const [ pageState, setPageState ] = useState("Login") 
-    const auth = getAuth()
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setPageState("Profile")
-            } else {
-                setPageState("Login")
-            }
-        })
-    }, [auth])
 
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    // console.log(JSON.stringify(token))
+
+    useEffect(() => {
+        if (token) {
+            setPageState("Profile")
+        } else {
+            setPageState("Login")
+        }
+    }, [token])
+    // // FIREBASE AUTHENTICATION STARTS HERE
+    // const auth = getAuth()
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             setPageState("Profile")
+    //         } else {
+    //             setPageState("Login")
+    //         }
+    //     })
+    // }, [auth])
+    // // FIREBASE AUTHENTICATION ENDS HERE
 
     // checks if the current URL (location.pathname) is route
     function pathMatchRoute(route){
@@ -27,6 +41,8 @@ export default function Header() {
             return true
         }
     }
+
+
     return (
         <div className='bg-white border-b shadow-sm sticky top-0 z-0'>
             <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>

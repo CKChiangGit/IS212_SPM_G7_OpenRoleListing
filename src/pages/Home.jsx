@@ -1,15 +1,15 @@
-import { React, useContext } from 'react'
-import { AuthContext }  from '../components/AuthContext';
+import { React } from 'react'
 
 export default function Home() {     
-    const { token } = useContext(AuthContext);
-    console.log(token)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    // console.log(JSON.stringify(token))
 
     return (
         <div>
             {token ? (
                 <div>
-                    {Object.entries(token[0]).map(([key, value]) => (
+                    {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
                             {key}: {value}
                         </p>

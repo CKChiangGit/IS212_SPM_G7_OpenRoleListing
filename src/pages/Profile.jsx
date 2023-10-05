@@ -1,28 +1,37 @@
 import React from 'react'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, updateProfile } from "firebase/auth";
-import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
-import { db } from "../firebase"
+// import { getAuth, updateProfile } from "firebase/auth";
+// import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
+// import { db } from "../firebase"
 import ListingItem from "../components/ListingItem";
 // import Table from 'react-bootstrap/Table';
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
+import { AuthContext } from '../hooks/AuthContext';
 
 
 
 export default function Profile() {
-    const auth = getAuth()
     const navigate = useNavigate()
 
+    // get login token from local storage
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    console.log(JSON.stringify(token))
+
     const [formData, setFormData] = useState({
-        // name: "test",
-        // email: "test@gmail.com"
-        name: auth.currentUser.displayName,
-        email: auth.currentUser.email,
-    })
+            name: token.fname + token.lname,
+            email: token.email,
+        })
     const {name, email} = formData
+
+    const { logout } = useContext(AuthContext);
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+      };
 
     const columns = [
         { label: "Full Name", accessor: "full_name", sortable: true },
@@ -32,75 +41,84 @@ export default function Profile() {
         { label: "Start date", accessor: "start_date", sortable: true },
     ];
 
-    // Log out function
-    function logOut(){
-        auth.signOut()
-        navigate('/')
-    }
+    // // FIREBASE AUTHENTICATION START HERE
+    // const auth = getAuth()
+    // const [formData, setFormData] = useState({
+    //     // name: "test",
+    //     // email: "test@gmail.com"
+    //     name: auth.currentUser.displayName,
+    //     email: auth.currentUser.email,
+    // })
 
-    const [listings, setListings] = useState(null)
+    // // Log out function
+    // function logOut(){
+    //     auth.signOut()
+    //     navigate('/')
+    // }
+
+    // const [listings, setListings] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        async function fetchRoleList() {
-            // query firebase collection
-            const roleListRef = collection(db, "open_roles")
+    // useEffect(() => {
+    //     async function fetchRoleList() {
+    //         // query firebase collection
+    //         const roleListRef = collection(db, "open_roles")
             
-            // const q  = query(
-            //     roleListRef
-            // )
-            // console.log(q)
+    //         // const q  = query(
+    //         //     roleListRef
+    //         // )
+    //         // console.log(q)
 
-            // query to find only user submitted open roles
-            console.log(auth.currentUser.uid)
-            const qUser  = query(
-                roleListRef, 
-                where("userID", "==", auth.currentUser.uid),
-                orderBy("timestamp")
-            )
+    //         // query to find only user submitted open roles
+    //         console.log(auth.currentUser.uid)
+    //         const qUser  = query(
+    //             roleListRef, 
+    //             where("userID", "==", auth.currentUser.uid),
+    //             orderBy("timestamp")
+    //         )
 
-            const querySnap = await getDocs(qUser)
-            let listings = []
-            querySnap.forEach((doc) => {
-                return listings.push({
-                    id: doc.id,
-                    data: doc.data(),
-                })
-            })
-            setListings(listings)
-            setLoading(false)
-        }
-        fetchRoleList()
-
-        console.log(JSON.stringify(tableData1) + " is defaultTableData")
-    }, [auth.currentUser.uid])
-    console.log(listings)
-
-
-    //   // connection to ConnectionManger.js
-    //   const { register, handleSubmit } = useForm();
-    //   const [error, setError] = useState('');
-    //   const [loading, setLoading] = useState(false);
-    //   const { currentUser } = useAuth();
-    //   const history = useHistory();
-    //   const BASE_URL = "mysql://root:@localhost:3306/spm"
-    
-    //   const onSubmit = async (data) => {
-    //     try {
-    //       setLoading(true);
-    //       setError('');
-    //       const response = await axios.post(`${BASE_URL}/listings`, {
-    //         ...data,
-    //         userId: currentUser.uid,
-    //       });
-    //       console.log(response.data);
-    //       history.push('/');
-    //     } catch (error) {
-    //       console.error(error);
-    //       setError('Failed to create listing');
+    //         const querySnap = await getDocs(qUser)
+    //         let listings = []
+    //         querySnap.forEach((doc) => {
+    //             return listings.push({
+    //                 id: doc.id,
+    //                 data: doc.data(),
+    //             })
+    //         })
+    //         setListings(listings)
+    //         setLoading(false)
     //     }
-    //     setLoading(false);
-    //   };
+    //     fetchRoleList()
+
+    //     console.log(JSON.stringify(tableData1) + " is defaultTableData")
+    // }, [auth.currentUser.uid])
+    // console.log(listings)
+    // // FIREBASE AUTHENTICATION ENDS HERE
+
+    // // connection to ConnectionManger.js
+    // const { register, handleSubmit } = useForm();
+    // const [error, setError] = useState('');
+    // const [loading, setLoading] = useState(false);
+    // const { currentUser } = useAuth();
+    // const history = useHistory();
+    // const BASE_URL = "mysql://root:@localhost:3306/spm"
+
+    // const onSubmit = async (data) => {
+    // try {
+    //     setLoading(true);
+    //     setError('');
+    //     const response = await axios.post(`${BASE_URL}/listings`, {
+    //     ...data,
+    //     userId: currentUser.uid,
+    //     });
+    //     console.log(response.data);
+    //     history.push('/');
+    // } catch (error) {
+    //     console.error(error);
+    //     setError('Failed to create listing');
+    // }
+    // setLoading(false);
+    // };
 
     return (
         <div>
@@ -143,7 +161,7 @@ export default function Profile() {
                                 </span>
                             </p>
                             <p
-                                onClick={logOut}
+                                onClick={handleLogout}
                                 className="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer"
                             >
                                 Sign out
@@ -166,7 +184,7 @@ export default function Profile() {
             </section>
 
             <div className="max-w-6xl px-3 mt-6 mx-auto">
-                {!loading && listings.length > 0 && (
+                {/* {!loading && listings.length > 0 && (
                 <>
                     <h2 className="text-2xl text-center font-semibold mb-6">
                         My Listings
@@ -183,13 +201,13 @@ export default function Profile() {
                         ))}
                     </ul>
 
-                    <Table
+                </>
+                )} */}
+                <Table
                         caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
                         data={tableData1}
                         columns={columns}
-                    />
-                </>
-                )}
+                />
             </div>
 
         </div>

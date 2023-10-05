@@ -4,7 +4,7 @@ import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom";
 
 // // SQL AUTHENTICATION START HERE
-import { AuthContext, authenticateUser } from '../components/AuthContext';
+import { AuthContext, authenticateUser } from '../hooks/AuthContext';
 // // // FIREBASE AUTHENTICATION START HERE
 // import { signInWithEmailAndPassword, getAuth} from 'firebase/auth';
 

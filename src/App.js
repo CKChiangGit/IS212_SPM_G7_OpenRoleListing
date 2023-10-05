@@ -14,37 +14,37 @@ import { data } from "autoprefixer";
 import axios from 'axios';
 
 function App() {
-    // method 1
-    const [backendData, setBackendData] = useState([{}])
+    // // method 1
+    // const [backendData, setBackendData] = useState([{}])
 
-    useEffect(() => {
-        // const fetchPosts = async () => { 
-        //     try { 
-        //         const response = await api.get('/api'); 
+    // useEffect(() => {
+    //     // const fetchPosts = async () => { 
+    //     //     try { 
+    //     //         const response = await api.get('/api'); 
                 
-        //     } catch (err) { 
-        //         if (err. response) { 
-        //         // Not in the 200 response range? 
-        //         console. log (err. response. data) ; 
-        //         console. log (err. response. status) ; 
-        //         console. log( err. response. headers) ; 
-        //         } else { 
-        //         console. log(`Error: ${err.message}`); 
-        //         }
-        //     }
-        // }
-        // fetchPosts();
+    //     //     } catch (err) { 
+    //     //         if (err. response) { 
+    //     //         // Not in the 200 response range? 
+    //     //         console. log (err. response. data) ; 
+    //     //         console. log (err. response. status) ; 
+    //     //         console. log( err. response. headers) ; 
+    //     //         } else { 
+    //     //         console. log(`Error: ${err.message}`); 
+    //     //         }
+    //     //     }
+    //     // }
+    //     // fetchPosts();
 
-        // // method 1
-        fetch("/api").then(
-            response => response.json()
-        ).then(
-            data => {
-                setBackendData(data)
-                console.log(data)
-            }
-        )
-    }, [])
+    //     // // method 1
+    //     fetch("/api").then(
+    //         response => response.json()
+    //     ).then(
+    //         data => {
+    //             setBackendData(data)
+    //             console.log(data)
+    //         }
+    //     )
+    // }, [])
 
 
 
@@ -81,13 +81,13 @@ function App() {
             />
 
             {/* This is just to test if the backend is working */}
-            {(typeof backendData.users === 'undefined') ? (
+            {/* {(typeof backendData.users === 'undefined') ? (
                 <p>Loading...</p>
             ): (
                 backendData.users.map((user, i) => (
                     <p  key={i}>{user.name}</p>
                 ))
-            )}
+            )} */}
         </>
     );
 }
