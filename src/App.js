@@ -63,7 +63,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="create-role" element={<PrivateRoute />}>
-                    <Route path="/create-role" element={<CreateRole />} />
+                        <Route path="/create-role" element={<CreateRole />} />
                     </Route>
                 </Routes>
             </Router>

@@ -21,7 +21,7 @@
     "react-icons": "^4.11.0",
     "react-moment": "^1.1.3",
     "react-router": "^6.15.0",
-    "react-router-dom": "^6.15.0",
+    "react-router-dom": "^6.16.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.1.3",
     "sequelize": "^6.33.0",
@@ -32,7 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon role_details.js"
+    "roleD": "nodemon role_details.js",
+    "staffD": "nodemon staff_details.js"
   },
   "eslintConfig": {
     "extends": [

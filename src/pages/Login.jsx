@@ -1,19 +1,28 @@
 import React from 'react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, getAuth} from 'firebase/auth';
+
+// // SQL AUTHENTICATION START HERE
+import { AuthContext, authenticateUser } from '../components/AuthContext';
+// // // FIREBASE AUTHENTICATION START HERE
+// import { signInWithEmailAndPassword, getAuth} from 'firebase/auth';
+
 import { toast } from "react-toastify";
 
 export default function Login() {
     // sets showPassword to false initially
     const [showPassword, setShowPassword] = useState(false);
 
+
+    // // SQL AUTHENTICATION START HERE
     const [formData, setFormData] = useState({
         email: "",
         password: "",
+        role: "",
     })
-    const { email, password } = formData
+    const { email, password, role } = formData
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate()
 
     // sets the input element's id to the its value (whatever typed in)
@@ -24,29 +33,69 @@ export default function Login() {
             [e.target.id]: e.target.value,
         }))
     }
-
-    // called when register button is clicked 
-    async function onSubmit(e) {
-        // prevent refreshing on form submit
-        e.preventDefault()
-
+  
+    const onSubmit = async (e) => {
+        e.preventDefault();
         try {
-            const auth = getAuth();
-            const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            if (userCredential.user) {
-                navigate("/")
-                console.log(userCredential.user)
-                toast.success("Logging in. " + userCredential.user.email)
+            const token = await authenticateUser(email, password);
+            login(token);
+            console.log(token)
+            if (token.length > 0) {
+                const userData = token[0];
+                if (userData) {
+                    navigate("/")
+                    console.log(userData.email)
+                    toast.success("Logging in. " + userData.email)
+                }
             }
         } catch (error){
-            const errorMsg = {
-                "Firebase: Error (auth/wrong-password).": "Password is invalid",
-                "Firebase: Error (auth/user-not-found).": "This email isn't registered",
-            }
             console.log(error.message)
-            toast.error("Login failed. " + errorMsg[error.message])
+            toast.error("Login failed. " + error.message)
         }
+        
     }
+    // // SQL AUTHENTICATION ENDS HERE
+
+    // // FIREBASE AUTHENTICATION START HERE
+    // const [formData, setFormData] = useState({
+    //     email: "",
+    //     password: "",
+    // })
+    // const { email, password } = formData
+    // const navigate = useNavigate()
+
+    // // sets the input element's id to the its value (whatever typed in)
+    // function onChange(e){
+    //     console.log(e.target.value)
+    //     setFormData((prevState)=>({
+    //         ...prevState,
+    //         [e.target.id]: e.target.value,
+    //     }))
+    // }
+
+    // // called when register button is clicked 
+    // async function onSubmit(e) {
+    //     // prevent refreshing on form submit
+    //     e.preventDefault()
+
+    //     try {
+    //         const auth = getAuth();
+    //         const userCredential = await signInWithEmailAndPassword(auth, email, password)
+    //         if (userCredential.user) {
+    //             navigate("/")
+    //             console.log(userCredential.user)
+    //             toast.success("Logging in. " + userCredential.user.email)
+    //         }
+    //     } catch (error){
+    //         const errorMsg = {
+    //             "Firebase: Error (auth/wrong-password).": "Password is invalid",
+    //             "Firebase: Error (auth/user-not-found).": "This email isn't registered",
+    //         }
+    //         console.log(error.message)
+    //         toast.error("Login failed. " + errorMsg[error.message])
+    //     }
+    // }
+    // // FIREBASE AUTHENTICATION ENDS HERE
 
     return (
         <section>
