@@ -11,9 +11,9 @@ export default function Header() {
 
     const [ pageState, setPageState ] = useState("Login") 
 
+    // get login token from local storage
     const storedToken = localStorage.getItem('token');
     const token = storedToken ? JSON.parse(storedToken)[0] : null;
-    // console.log(JSON.stringify(token))
 
     useEffect(() => {
         if (token) {
