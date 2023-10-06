@@ -4,8 +4,9 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
-import Register from "./pages/Register";
+import CreateStaff from "./pages/CreateStaff";
 import CreateRole from "./pages/CreateRole";
+import EditStaffSkill from "./pages/EditStaffSkill";
 import { ToastContainer } from "react-toastify"; // notification app
 import "react-toastify/dist/ReactToastify.css"; // notification app css
 import { useEffect, useState} from "react";
@@ -59,12 +60,16 @@ function App() {
                     <Route path="/profile" element={<PrivateRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
-                    
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="create-role" element={<PrivateRoute />}>
-                        <Route path="/create-role" element={<CreateRole />} />
+                    <Route path="/staff_creation" element={<PrivateRoute />}>
+                        <Route path="/staff_creation" element={<CreateStaff />} />
                     </Route>
+                    <Route path="/staff_skill" element={<PrivateRoute />}>
+                        <Route path="/staff_skill" element={<EditStaffSkill />} />
+                    </Route>
+                    <Route path="/role_creation" element={<PrivateRoute />}>
+                        <Route path="/role_creation" element={<CreateRole />} />
+                    </Route>
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </Router>
             <ToastContainer

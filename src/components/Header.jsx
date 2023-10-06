@@ -56,17 +56,21 @@ export default function Header() {
                         }`} onClick={() => navigate("/")}>
                             Home
                         </li>
+
                         {/* Since the user will be moved to /login if he's not already logged in when going to /profile, the main path is /profile */}
                         <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
                             (pathMatchRoute("/profile") || pathMatchRoute("/login")) ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
                         }`} onClick={()=>navigate('/profile')}>
                             {pageState}
                         </li>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
-                            pathMatchRoute("/register") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
-                        }`} onClick={()=>navigate('/register')}>
-                            Register
-                        </li>
+
+                        {token && token.sys_role === "hr" && (
+                            <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
+                                pathMatchRoute("/staff_creation") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
+                            }`} onClick={()=>navigate('/staff_creation')}>
+                                Register
+                            </li>
+                        )}
                         
                     </ul>
                 </div>

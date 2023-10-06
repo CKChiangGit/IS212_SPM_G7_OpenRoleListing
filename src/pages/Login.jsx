@@ -3,9 +3,9 @@ import { useContext, useState } from 'react'
 import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom";
 
-// // SQL AUTHENTICATION START HERE
+// // SQL AUTHENTICATION 
 import { AuthContext, authenticateUser } from '../hooks/AuthContext';
-// // // FIREBASE AUTHENTICATION START HERE
+// // // FIREBASE AUTHENTICATION 
 // import { signInWithEmailAndPassword, getAuth} from 'firebase/auth';
 
 import { toast } from "react-toastify";
@@ -19,9 +19,8 @@ export default function Login() {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-        role: "",
     })
-    const { email, password, role } = formData
+    const { email, password } = formData
     const { login } = useContext(AuthContext);
     const navigate = useNavigate()
 
