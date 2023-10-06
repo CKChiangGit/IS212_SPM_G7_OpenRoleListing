@@ -57,7 +57,7 @@ export default function SignUp() {
             toast.success("Created staff " + token)
         } catch (error){
             console.log(error.message)
-            toast.error("Login failed. " + error.message)
+            toast.error("Staff creation failed. " + error.message)
         }
         
     }

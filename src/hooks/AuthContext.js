@@ -60,6 +60,6 @@ export const createUser = async (staff_id, fname, lname, dept, email, phone, biz
         console.log(data)
         return data;
     } else {
-        throw new Error(data.message);
+        throw new Error('Error creating new staff details');
     }
 };
