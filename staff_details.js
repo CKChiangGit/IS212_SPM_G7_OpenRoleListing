@@ -39,18 +39,21 @@ app.post('/staff_details', async (req, res) => {
 app.post('/staff_creation', async (req, res) => {
     try {
         const staff_creation = await StaffDetails.create(req.body);
-        // const staff_creation = await StaffDetails.create({
-        // staff_id: req.body.staff_id,
-        // fname: req.body.fname,
-        // lname: req.body.lname,
-        // dept: req.body.dept,
-        // email: req.body.email,
-        // phone: req.body.phone,
-        // biz_address: req.body.biz_address,
-        // sys_role: req.body.sys_role,
-        // pw: req.body.password
-        // });
         res.json(staff_creation);
+    } catch (error) {
+        res.status(500).json({ error: `Internal server error in '/staff_creation' endpoint` });
+    }
+});
+
+// update role details
+app.put('/staff_details/:id', async (req, res) => {
+    try {
+        const staff_details = await StaffDetails.update(req.body, {
+        where: {
+            staff_id: req.params.id
+        }
+        });
+        res.json(staff_details);
     } catch (error) {
         res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
     }

@@ -9,8 +9,8 @@ import ListingItem from "../components/ListingItem";
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
-import { AuthContext } from '../hooks/AuthContext';
-
+import { AuthContext, editUser } from '../hooks/AuthContext';
+import { toast } from "react-toastify";
 
 
 export default function Profile() {
@@ -22,10 +22,28 @@ export default function Profile() {
     console.log(JSON.stringify(token))
 
     const [formData, setFormData] = useState({
-            name: token.fname + token.lname,
-            email: token.email,
-        })
-    const {name, email} = formData
+        staff_id: token.staff_id,
+        name: token.fname + " " + token.lname,
+        fname: token.fname,
+        lname: token.lname,
+        email: token.email,
+        dept: token.dept,
+        phone: token.phone,
+        biz_address: token.biz_address,
+        sys_role: token.sys_role,
+        pw: token.pw,
+
+        // // testing data 
+        // fname: "JOHN asd",
+        // lname: "SIM",
+        // dept: "MANAGEMENT",
+        // email: "jack.sim.2@all-in-one.com.sg",
+        // phone: "87821918",
+        // biz_address: "65 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409065",
+        // sys_role: "hr",
+        // pw: "345345",
+    })
+    const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw} = formData
 
     const { logout } = useContext(AuthContext);
     const handleLogout = () => {
@@ -41,85 +59,27 @@ export default function Profile() {
         { label: "Start date", accessor: "start_date", sortable: true },
     ];
 
-    // // FIREBASE AUTHENTICATION START HERE
-    // const auth = getAuth()
-    // const [formData, setFormData] = useState({
-    //     // name: "test",
-    //     // email: "test@gmail.com"
-    //     name: auth.currentUser.displayName,
-    //     email: auth.currentUser.email,
-    // })
-
-    // // Log out function
-    // function logOut(){
-    //     auth.signOut()
-    //     navigate('/')
-    // }
-
-    // const [listings, setListings] = useState(null)
-    const [loading, setLoading] = useState(true)
-
-    // useEffect(() => {
-    //     async function fetchRoleList() {
-    //         // query firebase collection
-    //         const roleListRef = collection(db, "open_roles")
-            
-    //         // const q  = query(
-    //         //     roleListRef
-    //         // )
-    //         // console.log(q)
-
-    //         // query to find only user submitted open roles
-    //         console.log(auth.currentUser.uid)
-    //         const qUser  = query(
-    //             roleListRef, 
-    //             where("userID", "==", auth.currentUser.uid),
-    //             orderBy("timestamp")
-    //         )
-
-    //         const querySnap = await getDocs(qUser)
-    //         let listings = []
-    //         querySnap.forEach((doc) => {
-    //             return listings.push({
-    //                 id: doc.id,
-    //                 data: doc.data(),
-    //             })
-    //         })
-    //         setListings(listings)
-    //         setLoading(false)
-    //     }
-    //     fetchRoleList()
-
-    //     console.log(JSON.stringify(tableData1) + " is defaultTableData")
-    // }, [auth.currentUser.uid])
-    // console.log(listings)
-    // // FIREBASE AUTHENTICATION ENDS HERE
-
-    // // connection to ConnectionManger.js
-    // const { register, handleSubmit } = useForm();
-    // const [error, setError] = useState('');
-    // const [loading, setLoading] = useState(false);
-    // const { currentUser } = useAuth();
-    // const history = useHistory();
-    // const BASE_URL = "mysql://root:@localhost:3306/spm"
-
-    // const onSubmit = async (data) => {
-    // try {
-    //     setLoading(true);
-    //     setError('');
-    //     const response = await axios.post(`${BASE_URL}/listings`, {
-    //     ...data,
-    //     userId: currentUser.uid,
-    //     });
-    //     console.log(response.data);
-    //     history.push('/');
-    // } catch (error) {
-    //     console.error(error);
-    //     setError('Failed to create listing');
-    // }
-    // setLoading(false);
-    // };
-
+    // for changing personal profile
+    const [changeDetail, setChangeDetail] = useState(false);
+    function onChange(e) {
+        setFormData((prevState) => ({
+          ...prevState,
+          [e.target.id]: e.target.value,
+        }));
+    }
+    async function onSubmit() {
+        try {
+          if (fname !== "" && lname !== "") {
+            // send post data to backend '/staff_details/:id'
+            console.log("sending "+ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
+            const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
+            toast.success("Profile details updated" + token);
+          }
+        } catch (error) {
+          toast.error("Could not update the profile details");
+        }
+    }
+    
     return (
         <div>
             <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
@@ -138,6 +98,29 @@ export default function Profile() {
                                 className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
                             />
                         </label>
+
+                        <div className="mb-6 w-full flex justify-between ">
+                            <div className="">
+                                <input 
+                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
+                                    type="text" 
+                                    id="fname" 
+                                    value={fname} 
+                                    onChange={onChange} 
+                                    placeholder="First Name"
+                                />
+                            </div>
+                            <div className="">
+                                <input 
+                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
+                                    type="text" 
+                                    id="lname" 
+                                    value={lname} 
+                                    onChange={onChange} 
+                                    placeholder="Last Name"
+                                />
+                            </div>
+                        </div>
                         
 
                         {/* email input */}
@@ -153,11 +136,16 @@ export default function Profile() {
 
                         <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
                             <p className="flex items-center ">
-                                Do you want to change your username?
-                                <span                               
+                                Do you want to change your details?
+                                <span
+                                    onClick={() => {
+                                        // if changing details, next click will be onSumbit
+                                        changeDetail && onSubmit();
+                                        setChangeDetail((prevState) => !prevState);
+                                    }}                           
                                     className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
                                 >
-                                Edit
+                                {changeDetail ? "Apply Changes" : "Edit"}
                                 </span>
                             </p>
                             <p

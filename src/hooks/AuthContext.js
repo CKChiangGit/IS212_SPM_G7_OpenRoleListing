@@ -63,3 +63,22 @@ export const createUser = async (staff_id, fname, lname, dept, email, phone, biz
         throw new Error('Error creating new staff details');
     }
 };
+
+// sends request to edit staff details
+export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
+    const response = await fetch(`http://localhost:6001/staff_details/${staff_id}`, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
+        throw new Error('Error creating new staff details');
+    }
+};
