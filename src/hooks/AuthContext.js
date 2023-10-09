@@ -39,8 +39,8 @@ export const authenticateUser = async (email, password) => {
     });
     const data = await response.json();
     if (response.ok) {
-        console.log(data[0])
-        return data[0];
+        console.log(data)
+        return data;
     } else {
         throw new Error(data.message);
     }

@@ -46,6 +46,8 @@ export default function Login() {
                     console.log(userData.email)
                     toast.success("Logging in. " + userData.email)
                 }
+            } else {
+                toast.error("Login failed.")
             }
         } catch (error){
             console.log(error.message)
