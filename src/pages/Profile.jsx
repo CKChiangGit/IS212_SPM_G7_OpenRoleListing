@@ -100,6 +100,10 @@ export default function Profile() {
         }
         
     }
+
+    // table controls
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize, setPageSize] = useState(3);
     
     return (
         <div>
@@ -213,9 +217,12 @@ export default function Profile() {
                 </>
                 )} */}
                 <Table
-                        caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
-                        data={tableData1}
-                        columns={columns}
+                    caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
+                    data={tableData1}
+                    columns={columns}
+                    pageNumber={pageNumber}
+                    pageSize={pageSize}
+                    setPageNumber={setPageNumber}
                 />
             </div>
 
