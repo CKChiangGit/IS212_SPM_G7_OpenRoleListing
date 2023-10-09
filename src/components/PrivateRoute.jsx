@@ -6,7 +6,8 @@ import { Outlet, Navigate } from "react-router-dom"
 export default function PrivateRoute() {
     // SQL AUTHENTICATION START HERE
     const storedToken = localStorage.getItem('token');
-    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    const token = storedToken ? JSON.parse(storedToken) : null;
+    console.log(JSON.parse(storedToken))
     console.log("checking token:" + JSON.stringify(token))
     
     return token ? <Outlet /> : <Navigate to="/login" />;

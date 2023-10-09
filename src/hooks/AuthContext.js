@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext();
 
@@ -39,8 +39,8 @@ export const authenticateUser = async (email, password) => {
     });
     const data = await response.json();
     if (response.ok) {
-        console.log(data)
-        return data;
+        console.log(data[0])
+        return data[0];
     } else {
         throw new Error(data.message);
     }

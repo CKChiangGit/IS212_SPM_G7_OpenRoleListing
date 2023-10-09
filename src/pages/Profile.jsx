@@ -18,8 +18,18 @@ export default function Profile() {
 
     // get login token from local storage
     const storedToken = localStorage.getItem('token');
-    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    // const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    // const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')) || {});
+    const [token, setToken] = useState(storedToken ? JSON.parse(storedToken)[0] : null);
+
     console.log(JSON.stringify(token))
+
+    // check if token is valid
+    const { logout } = useContext(AuthContext);
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+      };
 
     const [formData, setFormData] = useState({
         staff_id: token.staff_id,
@@ -43,13 +53,9 @@ export default function Profile() {
         // sys_role: "hr",
         // pw: "345345",
     })
+    
+    
     const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw} = formData
-
-    const { logout } = useContext(AuthContext);
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-      };
 
     const columns = [
         { label: "Full Name", accessor: "full_name", sortable: true },
@@ -69,15 +75,30 @@ export default function Profile() {
     }
     async function onSubmit() {
         try {
-          if (fname !== "" && lname !== "") {
-            // send post data to backend '/staff_details/:id'
-            console.log("sending "+ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
-            const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
-            toast.success("Profile details updated" + token);
-          }
+            console.log(fname, lname)
+            if (fname !== "" && lname !== "") {
+                // send post data to backend '/staff_details/:id'
+                console.log("sending "+ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
+                const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
+                toast.success("Profile details updated");
+                // update user profile
+                const updatedToken = [{ ...formData, name: fname + " " + lname }];
+                setToken(updatedToken);
+                localStorage.setItem('token', JSON.stringify(updatedToken));
+                if (!token) {
+                    console.log("token not found")
+                    handleLogout()
+                }
+                // update name in formData
+                setFormData((prevState) => ({
+                    ...prevState,
+                    name: fname + " " + lname,
+                }));
+            }
         } catch (error) {
-          toast.error("Could not update the profile details");
+            toast.error("Could not update the profile details" + error.message);
         }
+        
     }
     
     return (
