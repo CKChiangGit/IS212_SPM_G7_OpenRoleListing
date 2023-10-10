@@ -20,9 +20,10 @@ export const AuthProvider = ({ children }) => {
         // decode JWT token2 using jwtDecode to get user data 
         const token2 = localStorage.getItem('token2')
         console.log("token2: " + token2)
-        const decoded = jwtDecode(token2);
+        const decoded = jwt.verify(token2, secret);
+        // const decoded = jwtDecode(token2);
         console.log("decoded: " + decoded);
-        localStorage.setItem('token3', JSON.stringify(decoded));
+        localStorage.setItem('token3', JSON.stringify(decoded[0]));
     };
 
     const logout = () => {
