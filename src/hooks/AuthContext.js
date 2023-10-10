@@ -1,18 +1,28 @@
 import React, { createContext, useState } from 'react';
+import jwtDecode from 'jwt-decode'
+const jwt = require('jsonwebtoken');
+
+const secret = 'mysecretkey';
 
 export const AuthContext = createContext();
 
 // creates login token and provides login / logout functions
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    // const [token, setToken] = useState('');
     const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')) || {});
 
     const login = (token) => {
-      setIsAuthenticated(true);
-      setToken(token);
-      // saves token to local storage
-      localStorage.setItem('token', JSON.stringify(token));
+        setIsAuthenticated(true);
+        setToken(token);
+        // saves token to local storage
+        localStorage.setItem('token', JSON.stringify(token));
+
+        // decode JWT token2 using jwtDecode to get user data 
+        const token2 = localStorage.getItem('token2')
+        console.log("token2: " + token2)
+        const decoded = jwtDecode(token2);
+        console.log("decoded: " + decoded);
+        localStorage.setItem('token3', JSON.stringify(decoded));
     };
 
     const logout = () => {
@@ -40,7 +50,21 @@ export const authenticateUser = async (email, password) => {
     const data = await response.json();
     if (response.ok) {
         console.log(data)
-        return data;
+        if (data.length > 0) {
+            // sign jwt token with no expiry date
+            const userId = { id: 123 };
+            jwt.sign({ ...data }, secret, (err, asyncToken) => {
+                if (err) throw err;
+                console.log(asyncToken);
+                // Save the user ID to local storage
+                localStorage.setItem('userId', userId);
+                // Save the JWT token to local storage
+                localStorage.setItem('token2', asyncToken);
+                // return asyncToken;
+            });
+            return data;
+        }
+        
     } else {
         throw new Error(data.message);
     }

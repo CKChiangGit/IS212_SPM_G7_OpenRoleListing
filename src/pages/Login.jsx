@@ -38,7 +38,7 @@ export default function Login() {
         try {
             const token = await authenticateUser(email, password);
             login(token);
-            console.log(token)
+            console.log("ive logged to " + JSON.stringify(token))
             if (token.length > 0) {
                 const userData = token[0];
                 if (userData) {
