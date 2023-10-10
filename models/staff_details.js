@@ -91,6 +91,7 @@ app.get('/staff_details', async (req, res) => {
 
 app.get('/staff_details/:staff_id', async (req, res) => {
   const staff_id = req.params.staff_id;
+  // Trying to figure out how to use query parameters. - Mervin
   // const { fname, lname, dept, email } = req.query;
   // const whereClause = {};
 
