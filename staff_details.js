@@ -16,9 +16,14 @@ app.use(bodyParser.json());
 // app.get("/staff_details", (req, res) => {
 //   res.json({ message: "Hello from server!" })
 // })   
-app.get('/staff_creation', async (req, res) => {
-    res.json({ message: "Hello from server!" })
-});
+app.get("/staff_details", async (req, res) => {
+    try {
+        const staff_details = await StaffDetails.findAll();
+        res.json(staff_details);
+    } catch (error) {
+        res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
+    }
+})   
 
 // return new role details that match email and password
 app.post('/staff_details', async (req, res) => {

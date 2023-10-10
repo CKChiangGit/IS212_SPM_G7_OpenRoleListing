@@ -21,62 +21,63 @@ For sortable table
 =====================
 */
 
-.table_container {
+.table-container {
+    max-height: 80vh;
     max-width: 750px;
     /* max-height: 500px; */
     margin: 0 auto;
     overflow: auto;
-  }
-  
-  .table {
+}
+
+.table {
     width: 100%;
     border-spacing: 0;
-  }
-  
-  caption {
+}
+
+caption {
     font-style: italic;
     font-size: 90%;
     margin-bottom: 10px;
-  }
-  
-  .table th {
+}
+
+.table th {
     background: #fff;
     padding: 8px 10px;
     border-bottom: 1px solid #1a1a1a;
     font-weight: bold;
     text-align: left;
-  }
-  
-  .table th.up {
+}
+
+.table th.up {
     background-image: url("./images/up_arrow.png");
-  }
-  .table th.down {
+}
+.table th.down {
     background-image: url("./images/down_arrow.png");
-  }
-  .table th.default {
+}
+.table th.default {
     background-image: url("./images/default.png");
-  }
-  th.up,
-  th.default,
-  th.down {
+}
+th.up,
+th.default,
+th.down {
     cursor: pointer;
     background-repeat: no-repeat;
     background-position: center right;
-  }
-  
-  .table td {
+}
+
+.table td {
     border-top: 1px solid #ddd;
     padding: 8px 20px;
-  }
-  
-  .table tbody tr:first-child td {
+}
+
+.table tbody tr:first-child td {
     border-top: none;
-  }
-  
-  .table tbody tr:nth-child(n) td {
+}
+
+.table tbody tr:nth-child(n) td {
     background: #eff0f0;
-  }
-  
-  .table tbody tr:nth-child(2n) td {
+}
+
+.table tbody tr:nth-child(2n) td {
     background: #fff;
-  }
+}

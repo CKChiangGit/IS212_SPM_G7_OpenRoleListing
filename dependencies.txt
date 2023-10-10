@@ -16,3 +16,6 @@ npm install express cors
 npm install nodemon # for node.js server
 npm install axios
 npm install jsonwebtoken // for using JWT to save user token 'sessions-like'
+npm i jwt-decode
+npm install --save-dev react-app-rewired
+npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process

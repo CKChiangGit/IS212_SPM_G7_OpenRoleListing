@@ -57,6 +57,7 @@ export default function Profile() {
     
     const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw} = formData
 
+    // table data
     const columns = [
         { label: "Full Name", accessor: "full_name", sortable: true },
         { label: "Email", accessor: "email", sortable: false },
@@ -100,10 +101,6 @@ export default function Profile() {
         }
         
     }
-
-    // table controls
-    const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(3);
     
     return (
         <div>
@@ -185,7 +182,7 @@ export default function Profile() {
 
                     <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
                         <Link 
-                            to="/create-role"
+                            to="/role_creation"
                             className="flex justify-center items-center"
                         >
                             <RiChatNewFill className="mr-2 text-3xl bg-blue-500 rounded-full p-1 border-2"/>
@@ -220,9 +217,9 @@ export default function Profile() {
                     caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
                     data={tableData1}
                     columns={columns}
-                    pageNumber={pageNumber}
-                    pageSize={pageSize}
-                    setPageNumber={setPageNumber}
+                    // pageNumber={pageNumber}
+                    // pageSize={pageSize}
+                    // setPageNumber={setPageNumber}
                 />
             </div>
 

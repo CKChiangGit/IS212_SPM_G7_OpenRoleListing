@@ -6,13 +6,13 @@ import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateStaff from "./pages/CreateStaff";
 import CreateRole from "./pages/CreateRole";
-import EditStaffSkill from "./pages/EditStaffSkill";
+import EditStaff from "./pages/EditStaff";
 import { ToastContainer } from "react-toastify"; // notification app
 import "react-toastify/dist/ReactToastify.css"; // notification app css
-import { useEffect, useState} from "react";
-import { data } from "autoprefixer";
-// import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
-import axios from 'axios';
+// import { useEffect, useState} from "react";
+// import { data } from "autoprefixer";
+// // import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
+// import axios from 'axios';
 
 function App() {
     // // method 1
@@ -63,8 +63,8 @@ function App() {
                     <Route path="/staff_creation" element={<PrivateRoute />}>
                         <Route path="/staff_creation" element={<CreateStaff />} />
                     </Route>
-                    <Route path="/staff_skill" element={<PrivateRoute />}>
-                        <Route path="/staff_skill" element={<EditStaffSkill />} />
+                    <Route path="/staff_edit" element={<PrivateRoute />}>
+                        <Route path="/staff_edit" element={<EditStaff />} />
                     </Route>
                     <Route path="/role_creation" element={<PrivateRoute />}>
                         <Route path="/role_creation" element={<CreateRole />} />
