@@ -35,16 +35,14 @@ module.exports = StaffSkills;
 // --Microservice Portion--
 
 const express = require('express');
-const mysql = require('mysql');
+const mysql2 = require('mysql2');
 
 const app = express();
 const port = 5002;
 
-app.use(cors());
-
 app.get('/staff_skills', async (req, res) => {
   try {
-    const skill_list = await staff_skills.findAll();
+    const skill_list = await StaffSkills.findAll();
 
     if (skill_list.length) {
       return res.status(200).json({
@@ -57,7 +55,7 @@ app.get('/staff_skills', async (req, res) => {
 
     return res.status(404).json({
       code: 404,
-      message: 'There are no available houses.',
+      message: 'There are no available skills.',
     });
   } catch (error) {
     console.error(error);
@@ -69,10 +67,10 @@ app.get('/staff_skills', async (req, res) => {
 });
 
 app.get('/staff_skills/:staff_id', async (req, res) => {
-  const staff_skills = req.params.staff_id;
+  const staff_id = req.params.staff_id;
 
   try {
-    const staff_skills = await spm.findOne({ where: { staff_id } });
+    const staff_skills = await StaffSkills.findOne({ where: { staff_id } });
 
     if (staff_skills) {
       return res.status(200).json({
@@ -83,7 +81,7 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
 
     return res.status(404).json({
       code: 404,
-      message: 'Staff skills not found.',
+      message: 'Staff skills / Staff details not found.',
     });
   } catch (error) {
     console.error(error);
