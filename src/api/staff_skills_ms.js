@@ -33,7 +33,7 @@ const StaffSkills = sequelize.define('StaffSkills', {
   StaffSkills.belongsTo(StaffDetails, { foreignKey: 'staff_id', as: 'staff' });
   StaffSkills.belongsTo(SkillDetails, { foreignKey: 'skill_id', as: 'skill' });
   
-  module.exports = StaffSkills;
+//   module.exports = StaffSkills;
   
 app.get('/staff_skills', async (req, res) => {
   try {
