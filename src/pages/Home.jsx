@@ -1,7 +1,7 @@
 import { React } from 'react'
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
-
+import Popup from '../components/Popup';
 
 // table data
 const columns = [
@@ -33,6 +33,10 @@ export default function Home() {
                         columns={columns}
                         pageSize={3}
                     />
+                    <Popup role={{
+                        "name": 1,
+                        "description": "Wendall Gripton",
+                    }}/>
                 </div>
             ) : (
                 <div>

@@ -33,7 +33,7 @@ return (
 };
 
 // export default function Table({ caption, data, columns, pageNumber, pageSize, setPageNumber}) {
-export default function Table({ caption, data, columns, pageSize}) {
+export default function Table({ caption, data, columns, pageSize, type}) {
     console.log("data received is "+ data + " and pageSizeLimit received is "+ pageSize)   
     const [tableData, handleSorting] = useSortableTable(data, columns);
 
@@ -48,7 +48,7 @@ export default function Table({ caption, data, columns, pageSize}) {
                     <table className="table">
                         <caption>{caption}</caption>
                         <TableHead {...{ columns, handleSorting }} />
-                        <TableBody {...{ columns, tableData, pageNumber, pageSize }} />
+                        <TableBody {...{ columns, tableData, pageNumber, pageSize, type}} />
                     </table>
                 </div>
                 <PageControl {...{ pageNumber, setPageNumber, pageLimit }} />

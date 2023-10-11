@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 // import Table from 'react-bootstrap/Table';
 import Table from "../components/Table";
-import tableData1 from "../tableData1.json";
+import tableData from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
 import { AuthContext, editUser } from '../hooks/AuthContext';
 import { toast } from "react-toastify";
@@ -215,8 +215,10 @@ export default function Profile() {
                 )} */}
                 <Table
                     caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
-                    data={tableData1}
+                    data={tableData}
                     columns={columns}
+                    pageSize={3}
+                    type="staff"
                     // pageNumber={pageNumber}
                     // pageSize={pageSize}
                     // setPageNumber={setPageNumber}

@@ -128,18 +128,20 @@ export default function EditStaff() {
             <h1 className='text-3xl text-center mt-6 font-bold'>
                 Edit User
             </h1>
+            <Table
+                caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
+                data={tableData}
+                columns={columns}
+                pageSize={5}
+                type="staff"
+                // pageNumber={pageNumber}
+                // pageSize={pageSize}
+                // setPageNumber={setPageNumber}
+            />
             <div className="flex justify-center flex-wrap items-center px-6 py-4 max-w-7xl mx-auto"  >
                 <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-4">
                 {/* <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-4"> */}
-                    <Table
-                        caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
-                        data={tableData}
-                        columns={columns}
-                        pageSize={3}
-                        // pageNumber={pageNumber}
-                        // pageSize={pageSize}
-                        // setPageNumber={setPageNumber}
-                    />
+                    <h1>Hello</h1>
                 </div>
                 <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
                     <form onSubmit={onSubmit}>
