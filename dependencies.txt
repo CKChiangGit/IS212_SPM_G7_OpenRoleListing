@@ -19,3 +19,10 @@ npm install jsonwebtoken // for using JWT to save user token 'sessions-like'
 npm i jwt-decode
 npm install --save-dev react-app-rewired
 npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process
+
+
+--- For Microservices ---
+npm install flask
+npm install request
+npm install jsonify
+npm install body-parser
