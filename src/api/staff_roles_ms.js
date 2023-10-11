@@ -12,7 +12,7 @@ const port = 5003;
 
 app.get('/staff_roles', async (req, res) => {
   try {
-    const staff_roles = await StaffRoles.findAll();
+    const staff_roles = await StaffRoles.findAll(); // test
 
     if (staff_roles.length) {
       return res.status(200).json({
