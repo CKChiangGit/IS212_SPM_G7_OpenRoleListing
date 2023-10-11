@@ -23,36 +23,3 @@ RoleSkills.belongsTo(RoleDetails, { foreignKey: 'role_id', as: 'role' });
 RoleSkills.belongsTo(SkillDetails, { foreignKey: 'skill_id', as: 'skill' });
 
 module.exports = RoleSkills;
-
-// // --Microservice Portion--
-// const express = require('express');
-// const mysql2 = require('mysql2');
-
-// const app = express();
-// const port = 5006;
-
-// app.get('/role_skills', async (req, res) => {
-//   try {
-//     const role_skills = await RoleSkills.findAll();
-
-//     if (role_skills.length) {
-//       return res.status(200).json({
-//         code: 200,
-//         data: {
-//           'role_skills': role_skills.map(role_skills => role_skills.toJSON()),
-//         },
-//       });
-//     }
-
-//     return res.status(404).json({
-//       code: 404,
-//       message: 'There are no available staff roles.',
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       code: 500,
-//       message: 'Internal Server Error',
-//     });
-//   }
-// });

@@ -7,33 +7,6 @@ const mysql2 = require('mysql2');
 
 const app = express();
 const port = 5002;
-
-
-// const StaffSkills = sequelize.define('StaffSkills', {
-//     staff_id: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false,
-//       primaryKey: true,
-//     },
-//     skill_id: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false,
-//       primaryKey: true,
-//     },
-//     ss_status: {
-//       type: DataTypes.ENUM('active', 'unverified', 'in-progress'),
-//       allowNull: false,
-//     },
-//   }, {
-//     tableName: 'STAFF_SKILLS',
-//     timestamps: false,
-//   });
-  
-//   StaffSkills.belongsTo(StaffDetails, { foreignKey: 'staff_id', as: 'staff' });
-//   StaffSkills.belongsTo(SkillDetails, { foreignKey: 'skill_id', as: 'skill' });
-  
-//   module.exports = StaffSkills;
-  
 app.get('/staff_skills', async (req, res) => {
   try {
     const skill_list = await StaffSkills.findAll();
