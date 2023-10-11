@@ -1,8 +1,7 @@
 // --Microservice Portion--
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
-const StaffDetails = require('../../models/staff_details'); // Import the StaffDetails model
-const SkillDetails = require('../../models/skill_details'); // Import the SkillDetails model
+const StaffSkills = require('../../models/staff_skills'); // Import the StaffSkills model
 const express = require('express');
 const mysql2 = require('mysql2');
 
@@ -10,28 +9,28 @@ const app = express();
 const port = 5002;
 
 
-const StaffSkills = sequelize.define('StaffSkills', {
-    staff_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    skill_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    ss_status: {
-      type: DataTypes.ENUM('active', 'unverified', 'in-progress'),
-      allowNull: false,
-    },
-  }, {
-    tableName: 'STAFF_SKILLS',
-    timestamps: false,
-  });
+// const StaffSkills = sequelize.define('StaffSkills', {
+//     staff_id: {
+//       type: DataTypes.INTEGER,
+//       allowNull: false,
+//       primaryKey: true,
+//     },
+//     skill_id: {
+//       type: DataTypes.INTEGER,
+//       allowNull: false,
+//       primaryKey: true,
+//     },
+//     ss_status: {
+//       type: DataTypes.ENUM('active', 'unverified', 'in-progress'),
+//       allowNull: false,
+//     },
+//   }, {
+//     tableName: 'STAFF_SKILLS',
+//     timestamps: false,
+//   });
   
-  StaffSkills.belongsTo(StaffDetails, { foreignKey: 'staff_id', as: 'staff' });
-  StaffSkills.belongsTo(SkillDetails, { foreignKey: 'skill_id', as: 'skill' });
+//   StaffSkills.belongsTo(StaffDetails, { foreignKey: 'staff_id', as: 'staff' });
+//   StaffSkills.belongsTo(SkillDetails, { foreignKey: 'skill_id', as: 'skill' });
   
 //   module.exports = StaffSkills;
   
