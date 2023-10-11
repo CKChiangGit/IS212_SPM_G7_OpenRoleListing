@@ -1,18 +1,23 @@
-const TableBody = ({ tableData, columns }) => {
+const TableBody = ({ tableData, columns, pageNumber, pageSize }) => {
+    // console.log("received " + pageNumber + " and " + pageSize)
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const dataToDisplay = tableData.slice(startIndex, endIndex);
+    // console.log(startIndex, endIndex, dataToDisplay)
     return (
-      <tbody>
-        {tableData.map((data) => {
-          return (
+        <tbody>
+        {dataToDisplay.map((data) => {
+            return (
             <tr key={data.id}>
-              {columns.map(({ accessor }) => {
+                {columns.map(({ accessor }) => {
                 const tData = data[accessor] ? data[accessor] : "——";
                 return <td key={accessor}>{tData}</td>;
-              })}
+                })}
             </tr>
-          );
+            );
         })}
-      </tbody>
+        </tbody>
     );
-  };
-  
-  export default TableBody;
+    };
+
+export default TableBody;

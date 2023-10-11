@@ -36,6 +36,10 @@ const StaffDetails = sequelize.define('StaffDetails', {
     type: DataTypes.ENUM('staff', 'hr', 'manager', 'inactive'),
     allowNull: false,
   },
+  pw: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
 }, {
   tableName: 'staff_details',
   timestamps: false, // If you don't want Sequelize to add createdAt and updatedAt columns

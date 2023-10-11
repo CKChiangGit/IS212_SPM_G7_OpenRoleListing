@@ -4,47 +4,48 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
-import Register from "./pages/Register";
+import CreateStaff from "./pages/CreateStaff";
 import CreateRole from "./pages/CreateRole";
+import EditStaff from "./pages/EditStaff";
 import { ToastContainer } from "react-toastify"; // notification app
 import "react-toastify/dist/ReactToastify.css"; // notification app css
-import { useEffect, useState} from "react";
-import { data } from "autoprefixer";
-// import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
-import axios from 'axios';
+// import { useEffect, useState} from "react";
+// import { data } from "autoprefixer";
+// // import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap styling
+// import axios from 'axios';
 
 function App() {
-    // method 1
-    const [backendData, setBackendData] = useState([{}])
+    // // method 1
+    // const [backendData, setBackendData] = useState([{}])
 
-    useEffect(() => {
-        // const fetchPosts = async () => { 
-        //     try { 
-        //         const response = await api.get('/api'); 
+    // useEffect(() => {
+    //     // const fetchPosts = async () => { 
+    //     //     try { 
+    //     //         const response = await api.get('/api'); 
                 
-        //     } catch (err) { 
-        //         if (err. response) { 
-        //         // Not in the 200 response range? 
-        //         console. log (err. response. data) ; 
-        //         console. log (err. response. status) ; 
-        //         console. log( err. response. headers) ; 
-        //         } else { 
-        //         console. log(`Error: ${err.message}`); 
-        //         }
-        //     }
-        // }
-        // fetchPosts();
+    //     //     } catch (err) { 
+    //     //         if (err. response) { 
+    //     //         // Not in the 200 response range? 
+    //     //         console. log (err. response. data) ; 
+    //     //         console. log (err. response. status) ; 
+    //     //         console. log( err. response. headers) ; 
+    //     //         } else { 
+    //     //         console. log(`Error: ${err.message}`); 
+    //     //         }
+    //     //     }
+    //     // }
+    //     // fetchPosts();
 
-        // // method 1
-        fetch("/api").then(
-            response => response.json()
-        ).then(
-            data => {
-                setBackendData(data)
-                console.log(data)
-            }
-        )
-    }, [])
+    //     // // method 1
+    //     fetch("/api").then(
+    //         response => response.json()
+    //     ).then(
+    //         data => {
+    //             setBackendData(data)
+    //             console.log(data)
+    //         }
+    //     )
+    // }, [])
 
 
 
@@ -59,12 +60,16 @@ function App() {
                     <Route path="/profile" element={<PrivateRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
-                    
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="create-role" element={<PrivateRoute />}>
-                    <Route path="/create-role" element={<CreateRole />} />
+                    <Route path="/staff_creation" element={<PrivateRoute />}>
+                        <Route path="/staff_creation" element={<CreateStaff />} />
                     </Route>
+                    <Route path="/staff_edit" element={<PrivateRoute />}>
+                        <Route path="/staff_edit" element={<EditStaff />} />
+                    </Route>
+                    <Route path="/role_creation" element={<PrivateRoute />}>
+                        <Route path="/role_creation" element={<CreateRole />} />
+                    </Route>
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </Router>
             <ToastContainer
@@ -81,13 +86,13 @@ function App() {
             />
 
             {/* This is just to test if the backend is working */}
-            {(typeof backendData.users === 'undefined') ? (
+            {/* {(typeof backendData.users === 'undefined') ? (
                 <p>Loading...</p>
             ): (
                 backendData.users.map((user, i) => (
                     <p  key={i}>{user.name}</p>
                 ))
-            )}
+            )} */}
         </>
     );
 }

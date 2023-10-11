@@ -10,8 +10,10 @@
     "axios": "^1.5.1",
     "bootstrap": "^5.3.1",
     "cors": "^2.8.5",
+    "crypto": "npm:crypto-browserify",
     "express": "^4.18.2",
-    "firebase": "^10.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "mysql2": "^3.6.1",
     "nodemon": "^3.0.1",
@@ -21,18 +23,19 @@
     "react-icons": "^4.11.0",
     "react-moment": "^1.1.3",
     "react-router": "^6.15.0",
-    "react-router-dom": "^6.15.0",
+    "react-router-dom": "^6.16.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.1.3",
     "sequelize": "^6.33.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "dev": "nodemon role_details.js"
+    "roleD": "nodemon role_details.js",
+    "staffD": "nodemon staff_details.js"
   },
   "eslintConfig": {
     "extends": [
@@ -54,8 +57,18 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
+    "assert": "^2.1.0",
     "autoprefixer": "^10.4.15",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
     "postcss": "^8.4.29",
-    "tailwindcss": "^3.3.3"
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.3.3",
+    "url": "^0.11.3"
   }
 }
