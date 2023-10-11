@@ -1,10 +1,15 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, updateProfile } from "firebase/auth";
 import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "../firebase"
 import ListingItem from "../components/ListingItem";
+// import Table from 'react-bootstrap/Table';
+import Table from "../components/Table";
+import tableData1 from "../tableData1.json";
+import { RiChatNewFill } from "react-icons/ri";
+
 
 
 export default function Profile() {
@@ -18,6 +23,14 @@ export default function Profile() {
         email: auth.currentUser.email,
     })
     const {name, email} = formData
+
+    const columns = [
+        { label: "Full Name", accessor: "full_name", sortable: true },
+        { label: "Email", accessor: "email", sortable: false },
+        { label: "Gender", accessor: "gender", sortable: true, sortbyOrder: "desc" },
+        { label: "Age", accessor: "age", sortable: true },
+        { label: "Start date", accessor: "start_date", sortable: true },
+    ];
 
     // Log out function
     function logOut(){
@@ -58,8 +71,36 @@ export default function Profile() {
             setLoading(false)
         }
         fetchRoleList()
-      }, [auth.currentUser.uid])
-      console.log(listings)
+
+        console.log(JSON.stringify(tableData1) + " is defaultTableData")
+    }, [auth.currentUser.uid])
+    console.log(listings)
+
+
+    //   // connection to ConnectionManger.js
+    //   const { register, handleSubmit } = useForm();
+    //   const [error, setError] = useState('');
+    //   const [loading, setLoading] = useState(false);
+    //   const { currentUser } = useAuth();
+    //   const history = useHistory();
+    //   const BASE_URL = "mysql://root:@localhost:3306/spm"
+    
+    //   const onSubmit = async (data) => {
+    //     try {
+    //       setLoading(true);
+    //       setError('');
+    //       const response = await axios.post(`${BASE_URL}/listings`, {
+    //         ...data,
+    //         userId: currentUser.uid,
+    //       });
+    //       console.log(response.data);
+    //       history.push('/');
+    //     } catch (error) {
+    //       console.error(error);
+    //       setError('Failed to create listing');
+    //     }
+    //     setLoading(false);
+    //   };
 
     return (
         <div>
@@ -70,7 +111,7 @@ export default function Profile() {
                 <div className="w-full md:w-[50%] mt-6 px-3">
                     <form action="">
                         {/* name input */}
-                        <label>
+                        <label className="w-full">
                             Username
                             <input type="text" 
                                 id="name" 
@@ -82,7 +123,7 @@ export default function Profile() {
                         
 
                         {/* email input */}
-                        <label>
+                        <label className="w-full">
                             Email
                             <input type="email" 
                                 id="email"
@@ -110,6 +151,17 @@ export default function Profile() {
                         </div>
                         
                     </form>
+
+                    <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
+                        <Link 
+                            to="/create-role"
+                            className="flex justify-center items-center"
+                        >
+                            <RiChatNewFill className="mr-2 text-3xl bg-blue-500 rounded-full p-1 border-2"/>
+                            Create role
+                        </Link>
+                        
+                    </button>
                 </div>
             </section>
 
@@ -117,19 +169,25 @@ export default function Profile() {
                 {!loading && listings.length > 0 && (
                 <>
                     <h2 className="text-2xl text-center font-semibold mb-6">
-                    My Listings
+                        My Listings
                     </h2>
                     <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {listings.map((listing) => (
-                        <ListingItem
-                        key={listing.id}
-                        id={listing.id}
-                        listing={listing.data}
-                        // onDelete={() => onDelete(listing.id)}
-                        // onEdit={() => onEdit(listing.id)}
-                        />
-                    ))}
+                        {listings.map((listing) => (
+                            <ListingItem
+                            key={listing.id}
+                            id={listing.id}
+                            listing={listing.data}
+                            // onDelete={() => onDelete(listing.id)}
+                            // onEdit={() => onEdit(listing.id)}
+                            />
+                        ))}
                     </ul>
+
+                    <Table
+                        caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
+                        data={tableData1}
+                        columns={columns}
+                    />
                 </>
                 )}
             </div>
