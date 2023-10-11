@@ -15,6 +15,7 @@
     "express": "^4.18.2",
     "firebase": "^10.4.0",
     "flask": "^0.2.10",
+    "git": "^0.1.5",
     "jsonify": "^0.0.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^3.1.2",
