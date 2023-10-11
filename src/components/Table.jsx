@@ -44,7 +44,7 @@ export default function Table({ caption, data, columns, pageSize, type}) {
 
         return (
             <>
-                <div class="table-container">
+                <div className="table-container">
                     <table className="table">
                         <caption>{caption}</caption>
                         <TableHead {...{ columns, handleSorting }} />

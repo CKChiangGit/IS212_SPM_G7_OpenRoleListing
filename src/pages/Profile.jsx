@@ -9,28 +9,29 @@ import ListingItem from "../components/ListingItem";
 import Table from "../components/Table";
 import tableData from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
-import { AuthContext, editUser } from '../hooks/AuthContext';
+import { authenticateUser, AuthContext, editUser } from '../hooks/AuthContext';
 import { toast } from "react-toastify";
-
+const jwt = require('jsonwebtoken');
 
 export default function Profile() {
     const navigate = useNavigate()
-
-    // get login token from local storage
-    const storedToken = localStorage.getItem('token');
-    // const token = storedToken ? JSON.parse(storedToken)[0] : null;
-    // const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')) || {});
-    const [token, setToken] = useState(storedToken ? JSON.parse(storedToken)[0] : null);
-
-    console.log(JSON.stringify(token))
+    
+    // // get login token    
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    const decodedToken = jwt.verify(jwt_token, secret);
+    const [token, setToken] = useState(decodedToken[0]);
+    console.log("decoded " + JSON.stringify(decodedToken[0]));
 
     // check if token is valid
     const { logout } = useContext(AuthContext);
     const handleLogout = () => {
+        console.log("logging out")
         logout();
         navigate('/');
       };
 
+    console.log("token " + JSON.stringify(token))
     const [formData, setFormData] = useState({
         staff_id: token.staff_id,
         name: token.fname + " " + token.lname,
@@ -53,10 +54,8 @@ export default function Profile() {
         // sys_role: "hr",
         // pw: "345345",
     })
-    
-    
     const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw} = formData
-
+    
     // table data
     const columns = [
         { label: "Full Name", accessor: "full_name", sortable: true },
@@ -79,17 +78,18 @@ export default function Profile() {
             console.log(fname, lname)
             if (fname !== "" && lname !== "") {
                 // send post data to backend '/staff_details/:id'
-                console.log("sending "+ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
+                console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
                 const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
                 toast.success("Profile details updated");
+
                 // update user profile
-                const updatedToken = [{ ...formData, name: fname + " " + lname }];
-                setToken(updatedToken);
-                localStorage.setItem('token', JSON.stringify(updatedToken));
-                if (!token) {
-                    console.log("token not found")
-                    handleLogout()
-                }
+                // const updatedToken = { ...formData, name: fname + " " + lname };
+                authenticateUser(email, pw);
+                // localStorage.setItem('token', JSON.stringify(updatedToken));
+                // if (!token) {
+                //     console.log("token not found")
+                //     handleLogout()
+                // }
                 // update name in formData
                 setFormData((prevState) => ({
                     ...prevState,
@@ -97,7 +97,7 @@ export default function Profile() {
                 }));
             }
         } catch (error) {
-            toast.error("Could not update the profile details" + error.message);
+            toast.error("Could not update the profile details. " + error.message);
         }
         
     }
