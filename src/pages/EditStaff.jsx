@@ -11,15 +11,18 @@ import { createUser } from '../hooks/AuthContext';
 import { AuthContext, editUser } from '../hooks/AuthContext';
 import Table from "../components/Table";
 import tableData from "../tableData3.json";
+const jwt = require('jsonwebtoken');
+
 
 export default function EditStaff() {
     const navigate = useNavigate()
 
-    // get login token from local storage
-    const storedToken = localStorage.getItem('token');
-    // const token = storedToken ? JSON.parse(storedToken)[0] : null;
-    // const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')) || {});
-    const [token, setToken] = useState(storedToken ? JSON.parse(storedToken)[0] : null);
+    // // get login token    
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    const decodedToken = jwt.verify(jwt_token, secret);
+    const [token, setToken] = useState(decodedToken[0]);
+    console.log("decoded " + JSON.stringify(decodedToken[0]));
 
     console.log(JSON.stringify(token))
 
@@ -91,17 +94,18 @@ export default function EditStaff() {
             console.log(fname, lname)
             if (fname !== "" && lname !== "") {
                 // send post data to backend '/staff_details/:id'
-                console.log("sending "+ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
+                console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
                 const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
                 toast.success("Profile details updated");
+
                 // update user profile
-                const updatedToken = [{ ...formData, name: fname + " " + lname }];
-                setToken(updatedToken);
-                localStorage.setItem('token', JSON.stringify(updatedToken));
-                if (!token) {
-                    console.log("token not found")
-                    handleLogout()
-                }
+                // const updatedToken = { ...formData, name: fname + " " + lname };
+                // authenticateUser(email, pw);
+                // localStorage.setItem('token', JSON.stringify(updatedToken));
+                // if (!token) {
+                //     console.log("token not found")
+                //     handleLogout()
+                // }
                 // update name in formData
                 setFormData((prevState) => ({
                     ...prevState,
@@ -109,7 +113,7 @@ export default function EditStaff() {
                 }));
             }
         } catch (error) {
-            toast.error("Could not update the profile details" + error.message);
+            toast.error("Could not update the profile details. " + error.message);
         }
         
     }
@@ -128,18 +132,20 @@ export default function EditStaff() {
             <h1 className='text-3xl text-center mt-6 font-bold'>
                 Edit User
             </h1>
+            <Table
+                caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
+                data={tableData}
+                columns={columns}
+                pageSize={5}
+                type="staff"
+                // pageNumber={pageNumber}
+                // pageSize={pageSize}
+                // setPageNumber={setPageNumber}
+            />
             <div className="flex justify-center flex-wrap items-center px-6 py-4 max-w-7xl mx-auto"  >
                 <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-4">
                 {/* <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-4"> */}
-                    <Table
-                        caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
-                        data={tableData}
-                        columns={columns}
-                        pageSize={3}
-                        // pageNumber={pageNumber}
-                        // pageSize={pageSize}
-                        // setPageNumber={setPageNumber}
-                    />
+                    <h1>Hello</h1>
                 </div>
                 <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
                     <form onSubmit={onSubmit}>

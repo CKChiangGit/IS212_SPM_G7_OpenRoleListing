@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext, useState } from 'react'
-import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom";
 
 // // SQL AUTHENTICATION 
@@ -38,17 +38,11 @@ export default function Login() {
         try {
             const token = await authenticateUser(email, password);
             login(token);
-            console.log("ive logged to " + JSON.stringify(token))
-            if (token.length > 0) {
-                const userData = token[0];
-                if (userData) {
-                    navigate("/")
-                    console.log(userData.email)
-                    toast.success("Logging in. " + userData.email)
-                }
-            } else {
-                toast.error("Login failed.")
-            }
+            console.log("ive logged to " + token)
+            // console.log("ive logged to " + JSON.stringify(token))
+            navigate("/")
+            console.log(token.email)
+            toast.success("Logging in. " + token.email)
         } catch (error){
             console.log(error.message)
             toast.error("Login failed. " + error.message)
