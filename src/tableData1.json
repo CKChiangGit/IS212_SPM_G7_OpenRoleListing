@@ -46,5 +46,13 @@
       "gender": "Male",
       "age": 35,
       "start_date": "2021-03-09"
+    },
+    {
+      "id": 7,
+      "full_name": "Arny Amerighit2",
+      "email": "aameri@ibm.com",
+      "gender": "Male",
+      "age": 35,
+      "start_date": "2021-03-09"
     }
 ]
