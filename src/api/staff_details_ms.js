@@ -1,9 +1,8 @@
 // --Microservice Portion--
-const { DataTypes } = require('sequelize');
+const express = require('express');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const StaffDetails = require('../../models/staff_details'); // Import the StaffRoles model
-const express = require('express');
-const mysql2 = require('mysql2');
+
 
 const app = express();
 const port = 5004;
@@ -91,6 +90,13 @@ app.get('/staff_details/:staff_id', async (req, res) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, async () => {
+  try {
+    await sequelize.sync({ force: false });
+    console.log('Model synchronized with the database.');
+
+    console.log(`Server is running on port ${PORT}`);
+  } catch (error) {
+    console.error('Error syncing the model:', error);
+  }
 });
