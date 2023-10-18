@@ -42,7 +42,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "roleD": "nodemon role_details.js",
-    "staffD": "nodemon staff_details.js"
+    "staffD": "nodemon staff_details.js",
+    "staffDD": "nodemon staff_details_ms.js"
   },
   "eslintConfig": {
     "extends": [

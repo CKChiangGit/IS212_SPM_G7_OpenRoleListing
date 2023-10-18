@@ -80,6 +80,23 @@ export const authenticateUser = async (email, password) => {
     }
 };
 
+// sends request to get all staff details
+export const getAllUser = async () => {
+    const response = await fetch('http://localhost:5004/staff_details', {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        throw new Error('Error retrieving staff details');
+    }
+};
+
 // sends request to create new staff details
 export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
     const response = await fetch('http://localhost:6001/staff_creation', {

@@ -81,7 +81,14 @@ export default function Header() {
                             <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
                                 pathMatchRoute("/staff_creation") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
                             }`} onClick={()=>navigate('/staff_creation')}>
-                                Register
+                                Register Staff
+                            </li>
+                        )}
+                        {token && token.sys_role === "hr" && (
+                            <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
+                                pathMatchRoute("/staff_edit") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
+                            }`} onClick={()=>navigate('/staff_edit')}>
+                                Edit Staff
                             </li>
                         )}
                         
