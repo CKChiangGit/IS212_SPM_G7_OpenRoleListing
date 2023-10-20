@@ -1,5 +1,7 @@
-import { React, useEffect, useState }  from 'react'
-import {useLocation, useNavigate} from "react-router-dom"
+import { React, useContext, useEffect, useState }  from 'react'
+import { useLocation, useNavigate} from "react-router-dom"
+import { AuthContext } from '../hooks/AuthContext';
+const jwt = require('jsonwebtoken');
 
 // import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
@@ -11,10 +13,21 @@ export default function Header() {
 
     const [ pageState, setPageState ] = useState("Login") 
 
-    // get login token from local storage
-    const storedToken = localStorage.getItem('token');
-    const token = storedToken ? JSON.parse(storedToken)[0] : null;
-
+    // // get login token    
+    const [token, setToken] = useState(null);
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    useEffect(() => {
+    if (jwt_token !== null) {
+        const decodedToken = jwt.verify(jwt_token, secret);
+        setToken(decodedToken[0]);
+        console.log("decoded " + JSON.stringify(decodedToken[0]));
+    } else {
+        setToken()
+    }
+    }, [jwt_token, secret]);
+    
+    console.log("token " + token)
     useEffect(() => {
         if (token) {
             setPageState("Profile")
@@ -68,7 +81,14 @@ export default function Header() {
                             <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
                                 pathMatchRoute("/staff_creation") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
                             }`} onClick={()=>navigate('/staff_creation')}>
-                                Register
+                                Register Staff
+                            </li>
+                        )}
+                        {token && token.sys_role === "hr" && (
+                            <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
+                                pathMatchRoute("/staff_edit") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
+                            }`} onClick={()=>navigate('/staff_edit')}>
+                                Edit Staff
                             </li>
                         )}
                         

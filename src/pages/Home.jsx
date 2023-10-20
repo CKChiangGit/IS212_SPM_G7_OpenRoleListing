@@ -1,7 +1,9 @@
-import { React } from 'react'
+import { React, useState, useEffect } from 'react'
 import Table from "../components/Table";
 import tableData1 from "../tableData1.json";
-
+import Popup from '../components/Popup';
+import { AuthContext } from '../hooks/AuthContext';
+const jwt = require('jsonwebtoken');
 
 // table data
 const columns = [
@@ -13,9 +15,23 @@ const columns = [
 ];
 
 export default function Home() {     
-    const storedToken = localStorage.getItem('token');
-    const token = storedToken ? JSON.parse(storedToken)[0] : null;
+    // const storedToken = localStorage.getItem('token');
+    // const data1 = storedToken ? JSON.parse(storedToken)[0] : null;
     // console.log(JSON.stringify(token))
+
+    // // get login token    
+    const [token, setToken] = useState(null);
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    useEffect(() => {
+    if (jwt_token !== null) {
+        const decodedToken = jwt.verify(jwt_token, secret);
+        setToken(decodedToken[0]);
+        console.log("decoded " + JSON.stringify(decodedToken[0]));
+    } else {
+        setToken()
+    }
+    }, [jwt_token, secret]);
 
     return (
         <div>
@@ -33,6 +49,10 @@ export default function Home() {
                         columns={columns}
                         pageSize={3}
                     />
+                    <Popup role={{
+                        "name": 1,
+                        "description": "Wendall Gripton",
+                    }}/>
                 </div>
             ) : (
                 <div>

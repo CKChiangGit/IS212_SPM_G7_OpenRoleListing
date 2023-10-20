@@ -1,17 +1,25 @@
-import { React, useEffect, useState } from 'react'
+import { React, useContext, useEffect, useState } from 'react'
 import { Outlet, Navigate } from "react-router-dom"
-// import { AuthContext } from '../hooks/AuthContext';
+import { AuthContext } from '../hooks/AuthContext';
 // import { useAuthStatus } from "../hooks/useAuthStatus";
+const jwt = require('jsonwebtoken');
 
 export default function PrivateRoute() {
-    // SQL AUTHENTICATION START HERE
-    const storedToken = localStorage.getItem('token');
-    const token = storedToken ? JSON.parse(storedToken) : null;
-    console.log(JSON.parse(storedToken))
-    console.log("checking token:" + JSON.stringify(token))
+
+    // // get login token    
+    const [token, setToken] = useState(null);
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    useEffect(() => {
+        if (jwt_token !== null) {
+          const decodedToken = jwt.verify(jwt_token, secret);
+          setToken(decodedToken[0]);
+          console.log("decoded " + JSON.stringify(decodedToken[0]));
+        }
+      }, [jwt_token, secret]);
     
-    return token ? <Outlet /> : <Navigate to="/login" />;
-    // SQL AUTHENTICATION ENDS HERE
+    
+    return jwt_token ? <Outlet /> : <Navigate to="/login" />;
 
     // // // FIREBASE AUTHENTICATION START HERE
     // // const isLoggedIn = false;
