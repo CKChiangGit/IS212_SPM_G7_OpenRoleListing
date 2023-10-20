@@ -2,7 +2,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const SkillDetails = require('../../models/skill_details'); // Import the SkillDetails model
 const express = require('express');
-const mysql2 = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5006;
@@ -43,7 +44,7 @@ app.get('/skill_details/:skill_id', async (req, res) => {
       return res.status(200).json({
         code: 200,
         data: {
-          'skill_details': skill_details.map(skill_details.skill_name.toJSON()),
+          'skill_details': skill_details.map(skill_details => skill_details.toJSON()),
         },
       });
     }

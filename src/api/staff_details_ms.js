@@ -84,6 +84,20 @@ app.get('/staff_details/:staff_id', async (req, res) => {
   }
 });
 
+app.post('/staff_details', async (req, res) => {
+  try {
+      const staff_details = await StaffDetails.findAll({
+      where: {
+          email: req.body.email,
+          pw: req.body.password
+      }
+      });
+      res.json(staff_details);
+  } catch (error) {
+      res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
+  }
+});
+
 
 app.listen(PORT, async () => {
   try {

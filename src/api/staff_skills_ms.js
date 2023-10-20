@@ -3,7 +3,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const StaffSkills = require('../../models/staff_skills'); // Import the StaffSkills model
 const express = require('express');
-const mysql2 = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5009;
@@ -40,41 +41,71 @@ app.get('/staff_skills', async (req, res) => {
   }
 });
 
-// -- Persis version of staff_id query --
-app.get('/staff_skills/:staff_id', async (req, res) =>{
-  try{
-      var skills_results=[];
-      const staff_skills = await StaffSkills.findAll();   
-      var jsondata=JSON.stringify(staff_skills);  
-      var jsondata1=JSON.parse(jsondata)
-      for(var data1 in jsondata1){
-          for(var key in jsondata1[data1]){
-              if(key==='staff_id'){
-                  if(jsondata1[data1][key]===Number(req.params.staff_id)){
-                      console.log("yes")
-                      skills_results.push(jsondata1[data1])
 
+// -- Mervin version of staff_id query --
+app.get('/staff_skills/:staff_id', async (req, res) => {
+  const staff_id = req.params.staff_id;
+  try {
+    const staff_skills = await StaffSkills.findAll({ where: { staff_id } });
+    
+    if (staff_skills) {
+      return res.status(200).json({
+        code: 200,
+        data: staff_skills.map(skill => skill.toJSON())
+        //data: staff_skills.toJSON(),
+      });
+    }
 
-                  }
-
-              }
-          }
-      }
-      res.json(skills_results)
-      module.exports=skills_results 
-      
-
-
-      
-  }catch(error) {
+    return res.status(404).json({
+      code: 404,
+      message: 'Staff skills / Staff details not found.',
+    });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({
       code: 500,
-      message: 'Internal Server Error in "/staff_skills/:staff_id".',
+      message: 'Internal Server Error',
     });
-    
-    // res.status(500).json({ error: `Internal server error in '/staff_skills/:staff_id' endpoint` });
   }
 });
+
+//  
+
+// // -- Persis version of staff_id query --
+// app.get('/staff_skills/:staff_id', async (req, res) =>{
+//   try{
+//       var skills_results=[];
+//       const staff_skills = await StaffSkills.findAll();   
+//       var jsondata=JSON.stringify(staff_skills);  
+//       var jsondata1=JSON.parse(jsondata)
+//       for(var data1 in jsondata1){
+//           for(var key in jsondata1[data1]){
+//               if(key==='staff_id'){
+//                   if(jsondata1[data1][key]===Number(req.params.staff_id)){
+//                       console.log("yes")
+//                       skills_results.push(jsondata1[data1])
+
+
+//                   }
+
+//               }
+//           }
+//       }
+//       res.json(skills_results)
+//       module.exports=skills_results 
+      
+
+
+      
+//   }catch(error) {
+//     return res.status(500).json({
+//       code: 500,
+//       message: 'Internal Server Error in "/staff_skills/:staff_id".',
+//     });
+    
+//     // res.status(500).json({ error: `Internal server error in '/staff_skills/:staff_id' endpoint` });
+//   }
+// });
 
 app.listen(PORT, async () => {
   try {
@@ -89,37 +120,6 @@ app.listen(PORT, async () => {
 }); 
 
 
-// -- Mervin version of staff_id query --
-// app.get('/staff_skills/:staff_id', async (req, res) => {
-//   const staff_id = req.params.staff_id;
-
-//   try {
-//     const staff_skills = await StaffSkills.findOne({ where: { staff_id } });
-
-//     if (staff_skills) {
-//       return res.status(200).json({
-//         code: 200,
-//         data: staff_skills.toJSON(),
-//       });
-//     }
-
-//     return res.status(404).json({
-//       code: 404,
-//       message: 'Staff skills / Staff details not found.',
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       code: 500,
-//       message: 'Internal Server Error',
-//     });
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-// ----------------------------------------------------------
 
 // Persis code to send info to another microservice:
 //send data to another microservice
