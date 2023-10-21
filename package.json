@@ -17,7 +17,7 @@
     "flask": "^0.2.10",
     "git": "^0.1.5",
     "jsonify": "^0.0.1",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
@@ -42,7 +42,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "roleD": "nodemon role_details.js",
-    "staffD": "nodemon staff_details.js"
+    "staffD": "nodemon staff_details.js",
+    "staffDD": "nodemon staff_details_ms.js"
   },
   "eslintConfig": {
     "extends": [

@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* * {
     box-sizing: border-box;
-}
+} */
 
 body{
     background-color: #FDF0F4;

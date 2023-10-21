@@ -8,11 +8,12 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
     
     const navigate = useNavigate()
 
-    const handleClick = () => {
-        if (type === "staff") {
+    const handleClick = (data) => {
+        if (type === "edit") {
             alert("show dashboard of staff")
-            console.log("show dashboard of staff")
-            // render show dashboard component of staff visible
+            console.log("set local storage 'staff' to row data clicked")
+            localStorage.setItem("staff_edit", JSON.stringify(data))
+            window.dispatchEvent(new Event("staff_edit"));
             // navigate('/')
         } else {
             console.log("clicked")
@@ -24,7 +25,7 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
         <tbody>
         {dataToDisplay.map((data) => {
             return (
-                <tr key={data.id} className="table-row" onClick={handleClick}>
+                <tr key={data.id} className="table-row" onClick={() => handleClick(data)}>
                     {columns.map(({ accessor }) => {
                     const tData = data[accessor] ? data[accessor] : "——";
                     return <td key={accessor}>{tData}</td>;
