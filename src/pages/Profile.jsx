@@ -76,7 +76,8 @@ export default function Profile() {
     async function onSubmit() {
         try {
             console.log(fname, lname)
-            if (fname !== "" && lname !== "") {
+            if(Object.values(formData).every((val) => val !== '')) {
+            // if (fname !== "" && lname !== "") {
                 // send post data to backend '/staff_details/:id'
                 console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
                 const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);

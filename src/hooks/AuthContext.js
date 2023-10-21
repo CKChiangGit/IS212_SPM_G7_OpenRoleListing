@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
 // sends request to retrieve staff details
 export const authenticateUser = async (email, password) => {
-    const response = await fetch('http://localhost:6001/staff_details', {
+    const response = await fetch('http://localhost:5007/staff_details', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -51,15 +51,15 @@ export const authenticateUser = async (email, password) => {
     });
     const data = await response.json();
     if (response.ok) {
-        console.log("response ok " + data)
+        console.log("response ok " + JSON.stringify(data[0]))
         if (data.length > 0) {
             // sign jwt token with no expiry date
-            const userId = { id: 123 };
+            // const userId = { id: 123 };
             jwt.sign({ ...data }, secret, (err, asyncToken) => {
                 if (err) throw err;
                 console.log(asyncToken);
                 // Save the user ID & JWT token to local storage
-                localStorage.setItem('userId', userId);
+                // localStorage.setItem('userId', userId);
                 localStorage.setItem('jwt_token', asyncToken);
                 
                 // for REFERENCING readable JWT TOKEN
@@ -82,7 +82,7 @@ export const authenticateUser = async (email, password) => {
 
 // sends request to get all staff details
 export const getAllUser = async () => {
-    const response = await fetch('http://localhost:5004/staff_details', {
+    const response = await fetch('http://localhost:5007/staff_details', {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export const getAllUser = async () => {
 
 // sends request to create new staff details
 export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
-    const response = await fetch('http://localhost:6001/staff_creation', {
+    const response = await fetch('http://localhost:5007/staff_creation', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export const createUser = async (staff_id, fname, lname, dept, email, phone, biz
 
 // sends request to edit staff details
 export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
-    const response = await fetch(`http://localhost:6001/staff_details/${staff_id}`, {
+    const response = await fetch(`http://localhost:5007/staff_details/${staff_id}`, {
         method: 'PUT',
         headers: {
         'Content-Type': 'application/json',
