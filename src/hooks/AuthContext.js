@@ -51,11 +51,14 @@ export const authenticateUser = async (email, password) => {
     });
     const data = await response.json();
     if (response.ok) {
-        console.log("response ok " + JSON.stringify(data[0]))
-        if (data.length > 0) {
+        console.log("response ok " + JSON.stringify(data.data.staff_details[0]))
+        console.log("response ok " + data.data.staff_details.length)
+        if (data.data.staff_details.length > 0) {
             // sign jwt token with no expiry date
             // const userId = { id: 123 };
-            jwt.sign({ ...data }, secret, (err, asyncToken) => {
+            console.log(data.data.staff_details[0])
+            // const test = {"staff_id":2,"fname":"JACK","lname":"SIM","dept":"MANAGEMENT","email":"jack.sim.2@all-in-one.com.sg","phone":"86808357","biz_address":"65 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409065","sys_role":"hr","pw":"345345"}
+            jwt.sign(data.data.staff_details[0], secret, (err, asyncToken) => {
                 if (err) throw err;
                 console.log(asyncToken);
                 // Save the user ID & JWT token to local storage
@@ -64,15 +67,16 @@ export const authenticateUser = async (email, password) => {
                 
                 // for REFERENCING readable JWT TOKEN
                 const decoded = jwt.verify(asyncToken, secret);
-                console.log("decoded: " + JSON.stringify(decoded[0]));
-                localStorage.setItem('token3', JSON.stringify(decoded[0]));
+                console.log("decoded: " + JSON.stringify(decoded));
+                localStorage.setItem('token3', JSON.stringify(decoded));
 
                 // return asyncToken;
             });
             console.log("jwt has been signed")
-            return data[0];
+            return data.data.staff_details[0];
         } else {
-            throw new Error("Invalid email or password");
+            // throw new Error("Invalid email or password");
+            throw new Error("Invalid email or password" + JSON.stringify(data.data.staff_details[0]));
         }
         
     } else {
