@@ -19,7 +19,7 @@ export default function Header() {
     const secret = 'mysecretkey';
     useEffect(() => {
     if (jwt_token !== null) {
-        const decodedToken = jwt.verify(jwt_token, secret)[0];
+        const decodedToken = jwt.verify(jwt_token, secret);
         setToken(decodedToken);
         console.log("decoded " + JSON.stringify(decodedToken));
     } else {
@@ -27,7 +27,7 @@ export default function Header() {
     }
     }, [jwt_token, secret]);
     
-    console.log("token " + token)
+    console.log("token " + JSON.stringify(token))
     useEffect(() => {
         if (token) {
             setPageState("Profile")

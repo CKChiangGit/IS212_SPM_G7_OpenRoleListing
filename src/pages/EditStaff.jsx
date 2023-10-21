@@ -79,7 +79,7 @@ export default function EditStaff() {
     // // get login token    
     const jwt_token = localStorage.getItem('jwt_token');
     const secret = 'mysecretkey';
-    const decodedToken = jwt.verify(jwt_token, secret)[0];
+    const decodedToken = jwt.verify(jwt_token, secret);
     console.log("decoded: " + JSON.stringify(decodedToken));
 
     const [isEditingSelf, setIsEditingSelf] = useState(false);

@@ -26,8 +26,8 @@ export default function Home() {
     useEffect(() => {
     if (jwt_token !== null) {
         const decodedToken = jwt.verify(jwt_token, secret);
-        setToken(decodedToken[0]);
-        console.log("decoded " + JSON.stringify(decodedToken[0]));
+        setToken(decodedToken);
+        console.log("decoded " + JSON.stringify(decodedToken));
     } else {
         setToken()
     }
