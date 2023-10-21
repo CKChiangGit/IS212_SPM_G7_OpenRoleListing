@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Role Details</title>
+</head>
+<body>
+  <div id="role-description"></div>
+
+  <script>
+    async function fetchRoleDescription(role_id) {
+      const response = await fetch(`http://localhost:3001/openroles/${role_id}`);
+      const data = await response.json();
+
+      const roleDescription = document.getElementById('role-description');
+      roleDescription.innerHTML = JSON.stringify(data, null, 2);
+    }
+
+    // Extract role_id from the URL
+    const url = new URL(window.location.href);
+    const roleId = url.searchParams.get('role_id');
+
+    fetchRoleDescription(roleId);
+  </script>
+</body>
+</html>

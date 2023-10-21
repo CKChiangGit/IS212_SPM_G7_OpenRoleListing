@@ -1,17 +1,36 @@
-// Create a express microservice that retrieve role details from role_details model
+// This microservice is responsible for the retrieval and creation of role details.
+
+// Import the necessary modules and database models to use
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('../models/ConnectionManager');
-const RoleDetails = require('../models/role_details');
+const sequelize = require('../../models/ConnectionManager');
+const RoleDetails = require('../../models/role_details');
 const cors = require('cors');
-
 const app = express();
-const PORT = process.env.PORT || 3002;
 
+// Define the port number
+const PORT = process.env.PORT || 3004;
+
+// Use the necessary modules
 app.use(bodyParser.json());
 app.use(cors());
 
+// Get all role details
+app.get('/roledetails', async (req, res) => {
+  try {
+    const roledetails = await RoleDetails.findAll();
+    if (!roledetails.length) {
+      res.status(404).send('<p>There are no roles available.</p>');
+    } else {
+      res.status(200).json(roledetails);
+    }
+  } catch (error) {
+    console.error('Error getting all role details:', error);
+    res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+  }
+});
 
+// Get a role detail by role_id
 app.get('/roledetails/:role_id', async (req, res) => {
   try {
     const roledetails = await RoleDetails.findOne({
@@ -31,6 +50,18 @@ app.get('/roledetails/:role_id', async (req, res) => {
   } catch (error) {
     console.error('Error getting role details:', error);
     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+  }
+});
+
+
+// Post a new role detail
+app.post('/roledetails', async (req, res) => {
+  try {
+    const roledetail = await RoleDetails.create(req.body);
+    res.json(roledetail);
+  } catch (error) {
+    console.error('Error creating a new role listing:', error);
+    res.status(501).send(`<p>There is an error posting a new role listing, please contact the IT Department Team.</p>`);
   }
 });
 
