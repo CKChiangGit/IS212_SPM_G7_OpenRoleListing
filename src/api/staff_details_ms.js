@@ -95,7 +95,19 @@ app.post('/staff_details', async (req, res) => {
           pw: req.body.password
       }
       });
-      res.json(staff_details);
+      if (staff_details && staff_details.length > 0) {
+        return res.status(200).json({
+          code: 200,
+          data: {
+            'staff_details': staff_details.map(staff => staff.toJSON()),
+          },
+        });
+      }
+  
+      return res.status(404).json({
+        code: 404,
+        message: 'No matching staff details found.',
+      });
   } catch (error) {
       res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
   }

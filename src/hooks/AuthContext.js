@@ -51,7 +51,7 @@ export const authenticateUser = async (email, password) => {
     });
     const data = await response.json();
     if (response.ok) {
-        console.log("response ok " + data)
+        console.log("response ok " + JSON.stringify(data[0]))
         if (data.length > 0) {
             // sign jwt token with no expiry date
             // const userId = { id: 123 };

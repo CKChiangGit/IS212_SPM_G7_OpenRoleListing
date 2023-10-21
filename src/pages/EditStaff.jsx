@@ -79,9 +79,10 @@ export default function EditStaff() {
     // // get login token    
     const jwt_token = localStorage.getItem('jwt_token');
     const secret = 'mysecretkey';
-    const decodedToken = jwt.verify(jwt_token, secret);
+    const decodedToken = jwt.verify(jwt_token, secret)[0];
     console.log("decoded: " + JSON.stringify(decodedToken));
 
+    const [isEditingSelf, setIsEditingSelf] = useState(false);
     async function onSubmit(e) {
         e.preventDefault();
         try {
@@ -92,20 +93,48 @@ export default function EditStaff() {
                 await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
                 toast.success('Profile details updated');
                 updateTableData();
-                setToken({}); 
-                localStorage.removeItem('staff_edit'); 
-                
-                // if HR edited own profile
-                console.log("comparing ", staff_id, decodedToken.staff_id)
-                if (staff_id === decodedToken.staff_id) {
-                    authenticateUser(email, pw);
-                    console.log("jwt has been resigned")
+
+                // check if HR edited own profile
+                console.log("comparing ", token.staff_id, decodedToken.staff_id)
+                console.log(token.staff_id === decodedToken.staff_id)
+                if (token.staff_id === decodedToken.staff_id) {
+                    try {
+                        await authenticateUser(email, pw);
+                        console.log("jwt has been resigned");
+                        setToken({}); 
+                        localStorage.removeItem('staff_edit'); 
+                    } catch (error) {
+                      console.log("Error during authentication:", error);
+                    }
+                } else {
+                    setToken({}); 
+                    localStorage.removeItem('staff_edit'); 
                 }
+
             }
         } catch (error) {
             toast.error('Could not update the profile details. ' + error.message);
         }
     }
+    // useEffect(() => {
+    //     async function resignToken() {
+    //       if (isEditingSelf) {
+    //         try {
+    //             await authenticateUser(email, pw);
+    //             console.log("jwt has been resigned");
+    //             setToken({}); 
+    //             localStorage.removeItem('staff_edit'); 
+    //         } catch (error) {
+    //           console.log("Error during authentication:", error);
+    //         }
+    //       } else {
+    //         setToken({}); 
+    //         localStorage.removeItem('staff_edit'); 
+    //       }
+    //     }
+    //     resignToken();
+    //   }, [isEditingSelf, email, pw]);
+
     // // set table data as import from tableDtata3.json
     const [tableData, setTableData] = useState([])
     
