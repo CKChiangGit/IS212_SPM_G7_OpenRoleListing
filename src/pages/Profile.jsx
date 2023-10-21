@@ -20,8 +20,8 @@ export default function Profile() {
     const jwt_token = localStorage.getItem('jwt_token');
     const secret = 'mysecretkey';
     const decodedToken = jwt.verify(jwt_token, secret);
-    const [token, setToken] = useState(decodedToken[0]);
-    console.log("decoded " + JSON.stringify(decodedToken[0]));
+    const [token, setToken] = useState(decodedToken);
+    console.log("decoded " + JSON.stringify(decodedToken));
 
     // check if token is valid
     const { logout } = useContext(AuthContext);
