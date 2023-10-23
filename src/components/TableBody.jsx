@@ -26,9 +26,9 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
 
     return (
         <tbody>
-        {dataToDisplay.map((data) => {
+        {dataToDisplay.map((data, index) => {
             return (
-                <tr className="table-row" onClick={() => handleClick(data)}>
+                <tr key={index} className="table-row" onClick={() => handleClick(data)}>
                     {columns.map(({ accessor }) => {
                     const tData = data[accessor] ? data[accessor] : "——";
                     return <td key={accessor}>{tData}</td>;

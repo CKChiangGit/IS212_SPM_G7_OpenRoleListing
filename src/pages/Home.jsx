@@ -48,65 +48,16 @@ export default function Home() {
     // update table data with viewRole() and setTableData()
     const [tableData, setTableData] = useState([])
 
-    const updateTableData = async (data) => {
-        try {
-            // const data = JSON.parse(await viewRole());
-            // const response = await fetch('http://localhost:3003/openroles');
-            // const data2 = await response.json();
-            // const data = JSON.parse([{"role_listing_id":531,"role_id":27431,"role_listing_desc":"Technology Consultant","role_listing_source":2049,"role_listing_open":"2023-09-20","role_listing_close":"2023-10-04","role_listing_creator":8857,"role_listing_updater":8857,"role_listing_ts_create":"2023-09-25T12:07:09.000Z","role_listing_ts_update":"2023-09-25T12:07:09.000Z"},{"role_listing_id":532,"role_id":27432,"role_listing_desc":"Technology Advisor","role_listing_source":2049,"role_listing_open":"2023-09-20","role_listing_close":"2023-10-31","role_listing_creator":8857,"role_listing_updater":8857,"role_listing_ts_create":"2023-09-25T12:07:10.000Z","role_listing_ts_update":"2023-09-25T12:07:10.000Z"}])
-            // console.log("retrieved " + JSON.stringify(data))
-            // console.log("retrieved " + typeof data)
-            // // compare if data2 and data are the same
-            // if (JSON.stringify(data2) === JSON.stringify(data)) {
-            //     console.log("same")
-            // } 
-            setTableData(data);
+    const updateTableData = async () => {
+        try {            
+            setTableData(await viewRole());
             console.log("table data updated")
         } catch (error) {
             console.error(error);
         }
     };
     useEffect(() => {
-        
-        const data = [
-            {
-              "role_listing_id": 531,
-              "role_id": 27431,
-              "role_listing_desc": "Technology Consultant",
-              "role_listing_source": 2049,
-              "role_listing_open": "2023-09-20",
-              "role_listing_close": "2023-10-04",
-              "role_listing_creator": 8857,
-              "role_listing_updater": 8857,
-              "role_listing_ts_create": "2023-09-25T12:07:09.000Z",
-              "role_listing_ts_update": "2023-09-25T12:07:09.000Z"
-            },
-            {
-                "role_listing_id": 532,
-                "role_id": 27432,
-                "role_listing_desc": "Technology Advisor",
-                "role_listing_source": 2049,
-                "role_listing_open": "2023-09-20",
-                "role_listing_close": "2023-10-31",
-                "role_listing_creator": 8857,
-                "role_listing_updater": 8857,
-                "role_listing_ts_create": "2023-09-25T12:07:10.000Z",
-                "role_listing_ts_update": "2023-09-25T12:07:10.000Z"
-              }
-          ];
-        updateTableData(data);
-    }, []);
-    console.log(tableData)
-
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-        const response = await fetch('http://localhost:3003/openroles');
-        const data = await response.json();
-        setData(data);
-        };
-
-        fetchData();
+        updateTableData();
     }, []);
 
     return (
@@ -114,43 +65,43 @@ export default function Home() {
             {token ? (
                 
                 <div>
-                    <thead>
-                  <tr>
-                    <th>role_listing_id</th>
-                    <th>role_id</th>
-                    <th>role_listing_desc</th>
-                    <th>role_listing_source</th>
-                    <th>role_listing_open</th>
-                    <th>role_listing_close</th>
-                    <th>role_listing_creator</th>
-                    <th>role_listing_updater</th>
-                    <th>role_listing_ts_create</th>
-                    <th>role_listing_ts_update</th>
-                    <th>View</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map(item => (
-                    <tr key={item.role_listing_id}>
-                      <td>{item.role_listing_id}</td>
-                      <td>{item.role_id}</td>
-                      <td>{item.role_listing_desc}</td>
-                      <td>{item.role_listing_source}</td>
-                      <td>{item.role_listing_open}</td>
-                      <td>{item.role_listing_close}</td>
-                      <td>{item.role_listing_creator}</td>
-                      <td>{item.role_listing_updater}</td>
-                      <td>{item.role_listing_ts_create}</td>
-                      <td>{item.role_listing_ts_update}</td>
-                      <td>
-                        <button onClick={() => {
-                          const roleId = item.role_id;
-                          window.location.href = `view_role.html?role_id=${roleId}`;
-                        }}>View</button>
-                      </td>
+                    {/* <thead>
+                    <tr>
+                        <th>role_listing_id</th>
+                        <th>role_id</th>
+                        <th>role_listing_desc</th>
+                        <th>role_listing_source</th>
+                        <th>role_listing_open</th>
+                        <th>role_listing_close</th>
+                        <th>role_listing_creator</th>
+                        <th>role_listing_updater</th>
+                        <th>role_listing_ts_create</th>
+                        <th>role_listing_ts_update</th>
+                        <th>View</th>
                     </tr>
-                  ))}
-                </tbody>
+                    </thead>
+                    <tbody>
+                    {tableData.map(item => (
+                        <tr key={item.role_listing_id}>
+                        <td>{item.role_listing_id}</td>
+                        <td>{item.role_id}</td>
+                        <td>{item.role_listing_desc}</td>
+                        <td>{item.role_listing_source}</td>
+                        <td>{item.role_listing_open}</td>
+                        <td>{item.role_listing_close}</td>
+                        <td>{item.role_listing_creator}</td>
+                        <td>{item.role_listing_updater}</td>
+                        <td>{item.role_listing_ts_create}</td>
+                        <td>{item.role_listing_ts_update}</td>
+                        <td>
+                            <button onClick={() => {
+                            const roleId = item.role_id;
+                            window.location.href = `view_role.html?role_id=${roleId}`;
+                            }}>View</button>
+                        </td>
+                        </tr>
+                    ))}
+                    </tbody> */}
 
                     {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
@@ -158,17 +109,19 @@ export default function Home() {
                         </p>
                     ))}
                     <div className="">Home</div>
-                    <Table
-                        caption="Open roles available for applications."
-                        data={tableData}
-                        columns={columns}
-                        pageSize={3}
-                        type="apply"
-                    />
-                    <Popup role={{
-                        "name": 1,
-                        "description": "Wendall Gripton",
-                    }}/>
+                    {tableData.length > 0 ? (
+                        <><Table
+                            caption="Open roles available for applications."
+                            data={tableData}
+                            columns={columns}
+                            pageSize={3}
+                            type="apply" /><Popup role={{
+                                "name": 1,
+                                "description": "Wendall Gripton",
+                            }} /></>
+                    ) : (
+                        <div>Loading...</div>
+                    )}
                 </div>
             ) : (
                 <div>

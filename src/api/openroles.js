@@ -20,11 +20,11 @@ app.get('/openroles', async (req, res) => {
     // Ensure that applyroles.js returns a response
     // const response = await axios.get('http://localhost:3000/applyroles');
     const roleListings = await axios.get('http://localhost:3005/rolelistings');
-    // const openRoles = roleListings.data
+    const openRoles = roleListings.data
 
-    // Filter out the open roles available
-    const currentDate = new Date();
-    const openRoles = roleListings.data.filter(listing => new Date(listing.role_listing_close) > currentDate);
+    // // Filter out the open roles available
+    // const currentDate = new Date();
+    // const openRoles = roleListings.data.filter(listing => new Date(listing.role_listing_close) > currentDate);
   
     if (openRoles.length > 0) {
         res.status(200).json(openRoles);
