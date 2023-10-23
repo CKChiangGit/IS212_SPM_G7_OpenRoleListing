@@ -11,8 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3003;
 
 // Use the necessary modules
-app.use(bodyParser.json());
-app.use(cors());
+app.use(cors())
+app.use(bodyParser.json()); 
 
 // Filter out the open roles available
 app.get('/openroles', async (req, res) => {
@@ -20,12 +20,12 @@ app.get('/openroles', async (req, res) => {
     // Ensure that applyroles.js returns a response
     // const response = await axios.get('http://localhost:3000/applyroles');
     const roleListings = await axios.get('http://localhost:3005/rolelistings');
-    const openRoles = roleListings
+    // const openRoles = roleListings.data
 
-    // // Filter out the open roles available
-    // const currentDate = new Date();
-    // const openRoles = roleListings.data.filter(listing => new Date(listing.role_listing_close) > currentDate);
-
+    // Filter out the open roles available
+    const currentDate = new Date();
+    const openRoles = roleListings.data.filter(listing => new Date(listing.role_listing_close) > currentDate);
+  
     if (openRoles.length > 0) {
         res.status(200).json(openRoles);
     } else {
@@ -33,7 +33,9 @@ app.get('/openroles', async (req, res) => {
     }
 
   } catch (error) {
-    res.status(500).send(`<p>There is an internal error to display all open listings, please contact the IT Department Team.</p>`);
+    // include error in response
+    // res.status(500).send(`<p>There is an internal error to display all open listings, please contact the IT Department Team.</p>`);
+    res.status(500).send(`<p>There is an internal error to display all open listings, please contact the IT Department Team.</p>` + error);
   }
 });
 

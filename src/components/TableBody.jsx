@@ -10,11 +10,14 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
 
     const handleClick = (data) => {
         if (type === "edit") {
-            alert("show dashboard of staff")
-            console.log("set local storage 'staff' to row data clicked")
+            // alert("show dashboard of staff")
+            // console.log("set local storage 'staff' to row data clicked")
             localStorage.setItem("staff_edit", JSON.stringify(data))
             window.dispatchEvent(new Event("staff_edit"));
             // navigate('/')
+        } else if (type === "apply") {
+            alert("show open role details")
+            window.dispatchEvent(new Event("role_details"));
         } else {
             console.log("clicked")
             // navigate('/staff_edit')
@@ -25,7 +28,7 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
         <tbody>
         {dataToDisplay.map((data) => {
             return (
-                <tr key={data.id} className="table-row" onClick={() => handleClick(data)}>
+                <tr className="table-row" onClick={() => handleClick(data)}>
                     {columns.map(({ accessor }) => {
                     const tData = data[accessor] ? data[accessor] : "——";
                     return <td key={accessor}>{tData}</td>;
