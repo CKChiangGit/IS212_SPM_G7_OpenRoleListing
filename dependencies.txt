@@ -29,6 +29,11 @@ npm install body-parser
 
 
 -- Microservice Port numbers (add them in as we go) --
+
+openrole.js              - 3003
+roledetails.js           - 3004
+rolelistings.js         - 3005
+
 Apply Role Complex MS   - 5001
 role applications MS    - 5002
 role details MS         - 5003
