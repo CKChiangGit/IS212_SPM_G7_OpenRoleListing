@@ -43,7 +43,7 @@ export default function Home() {
         // { label: 'Role Updater', accessor: 'role_listing_updater', sortable: true },
         // { label: 'Role Create Date', accessor: 'role_listing_ts_create', sortable: true },
         // { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
-        { label: 'Role Skill Match', accessor: 'role_listing_id', sortable: true },
+        { label: 'Skill Match', accessor: 'role_listing_id', sortable: true },
     ];
     
     // update table data with viewRole() and setTableData()

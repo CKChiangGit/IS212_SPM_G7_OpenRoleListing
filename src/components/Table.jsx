@@ -2,7 +2,6 @@ import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import { useSortableTable } from "../hooks/useSortableTable";
 import { useState } from "react";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
 

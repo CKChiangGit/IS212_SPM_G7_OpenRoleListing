@@ -184,10 +184,6 @@ export default function EditStaff() {
                                 <button
                                     className="text-xl font-bold text-gray-600 hover:text-gray-700 focus:outline-none focus:text-gray-700"
                                     type="button"
-                                    onClick={(token)=> {
-                                        setToken({}); 
-                                        localStorage.removeItem('staff_edit'); 
-                                    }}
                                 >
                                     Go Back
                                 </button>

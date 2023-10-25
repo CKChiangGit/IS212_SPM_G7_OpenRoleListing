@@ -115,3 +115,9 @@ th.down {
 .moment {
     white-space: nowrap;
 }
+
+.truncated {
+    overflow: hidden ;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

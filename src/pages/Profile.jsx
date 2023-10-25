@@ -139,14 +139,14 @@ export default function Profile() {
     }, []);
     // console.log("table is " + JSON.stringify(tableData))
 
-    // update staff_edit token when localStorage changes
+    // update staff_edit token when event detected
     const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
-    console.log(role)
+
     useEffect(() => {
         const handleStorageChange = () => {
           const newToken = JSON.parse(localStorage.getItem('staff_edit')) || {};
           setRole(newToken);
-          console.log("updated " + newToken);
+        //   alert(role ? "role is " + JSON.stringify(role) : "role is empty");
         };
       
         window.addEventListener('edit_event', handleStorageChange);
@@ -157,129 +157,142 @@ export default function Profile() {
 
     return (
         <div>
-            <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
-                <h1 className='text-3xl text-center mt-6 font-bold'>
-                    Profile
-                </h1>
-                <div className="w-full md:w-[50%] mt-6 px-3">
-                    <form action="">
-                        {/* name input */}
-                        <label className="w-full">
-                            Username
-                            {!changeDetail ? (
+            {Object.keys(role).length === 0 ? (
+                <>
+                    <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
+                        <h1 className='text-3xl text-center mt-6 font-bold'>
+                            Profile
+                        </h1>
+                        <div className="w-full md:w-[50%] mt-6 px-3">
+                            <form action="">
+                                {/* name input */}
+                                <label className="w-full">
+                                    Username
+                                    {!changeDetail ? (
 
-                                    <input type="text" 
-                                        id="name" 
-                                        value={name}
+                                            <input type="text" 
+                                                id="name" 
+                                                value={name}
+                                                disabled 
+                                                className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                            />
+
+                                    ) : (
+                                        <div className="mb-6 w-full flex justify-between ">
+                                            <div className="">
+                                                <input 
+                                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
+                                                    type="text" 
+                                                    id="fname" 
+                                                    value={fname} 
+                                                    onChange={onChange} 
+                                                    placeholder="First Name"
+                                                />
+                                            </div>
+                                            <div className="">
+                                                <input 
+                                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
+                                                    type="text" 
+                                                    id="lname" 
+                                                    value={lname} 
+                                                    onChange={onChange} 
+                                                    placeholder="Last Name"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </label>
+
+                                {/* email input */}
+                                <label className="w-full">
+                                    Email
+                                    <input type="email" 
+                                        id="email"
+                                        value={email}
                                         disabled 
-                                        className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                        className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
                                     />
+                                </label>
 
-                            ) : (
-                                <div className="mb-6 w-full flex justify-between ">
-                                    <div className="">
-                                        <input 
-                                            className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
-                                            type="text" 
-                                            id="fname" 
-                                            value={fname} 
-                                            onChange={onChange} 
-                                            placeholder="First Name"
-                                        />
-                                    </div>
-                                    <div className="">
-                                        <input 
-                                            className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
-                                            type="text" 
-                                            id="lname" 
-                                            value={lname} 
-                                            onChange={onChange} 
-                                            placeholder="Last Name"
-                                        />
-                                    </div>
+                                <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
+                                    <p className="flex items-center ">
+                                        Do you want to change your details?
+                                        <span
+                                            onClick={() => {
+                                                // if changing details, next click will be onSumbit
+                                                changeDetail && onSubmit();
+                                                setChangeDetail((prevState) => !prevState);
+                                            }}                           
+                                            className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
+                                        >
+                                        {changeDetail ? "Apply" : "Edit"}
+                                        </span>
+                                    </p>
+                                    <p
+                                        onClick={handleLogout}
+                                        className="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer"
+                                    >
+                                        Sign out
+                                    </p>
                                 </div>
+                                
+                            </form>
+                            
+                            {/* Create role button only for HR */}
+                            {token.sys_role === "hr" ? (
+                                <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
+                                    <Link 
+                                        to="/role_creation"
+                                        className="flex justify-center items-center"
+                                    >
+                                        <RiChatNewFill className="mr-2 text-3xl bg-blue-500 rounded-full p-1 border-2"/>
+                                        Create role
+                                    </Link>
+                                </button>
+                            ) : (
+                                // don't show button
+                                ""
                             )}
-                        </label>
-
-                        {/* email input */}
-                        <label className="w-full">
-                            Email
-                            <input type="email" 
-                                id="email"
-                                value={email}
-                                disabled 
-                                className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-                            />
-                        </label>
-
-                        <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
-                            <p className="flex items-center ">
-                                Do you want to change your details?
-                                <span
-                                    onClick={() => {
-                                        // if changing details, next click will be onSumbit
-                                        changeDetail && onSubmit();
-                                        setChangeDetail((prevState) => !prevState);
-                                    }}                           
-                                    className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
-                                >
-                                {changeDetail ? "Apply" : "Edit"}
-                                </span>
-                            </p>
-                            <p
-                                onClick={handleLogout}
-                                className="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer"
-                            >
-                                Sign out
-                            </p>
+                            
+                            
                         </div>
-                        
-                    </form>
-                    
-                    {/* Create role button only for HR */}
-                    {token.sys_role === "hr" ? (
-                        <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
-                            <Link 
-                                to="/role_creation"
-                                className="flex justify-center items-center"
-                            >
-                                <RiChatNewFill className="mr-2 text-3xl bg-blue-500 rounded-full p-1 border-2"/>
-                                Create role
-                            </Link>
-                        </button>
-                    ) : (
-                        // don't show button
-                        ""
-                    )}
-                    
-                    
-                </div>
-            </section>
+                    </section>
 
-            <div className="max-w-6xl px-3 mt-6 mx-auto">
-                {(token.sys_role === "hr" || token.sys_role === "manager") && tableData ? (
-                    <div>
-                        {tableData.length > 0 ? (
-                            <>
-                                <Table
-                                    caption="Open roles available for applications."
-                                    data={tableData}
-                                    columns={columns}
-                                    pageSize={3}
-                                    type="edit" 
-                                />
-                                <Popup role={role} />
-                            </>
+                    <div className="max-w-6xl px-3 mt-6 mx-auto">
+                        {(token.sys_role === "hr" || token.sys_role === "manager") && tableData ? (
+                            <div>
+                                {tableData.length > 0 ? (
+                                    <>
+                                        <Table
+                                            caption="Open roles available for applications."
+                                            data={tableData}
+                                            columns={columns}
+                                            pageSize={3}
+                                            type="show" 
+                                        />
+                                        
+                                            
+                                        
+                                    </>
+                                ) : (
+                                    <div>Loading...</div>
+                                )}
+                            </div>
                         ) : (
-                            <div>Loading...</div>
+                            // don't show table
+                            ""
                         )}
-                    </div>
-                ) : (
-                    // don't show table
-                    ""
-                )}
-            </div>
-
+                    </div> 
+                </>
+                
+            ) : (
+                <>
+                    <h1 className='text-3xl text-center mt-6 font-bold'>
+                        Open Role Applicants
+                    </h1>
+                    <Popup role={role}/>
+                </>
+            )}
         </div>
     )
 }

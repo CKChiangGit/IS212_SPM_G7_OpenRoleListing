@@ -11,9 +11,9 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
     const navigate = useNavigate()
 
     const handleClick = (data) => {
-        if (type === "edit") {
+        if (type === "edit" || type === "show") {
             // // alert("show dashboard of staff")
-            // console.log("set local storage 'staff' to row data clicked")
+            // alert("set local storage 'staff' to row data clicked")
             localStorage.setItem("staff_edit", JSON.stringify(data))
             window.dispatchEvent(new Event("edit_event"));
             // navigate('/')
@@ -22,7 +22,6 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
             window.dispatchEvent(new Event("role_details"));
         } else {
             console.log("clicked")
-            // navigate('/staff_edit')
         }
     }
     // if type === edit, then show all columns
@@ -50,41 +49,37 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
                     <tr key={index} className="table-row" onClick={() => handleClick(data)}>
                         {columns.map(({ accessor }) => {
                         const tData = data[accessor] ? data[accessor] : "——";
-                        // return (<td key={accessor}>{tData}</td>)                               
-                        
-                            if (type === "edit") {
-                                return (<td key={accessor}>{tData}</td>)
-                            } else {
-                                return (
-                                    <td key={accessor}>
-                                        {accessor === "role_listing_open" ? (
-                                            <>
-                                                {moment.utc(tData).format("DD/MM/YY")}
-                                                <Moment
-                                                className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
-                                                fromNow
-                                                style={{ left: "20px" }}
-                                                >
-                                                {moment.utc(tData)}
-                                                </Moment>
-                                            </>
-                                        ) : accessor === "role_listing_close" ? (
-                                            <>
-                                                {moment.utc(tData).format("DD/MM/YY")}
-                                                <Moment
-                                                className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
-                                                fromNow
-                                                style={{ left: "20px" }}
-                                                >
-                                                {moment.utc(tData)}
-                                                </Moment>
-                                            </>
-                                        ) : (
-                                            tData
-                                        )}
-                                    </td>
-                                );
-                            }
+                        // return (<td key={accessor}>{tData}</td>)
+                        return (
+                            <td key={accessor}>
+                                {accessor === "role_listing_open" ? (
+                                    <>
+                                        {moment.utc(tData).format("DD/MM/YY")}
+                                        <Moment
+                                        className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                        fromNow
+                                        style={{ left: "20px" }}
+                                        >
+                                        {moment.utc(tData)}
+                                        </Moment>
+                                    </>
+                                ) : accessor === "role_listing_close" ? (
+                                    <>
+                                        {moment.utc(tData).format("DD/MM/YY")}
+                                        <Moment
+                                        className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                        fromNow
+                                        style={{ left: "20px" }}
+                                        >
+                                        {moment.utc(tData)}
+                                        </Moment>
+                                    </>
+                                ) : (
+                                    tData
+                                )}
+                            </td>
+                        );
+                            
                         })}
                     </tr>
                 );
@@ -93,7 +88,34 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
         
         )
     } else {
-        <div className="">hello</div>
+        return (
+            <tbody>
+                {dataToDisplay.map((data, index) => {
+                return (
+                    <tr key={index} className="table-row" onClick={() => handleClick(data)}>
+                        {columns.map(({ accessor }) => {
+                        const tData = data[accessor] ? data[accessor] : "——";
+                        
+                        return (
+                            <td key={accessor} style={{ height: "2rem" }}>
+                                {accessor === "fname" ? (
+                                    <>
+                                        {data["fname"] + " " + data["lname"]}
+                                    </>
+                                ) : accessor === "lname" ? (
+                                    null
+                                ) : (
+                                    tData
+                                )}
+                            </td>
+                        );
+
+                        })}
+                    </tr>
+                    );
+                })}
+            </tbody>
+        )
     }
 };
 

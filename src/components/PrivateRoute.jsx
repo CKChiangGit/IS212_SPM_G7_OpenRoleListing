@@ -12,13 +12,13 @@ export default function PrivateRoute() {
     const secret = 'mysecretkey';
     useEffect(() => {
         if (jwt_token !== null) {
-          const decodedToken = jwt.verify(jwt_token, secret);
-          setToken(decodedToken[0]);
-          console.log("decoded " + JSON.stringify(decodedToken[0]));
+            const decodedToken = jwt.verify(jwt_token, secret);
+            setToken(decodedToken[0]);
+            console.log("decoded " + JSON.stringify(decodedToken[0]));
         }
-      }, [jwt_token, secret]);
+    }, [jwt_token, secret]);
     
-    
+    localStorage.removeItem('staff_edit'); 
     return jwt_token ? <Outlet /> : <Navigate to="/login" />;
 
     // // // FIREBASE AUTHENTICATION START HERE
