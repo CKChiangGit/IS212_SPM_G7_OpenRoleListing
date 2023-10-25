@@ -6,30 +6,32 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 
 const PageControlButton = ({ direction, onClick }) => {
-    const icon = direction === "left" ? <AiOutlineArrowLeft/> : <AiOutlineArrowRight/>;
-    return (
-      <button className="" onClick={onClick}>
-        {icon}
-      </button>
-    );
-  };
+        const icon = direction === "left" ? <AiOutlineArrowLeft/> : <AiOutlineArrowRight/>;
+        return (
+            <button className="" onClick={onClick} style={
+                {position: "absolute", top: "50%", transform: "translateY(-50%)", left:  direction === "left" ? "5vw" : "90vw", right: "10px"}
+            }>
+                {icon}
+            </button>
+        );
+    };
   
 const PageControl = ({ pageNumber, setPageNumber, pageLimit }) => {
-const handleIncreasePageNumber = () => {
-    setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, pageLimit));
-};
+    const handleIncreasePageNumber = () => {
+        setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, pageLimit));
+    };
 
-const handleDecreasePageNumber = () => {
-    setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
-};
+    const handleDecreasePageNumber = () => {
+        setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
+    };
 
-return (
-    <div className="page-size-controls">
-    <PageControlButton direction="left" onClick={handleDecreasePageNumber} />
-    <span className="page-size-label">{pageNumber}</span>
-    <PageControlButton direction="right" onClick={handleIncreasePageNumber} />
-    </div>
-);
+    return (
+        <div className="page-size-controls">
+        <PageControlButton direction="left" onClick={handleDecreasePageNumber} />
+        <span className="page-size-label">{pageNumber}</span>
+        <PageControlButton direction="right" onClick={handleIncreasePageNumber} />
+        </div>
+    );
 };
 
 // export default function Table({ caption, data, columns, pageNumber, pageSize, setPageNumber}) {
@@ -42,18 +44,18 @@ export default function Table({ caption, data, columns, pageSize, type}) {
     const pageLimit = Math.ceil(tableData.length / pageSize);
     // console.log(pageNumber + "/" + pageLimit + " and pageSizeLimit is "+ pageSize)
 
-        return (
-            <>
-                <div className="table-container">
-                    <table className="table">
-                        <caption>{caption}</caption>
-                        <TableHead {...{ columns, handleSorting }} />
-                        <TableBody {...{ columns, tableData, pageNumber, pageSize, type}} />
-                    </table>
+            return (
+                <div style={{ position: "relative" }}>
+                    <div className="table-container">
+                        <table className="table">
+                            <caption>{caption}</caption>
+                            <TableHead {...{ columns, handleSorting }} />
+                            <TableBody {...{ columns, tableData, pageNumber, pageSize, type}} />
+                        </table>
+                    </div>
+                    <PageControl {...{ pageNumber, setPageNumber, pageLimit }} />
                 </div>
-                <PageControl {...{ pageNumber, setPageNumber, pageLimit }} />
-            </>
 
-    );
+        );
 };
 

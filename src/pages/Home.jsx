@@ -34,15 +34,16 @@ export default function Home() {
     }, [jwt_token, secret]);
 
     const columns = [
-        { label: 'Role ID', accessor: 'role_listing_id', sortable: true, sortbyOrder: 'desc' },
-        { label: 'Role Name', accessor: 'role_listing_desc', sortable: true },
-        { label: 'Role Source', accessor: 'role_listing_source', sortable: true },
+        // { label: 'Role ID', accessor: 'role_listing_id', sortable: true, sortbyOrder: 'desc' },
+        { label: 'Role Name', accessor: 'role_listing_desc', sortable: true, sortbyOrder: 'desc' },
+        // { label: 'Role Source', accessor: 'role_listing_source', sortable: true },
         { label: 'Role Open Date', accessor: 'role_listing_open', sortable: true },
         { label: 'Role Close Date', accessor: 'role_listing_close', sortable: true },
-        { label: 'Role Creator', accessor: 'role_listing_creator', sortable: true },
-        { label: 'Role Updater', accessor: 'role_listing_updater', sortable: true },
-        { label: 'Role Create Date', accessor: 'role_listing_ts_create', sortable: true },
-        { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
+        // { label: 'Role Creator', accessor: 'role_listing_creator', sortable: true },
+        // { label: 'Role Updater', accessor: 'role_listing_updater', sortable: true },
+        // { label: 'Role Create Date', accessor: 'role_listing_ts_create', sortable: true },
+        // { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
+        { label: 'Role Skill Match', accessor: 'role_listing_id', sortable: true },
     ];
     
     // update table data with viewRole() and setTableData()

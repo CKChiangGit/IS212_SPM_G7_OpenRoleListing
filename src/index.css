@@ -84,3 +84,8 @@ th.down {
 .table tbody tr:nth-child(2n) td {
     background: #fff;
 }
+
+.table tbody td {
+    position: relative;
+    height:10vh;
+}
