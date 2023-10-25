@@ -44,7 +44,9 @@ app.get('/skill_details/:skill_id', async (req, res) => {
       return res.status(200).json({
         code: 200,
         data: {
-          'skill_details': skill_details.map(skill_details => skill_details.toJSON()),
+          'skill_details': skill_details.map(skill_details => skill_details.skill_id.toJSON()),
+          'skill_name': skill_details.map(skill_details => skill_details.skill_name.toJSON()),
+          "skill_status": skill_details.map(skill_details => skill_details.skill_status.toJSON())
         },
       });
     }

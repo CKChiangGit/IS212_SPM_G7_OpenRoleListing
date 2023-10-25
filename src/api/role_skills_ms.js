@@ -17,10 +17,29 @@ app.use(bodyParser.json());
 
 app.get('/role_skills', async (req, res) => {
   try {
-    const role_skills = await RoleSkills.findAll();
-    res.json(role_skills);
+    const skill_list = await RoleSkills.findAll();
+      
+    skill_list.forEach(skill => {
+      if (!roleSkills[skill.role_id]) {
+        roleSkills[skill.role_id] = {
+          role_id: skill.role_id,
+          skill_ids: [skill.skill_id]
+        };
+      } else {
+        roleSkills[skill.role_id].skill_ids.push(skill.skill_id);
+      }
+    });
+    
+    const result = Object.values(roleSkills);
+
+    if (result.length) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).send('<p>There are no skills available for any staff.</p>');
+    }
+
   } catch (error) {
-    res.status(500).json({ error: `Internal server error in '/role_skills' endpoint` });
+    res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
   }
 });
 
@@ -60,5 +79,3 @@ app.listen(PORT, async () => {
       console.error('Error syncing the model:', error);
     }
   });  
-  
-  
