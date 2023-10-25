@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
 // import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 // import { db } from "../firebase"
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // // SQL AUTHENTICATION START HERE
 import { createUser } from '../hooks/AuthContext';
+const jwt = require('jsonwebtoken');
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +37,20 @@ export default function SignUp() {
     //     password: "",
     // })
     const { staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw } = formData
-    // const { login } = useContext(AuthContext);
+
     const navigate = useNavigate()
+
+    // // get login token    
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    const decodedToken = jwt.verify(jwt_token, secret);
+    console.log("decoded: " + JSON.stringify(decodedToken));
+    useEffect(() => {
+        if (decodedToken.sys_role !== "hr") {
+            toast.warning('You are not authorized to view this page');
+            navigate('/');
+        }
+    })
 
     // sets the input element's id to the its value (whatever typed in)
     function onChange(e){

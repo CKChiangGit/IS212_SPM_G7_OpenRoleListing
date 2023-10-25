@@ -81,8 +81,13 @@ export default function EditStaff() {
     const secret = 'mysecretkey';
     const decodedToken = jwt.verify(jwt_token, secret);
     console.log("decoded: " + JSON.stringify(decodedToken));
+    useEffect(() => {
+        if (decodedToken.sys_role !== "hr") {
+            toast.warning('You are not authorized to view this page');
+            navigate('/');
+        }
+    })
 
-    const [isEditingSelf, setIsEditingSelf] = useState(false);
     async function onSubmit(e) {
         e.preventDefault();
         try {
