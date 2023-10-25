@@ -36,10 +36,10 @@ const Popup = ({ role }) => {
                         <p className="flex items-center mb-3 font-semibold">
                             <div className="">{role.role_listing_id}</div>   
                         </p>
-                        <div className="">{role.role_listing_creator}</div>
-                        <div className="">{role.role_listing_updater}</div>
-                        <div className="">{role.role_listing_ts_create}</div>
-                        <div className="">{role.role_listing_ts_update}</div>
+                        <div className="">Creator: {role.role_listing_creator}</div>
+                        <div className="">Updater: {role.role_listing_updater}</div>
+                        <div className="">Date Created: {moment.utc(role.role_listing_ts_create).format("DD/MM/YY HH:MM a")}</div>
+                        <div className="pb-4">Date Updated: {moment.utc(role.role_listing_ts_update).format("DD/MM/YY HH:MM a")}</div>
 
                     </div>
                     <div className="bg-blue-300 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden"></div>
