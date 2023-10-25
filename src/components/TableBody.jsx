@@ -42,7 +42,7 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
             </tbody>
         )
     }
-    // if type === apply, then show only role_listing_desc and role_listing_ts_create
+    // if type === apply, then alter the date time formats and add Moments components
     return (
         <tbody>
         {dataToDisplay.map((data, index) => {
@@ -59,33 +59,31 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
                         } else {
                             return (
                                 <td key={accessor}>
-                                {accessor === "role_listing_open" ? (
-                                    <>
-                                        {moment.utc(tData).format("DD/MM/YY")}
-                                        <Moment
-                                        className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg"
-                                        fromNow
-                                        style={{ left: "20px" }}
-                                        >
-                                        {moment.utc(tData)}
-                                        </Moment>
-                                        
-                                        
-                                    </>
-                                ) : accessor === "role_listing_close" ? (
-                                    <>
-                                        {moment.utc(tData).format("DD/MM/YY")}
-                                        <Moment
-                                        className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg"
-                                        fromNow
-                                        style={{ left: "20px" }}
-                                        >
-                                        {moment.utc(tData)}
-                                        </Moment>
-                                    </>
-                                ) : (
-                                    tData
-                                )}
+                                    {accessor === "role_listing_open" ? (
+                                        <>
+                                            {moment.utc(tData).format("DD/MM/YY")}
+                                            <Moment
+                                            className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                            fromNow
+                                            style={{ left: "20px" }}
+                                            >
+                                            {moment.utc(tData)}
+                                            </Moment>
+                                        </>
+                                    ) : accessor === "role_listing_close" ? (
+                                        <>
+                                            {moment.utc(tData).format("DD/MM/YY")}
+                                            <Moment
+                                            className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                            fromNow
+                                            style={{ left: "20px" }}
+                                            >
+                                            {moment.utc(tData)}
+                                            </Moment>
+                                        </>
+                                    ) : (
+                                        tData
+                                    )}
                                 </td>
                             );
                         }

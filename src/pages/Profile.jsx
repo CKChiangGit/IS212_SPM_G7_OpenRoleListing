@@ -114,37 +114,40 @@ export default function Profile() {
                         {/* name input */}
                         <label className="w-full">
                             Username
-                            <input type="text" 
-                                id="name" 
-                                value={name}
-                                disabled 
-                                className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-                            />
-                        </label>
+                            {!changeDetail ? (
 
-                        <div className="mb-6 w-full flex justify-between ">
-                            <div className="">
-                                <input 
-                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
-                                    type="text" 
-                                    id="fname" 
-                                    value={fname} 
-                                    onChange={onChange} 
-                                    placeholder="First Name"
-                                />
-                            </div>
-                            <div className="">
-                                <input 
-                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
-                                    type="text" 
-                                    id="lname" 
-                                    value={lname} 
-                                    onChange={onChange} 
-                                    placeholder="Last Name"
-                                />
-                            </div>
-                        </div>
-                        
+                                    <input type="text" 
+                                        id="name" 
+                                        value={name}
+                                        disabled 
+                                        className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                    />
+
+                            ) : (
+                                <div className="mb-6 w-full flex justify-between ">
+                                    <div className="">
+                                        <input 
+                                            className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
+                                            type="text" 
+                                            id="fname" 
+                                            value={fname} 
+                                            onChange={onChange} 
+                                            placeholder="First Name"
+                                        />
+                                    </div>
+                                    <div className="">
+                                        <input 
+                                            className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
+                                            type="text" 
+                                            id="lname" 
+                                            value={lname} 
+                                            onChange={onChange} 
+                                            placeholder="Last Name"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </label>
 
                         {/* email input */}
                         <label className="w-full">
@@ -219,7 +222,7 @@ export default function Profile() {
                     data={tableData}
                     columns={columns}
                     pageSize={3}
-                    type="staff"
+                    type="apply"
                     // pageNumber={pageNumber}
                     // pageSize={pageSize}
                     // setPageNumber={setPageNumber}

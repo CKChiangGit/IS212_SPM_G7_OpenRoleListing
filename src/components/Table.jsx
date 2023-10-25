@@ -8,8 +8,8 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 const PageControlButton = ({ direction, onClick }) => {
         const icon = direction === "left" ? <AiOutlineArrowLeft/> : <AiOutlineArrowRight/>;
         return (
-            <button className="" onClick={onClick} style={
-                {position: "absolute", top: "50%", transform: "translateY(-50%)", left:  direction === "left" ? "5vw" : "90vw", right: "10px"}
+            <button className="arrow_button" onClick={onClick} style={
+                {left:  direction === "left" ? "-20px" : "20px"}
             }>
                 {icon}
             </button>
@@ -27,9 +27,9 @@ const PageControl = ({ pageNumber, setPageNumber, pageLimit }) => {
 
     return (
         <div className="page-size-controls">
-        <PageControlButton direction="left" onClick={handleDecreasePageNumber} />
-        <span className="page-size-label">{pageNumber}</span>
-        <PageControlButton direction="right" onClick={handleIncreasePageNumber} />
+            <PageControlButton direction="left" onClick={handleDecreasePageNumber} />
+            <span className="page-size-label">{pageNumber}</span>
+            <PageControlButton direction="right" onClick={handleIncreasePageNumber} />
         </div>
     );
 };
@@ -45,10 +45,15 @@ export default function Table({ caption, data, columns, pageSize, type}) {
     // console.log(pageNumber + "/" + pageLimit + " and pageSizeLimit is "+ pageSize)
 
             return (
-                <div style={{ position: "relative" }}>
+                <div>
+                    
                     <div className="table-container">
-                        <table className="table">
+                        <div className="centre">
                             <caption>{caption}</caption>
+                        </div>
+                        
+                        <table className="table">
+                            
                             <TableHead {...{ columns, handleSorting }} />
                             <TableBody {...{ columns, tableData, pageNumber, pageSize, type}} />
                         </table>
