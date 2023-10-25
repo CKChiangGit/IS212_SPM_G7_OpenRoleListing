@@ -118,38 +118,6 @@ app.post('/role_applications', async (req, res) => {
       }
   }); 
 
-  //     axios.get('http://localhost:5005/role-details', {
-  //     params: { role_name: 'desired_role_name' }, // Replace with the role name you want to look up
-  //   })
-  //   .then((response) => {
-  //     const roleId = response.data.role_id;
-  //     // Use the retrieved role_id in the next step
-  //     // Now, you can query the "Role Skill" microservice based on this roleId
-  //     axios.get('http://localhost:5005/role-data', {
-  //       params: { role_listing_id: roleId }, // Assuming role_listing_id is the parameter
-  //     })
-  //     .then((roleResponse) => {
-  //       const roleSkills = roleResponse.data.role_skills;
-  //       // Use the retrieved role skills in your "Apply Role" logic
-  //     })
-  //     .catch((roleError) => {
-  //       console.error('Error retrieving role skills:', roleError);
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error retrieving role details:', error);
-  //   });
-  //   try {
-
-
-  //   } catch (error) {
-  //     res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
-  //   }
-  // });  
-
-
-  // app.get('/session_data', async (req, res) => {
-
   app.listen(PORT, async () => {
     try {
       // Sync the model with the database
