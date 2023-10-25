@@ -59,7 +59,10 @@ export default function EditStaff() {
           console.log("updated " + newToken);
         };
       
-        window.addEventListener('staff_edit', handleStorageChange);
+        window.addEventListener('edit_event', handleStorageChange);
+        return () => {
+            window.removeEventListener('edit_event', handleStorageChange);
+        }
       }, [staffEditValue]);
 
     const { staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw } = formData;

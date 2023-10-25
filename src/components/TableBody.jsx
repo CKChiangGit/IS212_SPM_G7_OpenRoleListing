@@ -12,10 +12,10 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
 
     const handleClick = (data) => {
         if (type === "edit") {
-            // alert("show dashboard of staff")
+            // // alert("show dashboard of staff")
             // console.log("set local storage 'staff' to row data clicked")
             localStorage.setItem("staff_edit", JSON.stringify(data))
-            window.dispatchEvent(new Event("staff_edit"));
+            window.dispatchEvent(new Event("edit_event"));
             // navigate('/')
         } else if (type === "apply") {
             alert("show open role details")

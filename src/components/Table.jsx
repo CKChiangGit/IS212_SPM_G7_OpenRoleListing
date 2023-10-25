@@ -3,20 +3,31 @@ import TableHead from "./TableHead";
 import { useSortableTable } from "../hooks/useSortableTable";
 import { useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
 
-const PageControlButton = ({ direction, onClick }) => {
-        const icon = direction === "left" ? <AiOutlineArrowLeft/> : <AiOutlineArrowRight/>;
+const PageControlButton = ({ direction, onClick, pageNumber, pageLimit }) => {
+        const icon = direction === "left" ? <BsFillArrowLeftCircleFill/> : <BsFillArrowRightCircleFill/>;
+        function getCellColor(direction, pageNumber, pageLimit) {
+            if (direction === "left") {
+              return pageNumber > 1 ? "#3377cc" : "#e7cfd6";
+            } else {
+              return pageNumber < pageLimit ? "#3377cc" : "#e7cfd6";
+            }
+        }
+          
         return (
-            <button className="arrow_button" onClick={onClick} style={
-                {left:  direction === "left" ? "-20px" : "20px"}
-            }>
+            <button className="arrow_button text-6xl" onClick={onClick} style={{
+                left:  direction === "left" ? "-20px" : "20px",
+                color: getCellColor(direction, pageNumber, pageLimit)
+            }}>
                 {icon}
             </button>
         );
     };
   
 const PageControl = ({ pageNumber, setPageNumber, pageLimit }) => {
+    console.log("PageControl " + pageLimit)
     const handleIncreasePageNumber = () => {
         setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, pageLimit));
     };
@@ -26,10 +37,10 @@ const PageControl = ({ pageNumber, setPageNumber, pageLimit }) => {
     };
 
     return (
-        <div className="page-size-controls">
-            <PageControlButton direction="left" onClick={handleDecreasePageNumber} />
+        <div className="page-size-controls mt-3">
+            <PageControlButton direction="left" onClick={handleDecreasePageNumber} pageNumber={pageNumber} pageLimit={pageLimit}/>
             <span className="page-size-label">{pageNumber}</span>
-            <PageControlButton direction="right" onClick={handleIncreasePageNumber} />
+            <PageControlButton direction="right" onClick={handleIncreasePageNumber} pageNumber={pageNumber} pageLimit={pageLimit} />
         </div>
     );
 };

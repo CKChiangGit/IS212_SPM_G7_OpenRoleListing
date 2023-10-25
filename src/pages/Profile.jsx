@@ -69,6 +69,29 @@ export default function Profile() {
         { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
     ];
 
+    // checks if window is too narrow and changes columns
+    const [isMd, setIsMd] = useState(false);
+    useEffect(() => {
+      const mediaQuery = window.matchMedia("(max-width: 1000px)");
+      setIsMd(mediaQuery.matches);
+  
+      const handleResize = () => {
+        setIsMd(mediaQuery.matches);
+      };
+      mediaQuery.addEventListener("change", handleResize);
+      return () => {
+        mediaQuery.removeEventListener("change", handleResize);
+      };
+    }, []);
+    if (isMd) {
+        columns.splice(0, columns.length, 
+            { label: 'Role ID', accessor: 'role_listing_id', sortable: true, sortbyOrder: 'desc' },
+        { label: 'Role Name', accessor: 'role_listing_desc', sortable: true, sortbyOrder: 'desc' },
+        { label: 'Role Source', accessor: 'role_listing_source', sortable: true },
+        );
+    }
+
+
     // for changing personal profile
     const [changeDetail, setChangeDetail] = useState(false);
     function onChange(e) {
@@ -84,17 +107,11 @@ export default function Profile() {
             // if (fname !== "" && lname !== "") {
                 // send post data to backend '/staff_details/:id'
                 console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
-                const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
+                await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
                 toast.success("Profile details updated");
 
-                // update user profile
-                // const updatedToken = { ...formData, name: fname + " " + lname };
                 authenticateUser(email, pw);
-                // localStorage.setItem('token', JSON.stringify(updatedToken));
-                // if (!token) {
-                //     console.log("token not found")
-                //     handleLogout()
-                // }
+
                 // update name in formData
                 setFormData((prevState) => ({
                     ...prevState,
@@ -120,7 +137,24 @@ export default function Profile() {
     useEffect(() => {
         updateTableData();
     }, []);
-    console.log("table is " + JSON.stringify(tableData))
+    // console.log("table is " + JSON.stringify(tableData))
+
+    // update staff_edit token when localStorage changes
+    const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
+    console.log(role)
+    useEffect(() => {
+        const handleStorageChange = () => {
+          const newToken = JSON.parse(localStorage.getItem('staff_edit')) || {};
+          setRole(newToken);
+          console.log("updated " + newToken);
+        };
+      
+        window.addEventListener('edit_event', handleStorageChange);
+        return () => {
+            window.removeEventListener('edit_event', handleStorageChange);
+        }
+      }, [role]);
+
     return (
         <div>
             <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
@@ -202,6 +236,7 @@ export default function Profile() {
                         
                     </form>
                     
+                    {/* Create role button only for HR */}
                     {token.sys_role === "hr" ? (
                         <button type="submit" className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg'>
                             <Link 
@@ -231,10 +266,9 @@ export default function Profile() {
                                     data={tableData}
                                     columns={columns}
                                     pageSize={3}
-                                    type="edit" /><Popup role={{
-                                        "name": 1,
-                                        "description": "Wendall Gripton",
-                                }} />
+                                    type="edit" 
+                                />
+                                <Popup role={role} />
                             </>
                         ) : (
                             <div>Loading...</div>
