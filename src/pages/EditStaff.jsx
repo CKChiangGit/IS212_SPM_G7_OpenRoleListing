@@ -116,24 +116,6 @@ export default function EditStaff() {
             toast.error('Could not update the profile details. ' + error.message);
         }
     }
-    // useEffect(() => {
-    //     async function resignToken() {
-    //       if (isEditingSelf) {
-    //         try {
-    //             await authenticateUser(email, pw);
-    //             console.log("jwt has been resigned");
-    //             setToken({}); 
-    //             localStorage.removeItem('staff_edit'); 
-    //         } catch (error) {
-    //           console.log("Error during authentication:", error);
-    //         }
-    //       } else {
-    //         setToken({}); 
-    //         localStorage.removeItem('staff_edit'); 
-    //       }
-    //     }
-    //     resignToken();
-    //   }, [isEditingSelf, email, pw]);
 
     // // set table data as import from tableDtata3.json
     const [tableData, setTableData] = useState([])
@@ -164,6 +146,7 @@ export default function EditStaff() {
             <h1 className='text-3xl text-center mt-6 font-bold'>
                 Edit Staff
             </h1>
+            {/* check if token of "staff_edit" is set*/}
             {Object.keys(token).length === 0 ? (
                 <div>
                      
@@ -174,9 +157,6 @@ export default function EditStaff() {
                         columns={columns}
                         pageSize={5}
                         type="edit"
-                        // pageNumber={pageNumber}
-                        // pageSize={pageSize}
-                        // setPageNumber={setPageNumber}
                     />
                 </div>
             ) : (

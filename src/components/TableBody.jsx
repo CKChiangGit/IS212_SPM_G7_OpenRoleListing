@@ -41,58 +41,60 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
                 })}
             </tbody>
         )
+    } else if (type === "apply") {
+        // if type === apply, then alter the date time formats and add Moments components
+        return (
+            <tbody>
+            {dataToDisplay.map((data, index) => {
+                return (
+                    <tr key={index} className="table-row" onClick={() => handleClick(data)}>
+                        {columns.map(({ accessor }) => {
+                        const tData = data[accessor] ? data[accessor] : "——";
+                        // return (<td key={accessor}>{tData}</td>)                               
+                        
+                            if (type === "edit") {
+                                return (<td key={accessor}>{tData}</td>)
+                            } else {
+                                return (
+                                    <td key={accessor}>
+                                        {accessor === "role_listing_open" ? (
+                                            <>
+                                                {moment.utc(tData).format("DD/MM/YY")}
+                                                <Moment
+                                                className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                                fromNow
+                                                style={{ left: "20px" }}
+                                                >
+                                                {moment.utc(tData)}
+                                                </Moment>
+                                            </>
+                                        ) : accessor === "role_listing_close" ? (
+                                            <>
+                                                {moment.utc(tData).format("DD/MM/YY")}
+                                                <Moment
+                                                className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
+                                                fromNow
+                                                style={{ left: "20px" }}
+                                                >
+                                                {moment.utc(tData)}
+                                                </Moment>
+                                            </>
+                                        ) : (
+                                            tData
+                                        )}
+                                    </td>
+                                );
+                            }
+                        })}
+                    </tr>
+                );
+            })}
+            </tbody>
+        
+        )
+    } else {
+        <div className="">hello</div>
     }
-    // if type === apply, then alter the date time formats and add Moments components
-    return (
-        <tbody>
-        {dataToDisplay.map((data, index) => {
-            return (
-                <tr key={index} className="table-row" onClick={() => handleClick(data)}>
-                    {columns.map(({ accessor }) => {
-                    const tData = data[accessor] ? data[accessor] : "——";
-                    // return (<td key={accessor}>
-                            
-                    //         {tData}
-                    //     </td>;)
-                        if (type === "edit") {
-                            return (<td key={accessor}>{tData}</td>)
-                        } else {
-                            return (
-                                <td key={accessor}>
-                                    {accessor === "role_listing_open" ? (
-                                        <>
-                                            {moment.utc(tData).format("DD/MM/YY")}
-                                            <Moment
-                                            className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
-                                            fromNow
-                                            style={{ left: "20px" }}
-                                            >
-                                            {moment.utc(tData)}
-                                            </Moment>
-                                        </>
-                                    ) : accessor === "role_listing_close" ? (
-                                        <>
-                                            {moment.utc(tData).format("DD/MM/YY")}
-                                            <Moment
-                                            className="relative bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg moment"
-                                            fromNow
-                                            style={{ left: "20px" }}
-                                            >
-                                            {moment.utc(tData)}
-                                            </Moment>
-                                        </>
-                                    ) : (
-                                        tData
-                                    )}
-                                </td>
-                            );
-                        }
-                    })}
-                </tr>
-            );
-        })}
-        </tbody>
-    );
 };
 
 export default TableBody;

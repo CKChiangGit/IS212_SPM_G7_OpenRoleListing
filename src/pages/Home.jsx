@@ -48,7 +48,6 @@ export default function Home() {
     
     // update table data with viewRole() and setTableData()
     const [tableData, setTableData] = useState([])
-
     const updateTableData = async () => {
         try {            
             setTableData(await viewRole());
@@ -66,43 +65,6 @@ export default function Home() {
             {token ? (
                 
                 <div>
-                    {/* <thead>
-                    <tr>
-                        <th>role_listing_id</th>
-                        <th>role_id</th>
-                        <th>role_listing_desc</th>
-                        <th>role_listing_source</th>
-                        <th>role_listing_open</th>
-                        <th>role_listing_close</th>
-                        <th>role_listing_creator</th>
-                        <th>role_listing_updater</th>
-                        <th>role_listing_ts_create</th>
-                        <th>role_listing_ts_update</th>
-                        <th>View</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {tableData.map(item => (
-                        <tr key={item.role_listing_id}>
-                        <td>{item.role_listing_id}</td>
-                        <td>{item.role_id}</td>
-                        <td>{item.role_listing_desc}</td>
-                        <td>{item.role_listing_source}</td>
-                        <td>{item.role_listing_open}</td>
-                        <td>{item.role_listing_close}</td>
-                        <td>{item.role_listing_creator}</td>
-                        <td>{item.role_listing_updater}</td>
-                        <td>{item.role_listing_ts_create}</td>
-                        <td>{item.role_listing_ts_update}</td>
-                        <td>
-                            <button onClick={() => {
-                            const roleId = item.role_id;
-                            window.location.href = `view_role.html?role_id=${roleId}`;
-                            }}>View</button>
-                        </td>
-                        </tr>
-                    ))}
-                    </tbody> */}
 
                     {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
