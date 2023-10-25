@@ -137,3 +137,21 @@ export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_a
         throw new Error('Error creating new staff details');
     }
 };
+
+// sends request to view open role details
+export const viewRole = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
+    const response = await fetch(`http://localhost:3003/openroles`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};

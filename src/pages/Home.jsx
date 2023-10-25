@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from 'react'
 import Table from "../components/Table";
-import tableData1 from "../tableData1.json";
+// import tableData1 from "../tableData1.json";
 import Popup from '../components/Popup';
-import { AuthContext } from '../hooks/AuthContext';
+import { viewRole } from '../hooks/AuthContext';
 const jwt = require('jsonwebtoken');
 
 // table data
@@ -33,26 +33,95 @@ export default function Home() {
     }
     }, [jwt_token, secret]);
 
+    const columns = [
+        { label: 'Role ID', accessor: 'role_listing_id', sortable: true, sortbyOrder: 'desc' },
+        { label: 'Role Name', accessor: 'role_listing_desc', sortable: true },
+        { label: 'Role Source', accessor: 'role_listing_source', sortable: true },
+        { label: 'Role Open Date', accessor: 'role_listing_open', sortable: true },
+        { label: 'Role Close Date', accessor: 'role_listing_close', sortable: true },
+        { label: 'Role Creator', accessor: 'role_listing_creator', sortable: true },
+        { label: 'Role Updater', accessor: 'role_listing_updater', sortable: true },
+        { label: 'Role Create Date', accessor: 'role_listing_ts_create', sortable: true },
+        { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
+    ];
+    
+    // update table data with viewRole() and setTableData()
+    const [tableData, setTableData] = useState([])
+
+    const updateTableData = async () => {
+        try {            
+            setTableData(await viewRole());
+            console.log("table data updated")
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        updateTableData();
+    }, []);
+
     return (
         <div>
             {token ? (
+                
                 <div>
+                    {/* <thead>
+                    <tr>
+                        <th>role_listing_id</th>
+                        <th>role_id</th>
+                        <th>role_listing_desc</th>
+                        <th>role_listing_source</th>
+                        <th>role_listing_open</th>
+                        <th>role_listing_close</th>
+                        <th>role_listing_creator</th>
+                        <th>role_listing_updater</th>
+                        <th>role_listing_ts_create</th>
+                        <th>role_listing_ts_update</th>
+                        <th>View</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tableData.map(item => (
+                        <tr key={item.role_listing_id}>
+                        <td>{item.role_listing_id}</td>
+                        <td>{item.role_id}</td>
+                        <td>{item.role_listing_desc}</td>
+                        <td>{item.role_listing_source}</td>
+                        <td>{item.role_listing_open}</td>
+                        <td>{item.role_listing_close}</td>
+                        <td>{item.role_listing_creator}</td>
+                        <td>{item.role_listing_updater}</td>
+                        <td>{item.role_listing_ts_create}</td>
+                        <td>{item.role_listing_ts_update}</td>
+                        <td>
+                            <button onClick={() => {
+                            const roleId = item.role_id;
+                            window.location.href = `view_role.html?role_id=${roleId}`;
+                            }}>View</button>
+                        </td>
+                        </tr>
+                    ))}
+                    </tbody> */}
+
                     {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
                             {key}: {value}
                         </p>
                     ))}
                     <div className="">Home</div>
-                    <Table
-                        caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
-                        data={tableData1}
-                        columns={columns}
-                        pageSize={3}
-                    />
-                    <Popup role={{
-                        "name": 1,
-                        "description": "Wendall Gripton",
-                    }}/>
+                    {tableData.length > 0 ? (
+                        <><Table
+                            caption="Open roles available for applications."
+                            data={tableData}
+                            columns={columns}
+                            pageSize={3}
+                            type="apply" /><Popup role={{
+                                "name": 1,
+                                "description": "Wendall Gripton",
+                            }} /></>
+                    ) : (
+                        <div>Loading...</div>
+                    )}
                 </div>
             ) : (
                 <div>
