@@ -67,14 +67,49 @@ async function getListofRoleIds() {
 async function getSkillDetails(skillId) {
   try {
     const response = await axios.get(`http://localhost:5006/skill_details/${skillId}`);
-    const skillDetailsData= response.data;
-    console.log(skillDetailsData);
-    const SkillNames = skillDetailsData.map(entry => entry.skill_name);
-    console.log(SkillNames);
-    return SkillNames;
+    const skillDetailsData = response.data;
+
+    if (skillDetailsData && skillDetailsData.skill_name && skillDetailsData.skill_status === 'active') {
+      // Assuming skillDetailsData is an object
+      const skillName = skillDetailsData.skill_name;
+      console.log(skillName);
+      return skillName;
+    } else {
+      console.error('Skill details not found or skill is not active');
+      return null; // You can choose to return a default value or handle the error differently
+    }
   } catch (error) {
-    console.error('Error retrieving skill names from skill details:', error);
-    return [];
+    console.error('Error retrieving skill details:', error);
+    return null; // Handle the error accordingly
+  }
+}
+// async function getSkillDetails(skillId) {
+//   try {
+//     const response = await axios.get(`http://localhost:5006/skill_details/${skillId}`);
+//     const skillDetailsData = response.data;
+//     console.log(skillDetailsData);
+//     const SkillNames = skillDetailsData.map(entry => entry.skill_name);
+//     console.log(SkillNames);
+//     return SkillNames;
+//   } catch (error) {
+//     console.error('Error retrieving skill names from skill details:', error);
+//     return [];
+//   }
+// }
+async function getSkillNames(roleId) {
+  try {
+    const skillNamelist = [];
+    const skillIdsArray = await getRoleSkills(roleId);
+    
+    for (y in skillIdsArray) {
+      const skillName = await getSkillDetails(skillIdsArray[y]);
+      skillNamelist.push(skillName);
+    }
+    
+    return skillNamelist;
+  } catch (error) {
+    console.error('Error in getSkillNames:', error);
+    throw error; // Re-throw the error to handle it at the caller level.
   }
 }
 
@@ -150,6 +185,7 @@ app.post('/role_applications', async (req, res) => {
     try
       {
         const staffId = 8857;
+        const result = [];
         roleSkillsBigArray = [];
         roleIdsArray = await getListofRoleIds();
         console.log(roleIdsArray)
@@ -184,7 +220,13 @@ app.post('/role_applications', async (req, res) => {
             else 
               {
                 skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsBigArray[x]);
-                console.log(`Matching Percentage for role id {roleIdsArray[${x}]} is: ${skillMatchPercent}%`);  
+                console.log(`Matching Percentage for role id {roleIdsArray[${x}]} is: ${skillMatchPercent}%`);
+                const skillNamelist = await getSkillNames(roleIdsArray[x]);
+                result.push({
+                  skill_id: roleIdsArray[x],
+                  skill_names: skillNamelist,
+                  skill_match: skillMatchPercent,
+                });  
               }
             } 
           catch (error) {
@@ -192,6 +234,7 @@ app.post('/role_applications', async (req, res) => {
             res.status(500).json({ error: 'Internal Server Error' });
           }
         }
+        console.log(result)
 
       } catch (error) {
         console.error('Error in /skill_match:', error);
@@ -203,26 +246,26 @@ app.post('/role_applications', async (req, res) => {
       // });
   }); 
 
-  app.get('/getSkillNames', async (req, res) => {
-    try
-    {
-      skillNamelist = [];
-      skillIdsArray = await getRoleSkills('27431');
-      console.log(skillIdsArray)
-      for (y in skillIdsArray)
-      {
-        console.log(skillIdsArray[y])
-        skillName = await getSkillDetails(skillIdsArray[y]);
-        console.log(skillName);
-        skillNamelist.push(skillName);
-      }
-      console.log(skillNamelist);
-    }
-    catch (error) {
-      console.error('Error in /getSkillNames:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  // app.get('/getSkillNames', async (req, res) => {
+  //   try
+  //   {
+  //     skillNamelist = [];
+  //     skillIdsArray = await getRoleSkills('27431');
+  //     console.log(skillIdsArray)
+  //     for (y in skillIdsArray)
+  //     {
+  //       console.log(skillIdsArray[y])
+  //       skillName = await getSkillDetails(skillIdsArray[y]);
+  //       console.log(skillName);
+  //       skillNamelist.push(skillName);
+  //     }
+  //     console.log(skillNamelist);
+  //   }
+  //   catch (error) {
+  //     console.error('Error in /getSkillNames:', error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   app.listen(PORT, async () => {
     try {
       // Sync the model with the database

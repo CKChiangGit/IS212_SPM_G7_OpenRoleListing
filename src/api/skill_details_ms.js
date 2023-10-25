@@ -39,17 +39,21 @@ app.get('/skill_details/:skill_id', async (req, res) => {
   const skill_id = req.params.skill_id;
   try {
     const skill_details = await SkillDetails.findAll({ where: {skill_id} });
-
     if (skill_details && skill_details.length > 0) {
-      return res.status(200).json({
-        code: 200,
-        data: {
-          'skill_details': skill_details.map(skill_details => skill_details.skill_id.toJSON()),
-          'skill_name': skill_details.map(skill_details => skill_details.skill_name.toJSON()),
-          "skill_status": skill_details.map(skill_details => skill_details.skill_status.toJSON())
-        },
-      });
+      const firstSkillDetails = skill_details[0].toJSON();
+      const response = {
+        "skill_id": firstSkillDetails.skill_id,
+        "skill_name": firstSkillDetails.skill_name,
+        "skill_status": firstSkillDetails.skill_status
+        };
+      return res.status(200).json(response);
     }
+    
+      // return res.status(200).json({
+        // code: 200,
+        // data: {
+        //   'skill_details': skill_details[0].toJSON(),
+        // },
 
     return res.status(404).json({
       code: 404,
