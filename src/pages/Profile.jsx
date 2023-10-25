@@ -20,8 +20,8 @@ export default function Profile() {
     const jwt_token = localStorage.getItem('jwt_token');
     const secret = 'mysecretkey';
     const decodedToken = jwt.verify(jwt_token, secret);
-    const [token, setToken] = useState(decodedToken[0]);
-    console.log("decoded " + JSON.stringify(decodedToken[0]));
+    const [token, setToken] = useState(decodedToken);
+    console.log("decoded " + JSON.stringify(decodedToken));
 
     // check if token is valid
     const { logout } = useContext(AuthContext);
@@ -76,7 +76,8 @@ export default function Profile() {
     async function onSubmit() {
         try {
             console.log(fname, lname)
-            if (fname !== "" && lname !== "") {
+            if(Object.values(formData).every((val) => val !== '')) {
+            // if (fname !== "" && lname !== "") {
                 // send post data to backend '/staff_details/:id'
                 console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
                 const token = await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Display</title>
+</head>
+<body>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>role_listing_id</th>
+        <th>role_id</th>
+        <th>role_listing_desc</th>
+        <th>role_listing_source</th>
+        <th>role_listing_open</th>
+        <th>role_listing_close</th>
+        <th>role_listing_creator</th>
+        <th>role_listing_updater</th>
+        <th>role_listing_ts_create</th>
+        <th>role_listing_ts_update</th>
+      </tr>
+    </thead>
+    <tbody id="data-body">
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchData() {
+      const response = await fetch('http://localhost:3003/openroles');
+      const data = await response.json();
+
+      const dataBody = document.getElementById('data-body');
+
+      data.forEach(item => {
+        const tableRow = document.createElement('tr');
+
+        Object.values(item).forEach(value => {
+          const tableData = document.createElement('td');
+          tableData.textContent = value;
+          tableRow.appendChild(tableData);
+        });
+
+        const viewButton = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'View';
+        button.addEventListener('click', () => {
+          const roleId = item.role_id;
+          window.location.href = `view_role.html?role_id=${roleId}`;
+        });
+        viewButton.appendChild(button);
+        tableRow.appendChild(viewButton);
+
+        dataBody.appendChild(tableRow);
+      });
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>

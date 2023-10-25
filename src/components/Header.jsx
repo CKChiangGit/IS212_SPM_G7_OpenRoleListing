@@ -20,14 +20,14 @@ export default function Header() {
     useEffect(() => {
     if (jwt_token !== null) {
         const decodedToken = jwt.verify(jwt_token, secret);
-        setToken(decodedToken[0]);
-        console.log("decoded " + JSON.stringify(decodedToken[0]));
+        setToken(decodedToken);
+        console.log("decoded " + JSON.stringify(decodedToken));
     } else {
         setToken()
     }
     }, [jwt_token, secret]);
     
-    console.log("token " + token)
+    console.log("token " + JSON.stringify(token))
     useEffect(() => {
         if (token) {
             setPageState("Profile")

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AuthContext, editUser, getAllUser } from '../hooks/AuthContext';
+import { authenticateUser, editUser, getAllUser } from '../hooks/AuthContext';
 import Table from '../components/Table';
 
 const jwt = require('jsonwebtoken');
@@ -31,7 +31,7 @@ export default function EditStaff() {
     //     navigate('/');
     // };
 
-    // // get staff_edit token
+    // // Get or Create staff_edit token
     const [token, setToken] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
     console.log(token)
 
@@ -76,20 +76,65 @@ export default function EditStaff() {
         { label: 'Password', accessor: 'pw', sortable: true },
     ];
 
+    // // get login token    
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    const decodedToken = jwt.verify(jwt_token, secret);
+    console.log("decoded: " + JSON.stringify(decodedToken));
+
+    const [isEditingSelf, setIsEditingSelf] = useState(false);
     async function onSubmit(e) {
         e.preventDefault();
         try {
-            if (fname !== '' && lname !== '') {
+            // check if all formData is not null
+            if(Object.values(formData).every((val) => val !== '')) {
+            
+                // console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
                 await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
                 toast.success('Profile details updated');
                 updateTableData();
-                setToken({}); 
-                localStorage.removeItem('staff_edit'); 
+
+                // check if HR edited own profile
+                console.log("comparing ", token.staff_id, decodedToken.staff_id)
+                console.log(token.staff_id === decodedToken.staff_id)
+                if (token.staff_id === decodedToken.staff_id) {
+                    try {
+                        await authenticateUser(email, pw);
+                        console.log("jwt has been resigned");
+                        setToken({}); 
+                        localStorage.removeItem('staff_edit'); 
+                    } catch (error) {
+                      console.log("Error during authentication:", error);
+                    }
+                } else {
+                    setToken({}); 
+                    localStorage.removeItem('staff_edit'); 
+                }
+
             }
         } catch (error) {
             toast.error('Could not update the profile details. ' + error.message);
         }
     }
+    // useEffect(() => {
+    //     async function resignToken() {
+    //       if (isEditingSelf) {
+    //         try {
+    //             await authenticateUser(email, pw);
+    //             console.log("jwt has been resigned");
+    //             setToken({}); 
+    //             localStorage.removeItem('staff_edit'); 
+    //         } catch (error) {
+    //           console.log("Error during authentication:", error);
+    //         }
+    //       } else {
+    //         setToken({}); 
+    //         localStorage.removeItem('staff_edit'); 
+    //       }
+    //     }
+    //     resignToken();
+    //   }, [isEditingSelf, email, pw]);
+
     // // set table data as import from tableDtata3.json
     const [tableData, setTableData] = useState([])
     
