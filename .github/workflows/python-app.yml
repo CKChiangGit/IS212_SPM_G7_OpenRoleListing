@@ -45,15 +45,12 @@ jobs:
         rm -rf node_modules
         npm install
         
-        # cd to root
-        cd /
-
-        MS_PATH=src/api
-
-        npm run apply_role_complexMS --prefix ${MS_PATH}
-        npm run roledetails --prefix ${MS_PATH}
-        npm run role_skills_ms --prefix ${MS_PATH}
-        npm run skill_details_ms --prefix ${MS_PATH}
+        
+        cd src/api
+        npm run apply_role_complexMS --prefix ../
+        npm run roledetails --prefix ../
+        npm run role_skills_ms --prefix ../
+        npm run skill_details_ms --prefix ../
 
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
