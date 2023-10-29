@@ -49,6 +49,35 @@ app.get('/openroles/:role_id', async (req, res) => {
   }
 });
 
+// Creation of new role
+// Receive data from frontend
+app.post('/createrole', bodyParser.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    // View the data received from the frontend
+    console.log(req.body);
+    // Prepare the data in JSON format
+    const jsonData = {
+      role_id: req.body.role_id,
+      role_name: req.body.role_name,
+      role_description: req.body.role_desc,
+      role_status: req.body.role_status
+    };
+    // Print the data to the console
+    console.log(jsonData);
+
+    // Send data as JSON to the 'createrole' endpoint
+    const newRole = await axios.post('http://localhost:3004/createrole', JSON.stringify(jsonData), {
+      headers: {
+        'Content-Type': 'application/json' // Set the content type as JSON
+      }
+    });
+
+    res.status(200).json(newRole.data); // Respond with the data received
+  } catch (error) {
+    res.status(500).send(`<p>There is an internal error creating a new role, please contact the IT Department Team.</p>`);
+  }
+});
+
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

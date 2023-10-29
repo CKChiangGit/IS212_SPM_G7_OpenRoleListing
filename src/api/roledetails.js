@@ -55,13 +55,22 @@ app.get('/roledetails/:role_id', async (req, res) => {
 
 
 // Post a new role detail
-app.post('/roledetails', async (req, res) => {
+app.post('/createrole', async (req, res) => {
   try {
-    const roledetail = await RoleDetails.create(req.body);
-    res.json(roledetail);
+    const { role_id, role_name, role_description, role_status } = req.body;
+
+    // Create a new role detail entry in the RoleDetails table
+    const newRole = await RoleDetails.create({
+      role_id,
+      role_name,
+      role_description,
+      role_status
+    });
+
+    res.status(201).json(newRole); // Respond with the created role details
   } catch (error) {
     console.error('Error creating a new role listing:', error);
-    res.status(501).send(`<p>There is an error posting a new role listing, please contact the IT Department Team.</p>`);
+    res.status(500).send('Internal Server Error');
   }
 });
 
