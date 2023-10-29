@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "roleD": "nodemon role_details.js",
     "staffD": "nodemon staff_details.js",
@@ -70,12 +70,14 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
+    "jest": "^27.5.1",
     "os-browserify": "^0.3.0",
     "postcss": "^8.4.29",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "supertest": "^6.3.3",
     "tailwindcss": "^3.3.3",
     "url": "^0.11.3"
   }
