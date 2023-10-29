@@ -2,6 +2,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const StaffDetails = require('../../models/staff_details'); // Import the StaffRoles model
+const StaffSkills = require('../../models/staff_skills');
+const SkillDetails = require('../../models/skill_details');
 const express = require('express');
 const mysql2 = require('mysql2');
 const cors = require('cors');
@@ -12,16 +14,42 @@ const PORT = process.env.PORT || 5007;
 app.use(cors()) 
 app.use(bodyParser.json());  
 
-
+// get all users + their skills
 app.get('/staff_details', async (req, res) => {
   try {
     const staff_details = await StaffDetails.findAll();
+    const skill_details = await StaffSkills.findAll();
 
+    const skill_name_id = await Promise.all(
+        // get the skill_name string + skill_id from SkillDetails
+        skill_details.map(async (skill) => {
+            const skill_name = await SkillDetails.findAll({
+                where: {
+                    skill_id: skill.skill_id
+                }
+            })
+            // return skill_name[0].skill_name
+            return skill_name[0]
+        }
+    ))
+    console.log(skill_name_id)  
+
+    // for each skill_detail's staff_id that matches with staff_details' staff_id, 
     if (staff_details.length) {
       return res.status(200).json({
         code: 200,
         data: {
-          'staff_details': staff_details.map(staff_details => staff_details.toJSON()),
+            'staff_details': staff_details.map(staff_details => {
+                // find corresponding skill_name, add the skill_name to the staff_details object
+                const skill_arr = []
+                skill_details.forEach(skill => {
+                    if (skill.staff_id === staff_details.staff_id) {
+                        skill_arr.push(skill_name_id[skill_details.indexOf(skill)])
+                    }
+                })
+                staff_details.dataValues.staff_skill = skill_arr
+                return staff_details.toJSON()
+            }),
         },
       });
     }
@@ -116,10 +144,28 @@ app.post('/staff_details', async (req, res) => {
 // create new staff details
 app.post('/staff_creation', async (req, res) => {
   try {
-      const staff_creation = await StaffDetails.create(req.body);
-      res.json(staff_creation);
+    const { staff_id, skill_id, ...staffDetails } = req.body;
+    const test = {
+        staff_id: staff_id, 
+        ...staffDetails
+    }
+    // console.log(test)
+    const staff_creation = await StaffDetails.create(test);
+
+    // console.log(staff_id, skill_id)
+    // // for each element in staff_skill array, create a new skill_name
+    const assign_staff_skill = await Promise.all(
+        skill_id.map(async (id) => {
+            return await StaffSkills.create({
+                staff_id: staff_id, 
+                skill_id: parseInt(id), 
+                ss_status: 'active'
+            })
+        })
+    )
+    res.json(assign_staff_skill);
   } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/staff_creation' endpoint` });
+      res.status(500).json({ error: `Internal server error in '/staff_creation' endpoint `});
   }
 });
 

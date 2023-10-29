@@ -101,14 +101,14 @@ export const getAllUser = async () => {
     }
 };
 
-// sends request to create new staff details
-export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
+// sends request to create new staff details + staff skills
+export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id) => {
     const response = await fetch('http://localhost:5007/staff_creation', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw }),
+        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id})
     });
     const data = await response.json();
     if (response.ok) {
@@ -159,6 +159,24 @@ export const viewRole = async () => {
 // sends request to view user's skills 
 export const viewUserSkill = async (staff_id) => {
     const response = await fetch(`http://localhost:3007/staff_skills/${staff_id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};
+
+// sends request to get all active skills 
+export const getActiveSkills = async (staff_id) => {
+    const response = await fetch(`http://localhost:5006/skill_details/active`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
