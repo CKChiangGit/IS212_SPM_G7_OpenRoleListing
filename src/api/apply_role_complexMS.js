@@ -23,13 +23,13 @@ const role_application_ids=require('../../models/role_applications.js');
 async function getStaffSkills(staffId) {
   console.log(staffId);
   try {
-    const response = await axios.get(`http://localhost:5009/staff_skills/${staffId}`);
-    const staffSkillsData = response.data.data;
+    const response = await axios.get(`http://localhost:3007/staff_skills/${staffId}`);
+    // const staffSkillIds = response.data
+    const staffSkillsData = response.data;
     console.log(staffSkillsData);
     // This is to filter out the unverified skills.
-    const staffSkillIds = staffSkillsData.filter(entry => entry.ss_status !== 'unverified').map(entry => entry.skill_id);
-    console.log(staffSkillIds);
-    return staffSkillIds;
+    console.log(staffSkillsData.skill_ids);
+    return staffSkillsData.skill_ids;
   } catch (error) {
     console.error('Error retrieving staff skills:', error);
     return [];
@@ -47,6 +47,69 @@ async function getRoleSkills(roleId) {
   } catch (error) {
     console.error('Error retrieving role skills:', error);
     return [];
+  }
+}
+
+async function getListofRoleIds() {
+  try {
+    const response = await axios.get(`http://localhost:3004/roledetails`);
+    const RoleDetailsData = response.data;
+    console.log(RoleDetailsData);
+    const RoleIds = RoleDetailsData.map(entry => entry.role_id);
+    console.log(RoleIds);
+    return RoleIds;
+  } catch (error) {
+    console.error('Error retrieving role Ids from roledetails:', error);
+    return [];
+  }
+}
+
+async function getSkillDetails(skillId) {
+  try {
+    const response = await axios.get(`http://localhost:5006/skill_details/${skillId}`);
+    const skillDetailsData = response.data;
+
+    if (skillDetailsData && skillDetailsData.skill_name && skillDetailsData.skill_status === 'active') {
+      // Assuming skillDetailsData is an object
+      const skillName = skillDetailsData.skill_name;
+      console.log(skillName);
+      return skillName;
+    } else {
+      console.error('Skill details not found or skill is not active');
+      return null; // You can choose to return a default value or handle the error differently
+    }
+  } catch (error) {
+    console.error('Error retrieving skill details:', error);
+    return null; // Handle the error accordingly
+  }
+}
+// async function getSkillDetails(skillId) {
+//   try {
+//     const response = await axios.get(`http://localhost:5006/skill_details/${skillId}`);
+//     const skillDetailsData = response.data;
+//     console.log(skillDetailsData);
+//     const SkillNames = skillDetailsData.map(entry => entry.skill_name);
+//     console.log(SkillNames);
+//     return SkillNames;
+//   } catch (error) {
+//     console.error('Error retrieving skill names from skill details:', error);
+//     return [];
+//   }
+// }
+async function getSkillNames(roleId) {
+  try {
+    const skillNamelist = [];
+    const skillIdsArray = await getRoleSkills(roleId);
+    
+    for (y in skillIdsArray) {
+      const skillName = await getSkillDetails(skillIdsArray[y]);
+      skillNamelist.push(skillName);
+    }
+    
+    return skillNamelist;
+  } catch (error) {
+    console.error('Error in getSkillNames:', error);
+    throw error; // Re-throw the error to handle it at the caller level.
   }
 }
 
@@ -101,55 +164,108 @@ app.post('/role_applications', async (req, res) => {
     }
   });  
 
-  app.get('/skill_match', async (req, res) => {
-    const staffId = 8857;
-    const roleId = '27431';
-    try{
-        staffskillsArray = await getStaffSkills(staffId);
-        roleskillsArray = await getRoleSkills(roleId);
-        console.log(staffskillsArray)
-        console.log(roleskillsArray)
-        const matchingPercentage = calculateMatchingPercentage(staffskillsArray, roleskillsArray);
-        console.log(`Matching Percentage: ${matchingPercentage}%`);
+  // app.get('/skill_match', async (req, res) => {
+  //   const staffId = 8857;
+  //   const roleId = '27431';
+  //   try{
+  //       staffskillsArray = await getStaffSkills(staffId);
+  //       roleskillsArray = await getRoleSkills(roleId);
+  //       console.log(staffskillsArray)
+  //       console.log(roleskillsArray)
+  //       const matchingPercentage = calculateMatchingPercentage(staffskillsArray, roleskillsArray);
+  //       console.log(`Matching Percentage: ${matchingPercentage}%`);
+
+  //     } catch (error) {
+  //       console.error('Error in /skill_match:', error);
+  //       res.status(500).json({ error: 'Internal Server Error' });
+  //     }
+  // }); 
+
+  app.get('/roleIds', async (req, res) => {
+    try
+      {
+        const staffId = 8857;
+        const result = [];
+        roleSkillsBigArray = [];
+        roleIdsArray = await getListofRoleIds();
+        console.log(roleIdsArray)
+        for (roleId in roleIdsArray)
+        {
+          console.log(roleIdsArray[roleId])
+          roleSkillsArray = await getRoleSkills(roleIdsArray[roleId]);
+          console.log(roleSkillsArray)  
+          // if (roleSkillsArray == null)
+          // {
+          //   roleSkillsArray = ['Null'];
+          //   console.log(roleSkillsArray)
+          // }
+          roleSkillsBigArray.push(roleSkillsArray);
+        }
+        console.log(roleSkillsBigArray)
+        staffskillsArray = await getStaffSkills(staffId)
+        console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
+        for (x in roleSkillsBigArray)
+        {
+          console.log(roleSkillsBigArray[x])
+          try
+          {
+            console.log(`test`)
+            console.log(roleSkillsBigArray[x])
+            console.log(roleSkillsBigArray[x].length)
+            if (roleSkillsBigArray[x].length == 0)
+            {
+              skillsMatchPercent = 0.00;
+              console.log(`Matching Percentage is invalid for this role id.`);
+            }
+            else 
+              {
+                skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsBigArray[x]);
+                console.log(`Matching Percentage for role id {roleIdsArray[${x}]} is: ${skillMatchPercent}%`);
+                const skillNamelist = await getSkillNames(roleIdsArray[x]);
+                result.push({
+                  skill_id: roleIdsArray[x],
+                  skill_names: skillNamelist,
+                  skill_match: skillMatchPercent,
+                });  
+              }
+            } 
+          catch (error) {
+            console.error('Error doing skill matching algorithm.', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+          }
+        }
+        console.log(result)
 
       } catch (error) {
         console.error('Error in /skill_match:', error);
         res.status(500).json({ error: 'Internal Server Error' });
       }
+      // return json({
+      //   skill_name: skillName
+      //   skill_match : skillMatchPercent
+      // });
   }); 
 
-  //     axios.get('http://localhost:5005/role-details', {
-  //     params: { role_name: 'desired_role_name' }, // Replace with the role name you want to look up
-  //   })
-  //   .then((response) => {
-  //     const roleId = response.data.role_id;
-  //     // Use the retrieved role_id in the next step
-  //     // Now, you can query the "Role Skill" microservice based on this roleId
-  //     axios.get('http://localhost:5005/role-data', {
-  //       params: { role_listing_id: roleId }, // Assuming role_listing_id is the parameter
-  //     })
-  //     .then((roleResponse) => {
-  //       const roleSkills = roleResponse.data.role_skills;
-  //       // Use the retrieved role skills in your "Apply Role" logic
-  //     })
-  //     .catch((roleError) => {
-  //       console.error('Error retrieving role skills:', roleError);
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error retrieving role details:', error);
-  //   });
-  //   try {
-
-
-  //   } catch (error) {
-  //     res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
+  // app.get('/getSkillNames', async (req, res) => {
+  //   try
+  //   {
+  //     skillNamelist = [];
+  //     skillIdsArray = await getRoleSkills('27431');
+  //     console.log(skillIdsArray)
+  //     for (y in skillIdsArray)
+  //     {
+  //       console.log(skillIdsArray[y])
+  //       skillName = await getSkillDetails(skillIdsArray[y]);
+  //       console.log(skillName);
+  //       skillNamelist.push(skillName);
+  //     }
+  //     console.log(skillNamelist);
   //   }
-  // });  
-
-
-  // app.get('/session_data', async (req, res) => {
-
+  //   catch (error) {
+  //     console.error('Error in /getSkillNames:', error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   app.listen(PORT, async () => {
     try {
       // Sync the model with the database
@@ -160,18 +276,4 @@ app.post('/role_applications', async (req, res) => {
     } catch (error) {
       console.error('Error syncing the model:', error);
     }
-  }); 
-
-
-
-
-
-
-// Matching algo code test from chatgpt, havent tested with MS communication yet.
-// function jaccardSimilarity(staff_skills, role_skills) {
-//   const staffskills = staff_skills.filter(skill => role_skills.includes(skill));
-//   const roleskills = role_skills.filter(skill => !staff_skills.includes(skill));
-//   const union = [...new Set([...staff_skills, ...role_skills])];
-//   const similarity = staffskills.length / roleskills.length;
-//   return similarity;
-// }
+  });

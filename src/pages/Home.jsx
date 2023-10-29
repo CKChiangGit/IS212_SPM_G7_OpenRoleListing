@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react'
+import { React } from 'react'
 import Table from "../components/Table";
 // import tableData1 from "../tableData1.json";
 import Popup from '../components/Popup';
@@ -15,8 +15,8 @@ const columns = [
 ];
 
 export default function Home() {     
-    // const storedToken = localStorage.getItem('token');
-    // const data1 = storedToken ? JSON.parse(storedToken)[0] : null;
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken)[0] : null;
     // console.log(JSON.stringify(token))
 
     // // get login token    
@@ -125,7 +125,7 @@ export default function Home() {
                 </div>
             ) : (
                 <div>
-                <p>You are not authenticated.</p>
+                <p>You are not authenticated.</pay>
                 </div>
             )}
 
