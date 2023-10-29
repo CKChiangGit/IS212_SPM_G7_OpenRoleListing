@@ -49,11 +49,11 @@ jobs:
         cd src/api
         # print list of all files in current directory
         ls -la
-        
-        npm run apply_role_complexMS --prefix ../../
-        npm run roledetails --prefix ../../
-        npm run role_skills_ms --prefix ../../
-        npm run skill_details_ms --prefix../../
+
+        npm run apply_role_complexMS.js --prefix ../../
+        npm run roledetails.js --prefix ../../
+        npm run role_skills_ms.js --prefix ../../
+        npm run skill_details_ms.js --prefix../../
 
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
