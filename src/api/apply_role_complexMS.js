@@ -182,10 +182,11 @@ app.post('/role_applications', async (req, res) => {
   // }); 
 
   // main function that will be called by the front end
-  app.get(`/apply_role/${staffId}`, async (req, res) => {
+  app.get('/apply_role/:staffId', async (req, res) => {
     try
       {
-        const staffId = 8857;
+        // const staffId = 8857;
+        const staffId = req.params.staffId;
         const result = [];
         roleSkillsBigArray = [];
         roleIdsArray = await getListofRoleIds();
