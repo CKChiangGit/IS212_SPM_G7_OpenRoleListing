@@ -49,10 +49,17 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
     const staffSkills = await StaffDetails.findAll({ where: { staff_id} });
     const skillIds = staffSkills.filter(skill => skill.ss_status === "active").map(skill => skill.skill_id);
 
+
+    const skillNames = await Promise.all(skillIds.map(async skill_id => {
+      const skillName = await SkillNames.findOne({ where: { skill_id } });
+      return skillName.skill_name;
+    }
+    ));
+
     if (skillIds.length) {    
       res.status(200).json({
         staff_id: staff_id,
-        skill_ids: skillIds
+        skill_names: skillNames
       });
     } else {
       res.status(404).send('<p>There are no active skills available for this staff.</p>');
