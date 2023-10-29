@@ -171,16 +171,44 @@ app.post('/staff_creation', async (req, res) => {
 
 // update staff details
 app.put('/staff_details/:id', async (req, res) => {
-  try {
-      const staff_details = await StaffDetails.update(req.body, {
-      where: {
-          staff_id: req.params.id
-      }
-      });
-      res.json(staff_details);
-  } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
-  }
+    try {
+        const { staff_id, skill_id, old_staff_id, ...staffDetails } = req.body;
+        const test = {
+            staff_id: staff_id, 
+            ...staffDetails
+        }
+        console.log(old_staff_id)
+        
+        // delete all staff_skills that match staff_id
+        const delete_staff_skill = await StaffSkills.destroy({
+            where: {
+                staff_id: old_staff_id
+            }
+        })
+        console.log("deleted " + delete_staff_skill)
+        
+        const staff_details = await StaffDetails.update(test, {
+            where: {
+                staff_id: req.params.id
+            }
+            });
+        
+        // res.json(staff_details);
+        // for each element in staff_skill array, create a new skill_name
+        const assign_staff_skill = await Promise.all(
+            skill_id.map(async (skill_id_id) => {
+                console.log(staff_id, parseInt(skill_id_id.skill_id))
+                return await StaffSkills.create({
+                    staff_id: staff_id, 
+                    skill_id: parseInt(skill_id_id.skill_id), 
+                    ss_status: 'active'
+                })
+            })
+        )
+        res.json(assign_staff_skill);
+    } catch (error) {
+        res.status(500).json({ error: `Internal server error in '/staff_details' endpoint` });
+    }
 });
 
 app.listen(PORT, async () => {

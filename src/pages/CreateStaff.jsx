@@ -145,6 +145,7 @@ export default function CreateStaff() {
                                     value={lname} 
                                     onChange={onChange} 
                                     placeholder="Last Name"
+                                    required
                                 />
                             </div>
                         </div>

@@ -77,16 +77,19 @@ export default function EditStaff() {
         try {
             // check if all formData is not null
             if(Object.values(formData).every((val) => val !== '')) {
-            
-                // console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
-                await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
-                toast.success('Profile details updated');
-                updateTableData();
-
                 // check if HR edited own profile
                 console.log("comparing ", token.staff_id, decodedToken.staff_id)
                 console.log(token.staff_id === decodedToken.staff_id)
-                if (token.staff_id === decodedToken.staff_id) {
+                const editOwnProfile = token.staff_id === decodedToken.staff_id;
+
+                console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill, decodedToken.staff_id);
+                await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill, decodedToken.staff_id);
+                toast.success('Profile details updated');
+                updateTableData();
+                setType("details");
+    
+                // reauthenticate if HR edited own profile
+                if (editOwnProfile) {
                     try {
                         await authenticateUser(email, pw);
                         console.log("jwt has been resigned");
@@ -96,13 +99,12 @@ export default function EditStaff() {
                       console.log("Error during authentication:", error);
                     }
                 } else {
-                    setToken({}); 
-                    localStorage.removeItem('staff_edit'); 
+                    navigate('/staff_list');
                 }
-
             }
         } catch (error) {
-            toast.error('Could not update the profile details. ' + error.message);
+            console.log(error);
+            toast.error('Error updating profile details');
         }
     }
 
@@ -153,12 +155,12 @@ export default function EditStaff() {
         if (isChecked) {
           setFormData((prevState) => ({
             ...prevState,
-            staff_skill: [...prevState.staff_skill, skillId],
+            staff_skill: [...prevState.staff_skill, {skill_id: parseInt(skillId)}],
           }));
         } else {
           setFormData((prevState) => ({
             ...prevState,
-            staff_skill: prevState.staff_skill.filter((id) => id !== skillId),
+            staff_skill: prevState.staff_skill.filter((id) => id.skill_id !== parseInt(skillId)),
           }));
         }
       };
@@ -264,6 +266,7 @@ export default function EditStaff() {
                                                 value={staff_id} 
                                                 onChange={onChange} 
                                                 placeholder="ID Number"
+                                                required
                                             />
                                         </div>
                                         <label className="text-lg font-semibold" htmlFor="fname">Staff Name</label>
@@ -275,6 +278,7 @@ export default function EditStaff() {
                                                     value={fname} 
                                                     onChange={onChange} 
                                                     placeholder="First Name"
+                                                    required
                                                 />
                                                 <input 
                                                     className=" w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
@@ -283,6 +287,7 @@ export default function EditStaff() {
                                                     value={lname} 
                                                     onChange={onChange} 
                                                     placeholder="Last Name"
+                                                    required
                                                 />
                                         </div>
                                         <label className="flex text-lg w-40 mr-6 font-semibold" htmlFor="dept">Department</label>
@@ -294,6 +299,7 @@ export default function EditStaff() {
                                                 value={dept} 
                                                 onChange={onChange} 
                                                 placeholder="Department"
+                                                required
                                             />
                                         </div>
                                         <label className="text-lg font-semibold"  htmlFor="email">Email Address</label>
@@ -304,6 +310,7 @@ export default function EditStaff() {
                                             value={email} 
                                             onChange={onChange} 
                                             placeholder="Email"
+                                            required
                                         />
                                         <div className="flex items-center align-items-center mb-4 ">
                                             <label className="flex text-lg w-20 mr-6 font-semibold" htmlFor="phone">Phone</label>
@@ -314,6 +321,7 @@ export default function EditStaff() {
                                                 value={phone} 
                                                 onChange={onChange} 
                                                 placeholder="Phone"
+                                                required
                                             />
                                         </div>
                                         
@@ -326,6 +334,7 @@ export default function EditStaff() {
                                                 value={biz_address} 
                                                 onChange={onChange} 
                                                 placeholder="Address"
+                                                required
                                             />
                                         </div>
                                         <div className="flex items-center align-items-center mb-4 ">
@@ -335,6 +344,7 @@ export default function EditStaff() {
                                                 id="sys_role" 
                                                 value={sys_role} 
                                                 onChange={onChange}
+                                                required
                                             >
                                                 <option value="staff">Staff</option>
                                                 <option value="hr">HR</option>
@@ -352,6 +362,7 @@ export default function EditStaff() {
                                                 value={pw} 
                                                 onChange={onChange} 
                                                 placeholder="Password"
+                                                required
                                             />
                                         </div>
                                     </>
@@ -366,7 +377,7 @@ export default function EditStaff() {
                                                         id={`${skill.skill_name}-checkbox`} 
                                                         type="checkbox" 
                                                         value={skill.skill_id} 
-                                                        defaultChecked={staff_skill.includes(skill.skill_id)}
+                                                        defaultChecked={staff_skill.some(s => s.skill_id === skill.skill_id)}
                                                         onClick={handleSkillChange}
                                                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                                                     />
