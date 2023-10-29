@@ -125,7 +125,6 @@ export default function EditStaff() {
         }
     }
 
-    // // set table data as import from tableDtata3.json
     const [tableData, setTableData] = useState([])
     
     // update table data with getAllUser() and setTableData()
@@ -148,6 +147,8 @@ export default function EditStaff() {
         [e.target.id]: e.target.value,
         }));
     }
+
+    const [type, setType] = useState("details");
 
     return (
         <section>
@@ -196,6 +197,35 @@ export default function EditStaff() {
                                         {key}: {value}
                                     </p>
                                 ))}
+
+                                <div className="flex mt-2">
+                                        <button
+                                            type="button"
+                                            id="type"
+                                            value="details"
+                                            onClick={() => setType("details")}
+                                            className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
+                                            type === "details"
+                                                ? "bg-white text-black"
+                                                : "bg-slate-600 text-zinc-500"
+                                            }`}
+                                        >
+                                            details
+                                        </button>
+                                        <button
+                                            type="button"
+                                            id="type"
+                                            value="skills"
+                                            onClick={() => setType("skills")}
+                                            className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
+                                            type === "skills"
+                                                ? "bg-white text-black"
+                                                : "bg-slate-600 text-zinc-500"
+                                            }`}
+                                        >
+                                            skills
+                                        </button>
+                                        </div>
                                 
                             </div>
                         </div>
