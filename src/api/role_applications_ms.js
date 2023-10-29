@@ -22,9 +22,8 @@ app.get('/role_applications_ids', async (req, res) => {
         var jsondata1=JSON.parse(jsondata)
         for(var data1 in jsondata1){
             for(var key in jsondata1[data1]){
-                if(key==='role_app_id'){git
+                if(key==='role_app_id'){
                     role_app_ids.push(Number(jsondata1[data1][key]))
-
                 }
             }
         }

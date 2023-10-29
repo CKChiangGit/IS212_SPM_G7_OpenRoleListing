@@ -35,6 +35,7 @@ export default function Login() {
   
     const onSubmit = async (e) => {
         e.preventDefault();
+        alert("Logging in. " + email)
         try {
             const token = await authenticateUser(email, password);
             login(token);

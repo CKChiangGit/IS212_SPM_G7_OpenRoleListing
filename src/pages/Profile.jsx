@@ -1,14 +1,9 @@
 import React from 'react'
 import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { getAuth, updateProfile } from "firebase/auth";
-// import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
-// import { db } from "../firebase"
-import ListingItem from "../components/ListingItem";
 import Table from "../components/Table";
-import tableData from "../tableData1.json";
 import { RiChatNewFill } from "react-icons/ri";
-import { authenticateUser, AuthContext, editUser, viewRole } from '../hooks/AuthContext';
+import { authenticateUser, AuthContext, editUser, viewRole, viewUserSkill } from '../hooks/AuthContext';
 import Popup from '../components/Popup';
 import { toast } from "react-toastify";
 const jwt = require('jsonwebtoken');
@@ -139,6 +134,20 @@ export default function Profile() {
     }, []);
     // console.log("table is " + JSON.stringify(tableData))
 
+    // update skill data with viewUserSkill() and setSkillData()
+    const [skillData, setSkillData] = useState([])
+    const updateSkillData = async () => {
+        try {            
+            setSkillData(await viewUserSkill(staff_id));
+            console.log("skill data updated")
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        updateSkillData();
+    }, []);
+
     // update staff_edit token when event detected
     const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
 
@@ -166,53 +175,139 @@ export default function Profile() {
                         <div className="w-full md:w-[50%] mt-6 px-3">
                             <form action="">
                                 {/* name input */}
-                                <label className="w-full">
-                                    Username
+                               
                                     {!changeDetail ? (
+                                        <>
+                                            <label className="w-full">
+                                                Username
+                                                <input type="text" 
+                                                    id="name" 
+                                                    value={name}
+                                                    disabled 
+                                                    className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
 
-                                            <input type="text" 
-                                                id="name" 
-                                                value={name}
-                                                disabled 
-                                                className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-                                            />
+                                            <label className="w-full">
+                                                Email
+                                                <input type="email" 
+                                                    id="email"
+                                                    value={email}
+                                                    disabled 
+                                                    className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
 
+                                            <label className="w-full">
+                                                Department
+                                                <input type="text" 
+                                                    id="dept"
+                                                    value={dept}
+                                                    disabled 
+                                                    className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
+
+                                            <label className="w-full">
+                                                Phone Number
+                                                <input type="number" 
+                                                    id="phone"
+                                                    value={phone}
+                                                    disabled 
+                                                    className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
+
+                                            <label className="w-full">
+                                                Business Address
+                                                <input type="email" 
+                                                    id="email"
+                                                    value={biz_address}
+                                                    disabled 
+                                                    className="mb-2 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
+
+                                            {/* display skillData as string*/}
+                                            <label className="w-full">
+                                                Skills
+                                                <input type="text" 
+                                                    id="email"
+                                                    value={skillData?.skill_ids?.join(", ")}
+                                                    disabled 
+                                                    className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+                                                />
+                                            </label>
+                                        </>
                                     ) : (
-                                        <div className="mb-6 w-full flex justify-between ">
-                                            <div className="">
+                                        <>
+                                            <label className="text-lg font-semibold" htmlFor="fname">Username</label>
+                                            <div className="mb-4 w-full flex justify-between ">
+                                                    <input 
+                                                        className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
+                                                        type="text" 
+                                                        id="fname" 
+                                                        value={fname} 
+                                                        onChange={onChange} 
+                                                        placeholder="First Name"
+                                                    />
+                                                    <input 
+                                                        className=" w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out" 
+                                                        type="text" 
+                                                        id="lname" 
+                                                        value={lname} 
+                                                        onChange={onChange} 
+                                                        placeholder="Last Name"
+                                                    />
+                                            </div>
+                                            <label className="flex text-lg w-40 mr-6 font-semibold" htmlFor="dept">Department</label>
+                                            <div className="flex items-center align-items-center mb-4 ">
                                                 <input 
-                                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
+                                                    className='flex-1 px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out w-full' 
                                                     type="text" 
-                                                    id="fname" 
-                                                    value={fname} 
+                                                    id="dept" 
+                                                    value={dept} 
                                                     onChange={onChange} 
-                                                    placeholder="First Name"
+                                                    placeholder="Department"
                                                 />
                                             </div>
-                                            <div className="">
+                                            <label className="text-lg font-semibold"  htmlFor="email">Email Address</label>
+                                            <input 
+                                                className='mb-4 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out' 
+                                                type="email" 
+                                                id="email" 
+                                                value={email} 
+                                                onChange={onChange} 
+                                                placeholder="Email"
+                                            />
+                                            <div className="flex items-center align-items-center mb-4 ">
+                                                <label className="flex text-lg w-20 mr-6 font-semibold" htmlFor="phone">Phone</label>
                                                 <input 
-                                                    className="mr-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out bg-red-200 focus:bg-red-200" 
-                                                    type="text" 
-                                                    id="lname" 
-                                                    value={lname} 
+                                                    className='flex-1 px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out w-full' 
+                                                    type="number"
+                                                    id="phone" 
+                                                    value={phone} 
                                                     onChange={onChange} 
-                                                    placeholder="Last Name"
+                                                    placeholder="Phone"
                                                 />
                                             </div>
-                                        </div>
+                                            
+                                            <label className="text-lg font-semibold">Business Address</label>
+                                            <div className="relative mb-4">
+                                                <textarea 
+                                                    className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out' 
+                                                    rows="3" cols="50"
+                                                    id="biz_address" 
+                                                    value={biz_address} 
+                                                    onChange={onChange} 
+                                                    placeholder="Address"
+                                                />
+                                            </div>
+                                        </>
                                     )}
-                                </label>
+                                
 
-                                {/* email input */}
-                                <label className="w-full">
-                                    Email
-                                    <input type="email" 
-                                        id="email"
-                                        value={email}
-                                        disabled 
-                                        className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-                                    />
-                                </label>
+                                
 
                                 <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
                                     <p className="flex items-center ">

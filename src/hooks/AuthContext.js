@@ -139,8 +139,26 @@ export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_a
 };
 
 // sends request to view open role details
-export const viewRole = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
+export const viewRole = async () => {
     const response = await fetch(`http://localhost:3003/openroles`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};
+
+// sends request to view user's skills 
+export const viewUserSkill = async (staff_id) => {
+    const response = await fetch(`http://localhost:3007/staff_skills/${staff_id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
