@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, where } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const SkillDetails = require('../../models/skill_details'); // Import the SkillDetails model
 const express = require('express');
@@ -35,7 +35,7 @@ app.get('/skill_details', async (req, res) => {
   }
 });
 
-app.get('/skill_details/:skill_id', async (req, res) => {
+app.get('/skill_details/:skill_id(\\d+)', async (req, res) => {
   const skill_id = req.params.skill_id;
   try {
     const skill_details = await SkillDetails.findAll({ where: {skill_id} });
@@ -68,6 +68,33 @@ app.get('/skill_details/:skill_id', async (req, res) => {
   }
 });
 
+// get only active skills
+app.get('/skill_details/active', async (req, res) => {
+  try {
+    const skill_details = await SkillDetails.findAll(
+      { where: {skill_status: "active"} }
+    );
+
+    if (skill_details.length) {
+      return res.status(200).json({
+        code: 200,
+        data: {
+          'skill_details': skill_details.map(skill_details => skill_details.toJSON()),
+        },
+      });
+    }
+    return res.status(404).json({
+      code: 404,
+      message: 'There are no skill details.',
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+    });
+  }
+});
 
 app.listen(PORT, async () => {
   try {
