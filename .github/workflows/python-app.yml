@@ -47,7 +47,11 @@ jobs:
         # npm run ${MS_PATH}/roledetails
         # npm run ${MS_PATH}/role_skills_ms
         # npm run ${MS_PATH}/skill_details_ms
+        
         cd src/api
+        # console log to see the path
+        console.log(process.cwd());
+        
         npm run apply_role_complexMS
         npm run roledetails
         npm run role_skills_ms
