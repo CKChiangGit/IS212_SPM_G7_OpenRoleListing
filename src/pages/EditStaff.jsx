@@ -59,7 +59,10 @@ export default function EditStaff() {
           console.log("updated " + newToken);
         };
       
-        window.addEventListener('staff_edit', handleStorageChange);
+        window.addEventListener('edit_event', handleStorageChange);
+        return () => {
+            window.removeEventListener('edit_event', handleStorageChange);
+        }
       }, [staffEditValue]);
 
     const { staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw } = formData;
@@ -81,8 +84,13 @@ export default function EditStaff() {
     const secret = 'mysecretkey';
     const decodedToken = jwt.verify(jwt_token, secret);
     console.log("decoded: " + JSON.stringify(decodedToken));
+    useEffect(() => {
+        if (decodedToken.sys_role !== "hr") {
+            toast.warning('You are not authorized to view this page');
+            navigate('/');
+        }
+    })
 
-    const [isEditingSelf, setIsEditingSelf] = useState(false);
     async function onSubmit(e) {
         e.preventDefault();
         try {
@@ -116,24 +124,6 @@ export default function EditStaff() {
             toast.error('Could not update the profile details. ' + error.message);
         }
     }
-    // useEffect(() => {
-    //     async function resignToken() {
-    //       if (isEditingSelf) {
-    //         try {
-    //             await authenticateUser(email, pw);
-    //             console.log("jwt has been resigned");
-    //             setToken({}); 
-    //             localStorage.removeItem('staff_edit'); 
-    //         } catch (error) {
-    //           console.log("Error during authentication:", error);
-    //         }
-    //       } else {
-    //         setToken({}); 
-    //         localStorage.removeItem('staff_edit'); 
-    //       }
-    //     }
-    //     resignToken();
-    //   }, [isEditingSelf, email, pw]);
 
     // // set table data as import from tableDtata3.json
     const [tableData, setTableData] = useState([])
@@ -164,6 +154,7 @@ export default function EditStaff() {
             <h1 className='text-3xl text-center mt-6 font-bold'>
                 Edit Staff
             </h1>
+            {/* check if token of "staff_edit" is set*/}
             {Object.keys(token).length === 0 ? (
                 <div>
                      
@@ -174,9 +165,6 @@ export default function EditStaff() {
                         columns={columns}
                         pageSize={5}
                         type="edit"
-                        // pageNumber={pageNumber}
-                        // pageSize={pageSize}
-                        // setPageNumber={setPageNumber}
                     />
                 </div>
             ) : (
@@ -196,10 +184,6 @@ export default function EditStaff() {
                                 <button
                                     className="text-xl font-bold text-gray-600 hover:text-gray-700 focus:outline-none focus:text-gray-700"
                                     type="button"
-                                    onClick={(token)=> {
-                                        setToken({}); 
-                                        localStorage.removeItem('staff_edit'); 
-                                    }}
                                 >
                                     Go Back
                                 </button>

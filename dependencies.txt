@@ -43,3 +43,6 @@ skill details MS        - 5006
 staff details MS        - 5007
 staff roles MS          - 5008
 staff skills MS         - 5009
+
+
+-- For DB --
