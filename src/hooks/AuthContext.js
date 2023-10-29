@@ -54,8 +54,8 @@ export const authenticateUser = async (email, password) => {
         console.log("response ok " + JSON.stringify(data.data.staff_details[0]))
         console.log("response ok " + data.data.staff_details.length)
         if (data.data.staff_details.length > 0) {
-            // sign jwt token with no expiry date
-            // const userId = { id: 123 };
+
+            console.log("successful " + data.data.staff_details)
             console.log(data.data.staff_details[0])
             // const test = {"staff_id":2,"fname":"JACK","lname":"SIM","dept":"MANAGEMENT","email":"jack.sim.2@all-in-one.com.sg","phone":"86808357","biz_address":"65 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409065","sys_role":"hr","pw":"345345"}
             jwt.sign(data.data.staff_details[0], secret, (err, asyncToken) => {

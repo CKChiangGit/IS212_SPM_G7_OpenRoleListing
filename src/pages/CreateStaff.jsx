@@ -112,6 +112,32 @@ export default function CreateStaff() {
             </h1>
             <div className="flex justify-center flex-wrap items-center px-6 py-0 max-w-6xl mx-auto">
                 
+                <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6 flex justify-center ">
+                    <div className="">
+                        <h3 class="text-lg font-semibold">Skills</h3>
+                        <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            
+                            {skills.map((skill) => (
+                                <li key={skill.skill_name} name="staff_skill" className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                    <div className="flex items-center px-3">
+                                    <input 
+                                        id={`${skill.skill_name}-checkbox`} 
+                                        type="checkbox" 
+                                        value={skill.skill_id} 
+                                        // onClick={() => {console.log(`${skill.skill_name}`)}}
+                                        onClick={handleSkillChange}
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                    />
+                                    
+                                    <label htmlFor={`${skill.skill_name}-checkbox`} className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{skill.skill_name}</label>
+                                    </div>
+                                </li>
+                            ))}
+                            
+                        </ul>
+                    </div>
+
+                </div>
                 <div className="w-full md:w-[67%] lg:w-[40%] lg:mr-20">
                     <form onSubmit={onSubmit}>
                         <p className="text-lg mt-6 font-semibold">Staff ID</p>
@@ -231,32 +257,7 @@ export default function CreateStaff() {
                     </form>
                     
                 </div>
-                <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6">
-                    {/* <img src="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80" alt="key" className='w-full rounded-2xl'/> */}
-                    
-                <h3 class="text-lg font-semibold">Skills</h3>
-                <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    
-                    {skills.map((skill) => (
-                        <li key={skill.skill_name} name="staff_skill" className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                            <div className="flex items-center px-3">
-                            <input 
-                                id={`${skill.skill_name}-checkbox`} 
-                                type="checkbox" 
-                                value={skill.skill_id} 
-                                // onClick={() => {console.log(`${skill.skill_name}`)}}
-                                onClick={handleSkillChange}
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                            
-                            <label htmlFor={`${skill.skill_name}-checkbox`} className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{skill.skill_name}</label>
-                            </div>
-                        </li>
-                    ))}
-                    
-                </ul>
-
-                </div>
+                
             </div>
         </section>
     )

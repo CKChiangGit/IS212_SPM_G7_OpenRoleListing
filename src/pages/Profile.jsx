@@ -38,6 +38,7 @@ export default function Profile() {
         biz_address: token.biz_address,
         sys_role: token.sys_role,
         pw: token.pw,
+        staff_skill: token.staff_skill,
 
         // // testing data 
         // fname: "JOHN asd",
@@ -49,7 +50,7 @@ export default function Profile() {
         // sys_role: "hr",
         // pw: "345345",
     })
-    const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw} = formData
+    const {staff_id, name, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill} = formData
     
     // table data
     const columns = [
@@ -99,19 +100,22 @@ export default function Profile() {
         try {
             console.log(fname, lname)
             if(Object.values(formData).every((val) => val !== '')) {
-            // if (fname !== "" && lname !== "") {
-                // send post data to backend '/staff_details/:id'
-                console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw])
-                await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
-                toast.success("Profile details updated");
+                // get skill_id from skill_name
+                const skill_id = await viewUserSkill(staff_id);
+                console.log("skill id is " + skill_id.skill_id)
 
-                authenticateUser(email, pw);
+                // // send post data to backend '/staff_details/:id'
+                // console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id])
+                // await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id);
+                // toast.success("Profile details updated");
 
-                // update name in formData
-                setFormData((prevState) => ({
-                    ...prevState,
-                    name: fname + " " + lname,
-                }));
+                // authenticateUser(email, pw);
+
+                // // update name in formData
+                // setFormData((prevState) => ({
+                //     ...prevState,
+                //     name: fname + " " + lname,
+                // }));
             }
         } catch (error) {
             toast.error("Could not update the profile details. " + error.message);
@@ -134,19 +138,19 @@ export default function Profile() {
     }, []);
     // console.log("table is " + JSON.stringify(tableData))
 
-    // update skill data with viewUserSkill() and setSkillData()
-    const [skillData, setSkillData] = useState([])
-    const updateSkillData = async () => {
-        try {            
-            setSkillData(await viewUserSkill(staff_id));
-            console.log("skill data updated")
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    useEffect(() => {
-        updateSkillData();
-    }, []);
+    // // update skill data with viewUserSkill() and setSkillData()
+    // const [skillData, setSkillData] = useState([])
+    // const updateSkillData = async () => {
+    //     try {            
+    //         setSkillData(await viewUserSkill(staff_id));
+    //         console.log("skill data updated")
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     updateSkillData();
+    // }, []);
 
     // update staff_edit token when event detected
     const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
@@ -231,10 +235,15 @@ export default function Profile() {
                                             {/* display skillData as string*/}
                                             <label className="w-full">
                                                 Skills
-                                                <input type="text" 
+                                                <textarea
+                                                    type="text"
                                                     id="skills"
-                                                    value={skillData?.skill_names?.join(", ")}
-                                                    disabled 
+                                                    value={
+                                                        staff_skill.length === 0
+                                                            ? "No skills added"
+                                                            : staff_skill.map((skill) => skill.skill_name).join(", ")
+                                                    }
+                                                    disabled
                                                     className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
                                                 />
                                             </label>

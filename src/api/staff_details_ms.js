@@ -117,17 +117,43 @@ app.get('/staff_details/:staff_id', async (req, res) => {
 // return new role details that match email and password
 app.post('/staff_details', async (req, res) => {
   try {
-      const staff_details = await StaffDetails.findAll({
-      where: {
-          email: req.body.email,
-          pw: req.body.password
-      }
-      });
+        const staff_details = await StaffDetails.findAll({
+            where: {
+                email: req.body.email,
+                pw: req.body.password
+            }
+        });
+    
+    //   get all staff_skills to match with staff_details
+    const skill_details = await StaffSkills.findAll();
+    const skill_name_id = await Promise.all(
+        // get the skill_name string + skill_id from SkillDetails
+        skill_details.map(async (skill) => {
+            const skill_name = await SkillDetails.findAll({
+                where: {
+                    skill_id: skill.skill_id
+                }
+            })
+            // return skill_name[0].skill_name
+            return skill_name[0]
+        }
+    ))
+    console.log(skill_name_id)  
       if (staff_details && staff_details.length > 0) {
         return res.status(200).json({
           code: 200,
           data: {
-            'staff_details': staff_details.map(staff => staff.toJSON()),
+            'staff_details': staff_details.map(staff_details => {
+                // find corresponding skill_name, add the skill_name to the staff_details object
+                const skill_arr = []
+                skill_details.forEach(skill => {
+                    if (skill.staff_id === staff_details.staff_id) {
+                        skill_arr.push(skill_name_id[skill_details.indexOf(skill)])
+                    }
+                })
+                staff_details.dataValues.staff_skill = skill_arr
+                return staff_details.toJSON()
+            }),
           },
         });
       }
