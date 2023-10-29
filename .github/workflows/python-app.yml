@@ -47,10 +47,10 @@ jobs:
         
         
         cd src/api
-        npm run apply_role_complexMS --prefix ../
-        npm run roledetails --prefix ../
-        npm run role_skills_ms --prefix ../
-        npm run skill_details_ms --prefix ../
+        npm run apply_role_complexMS --prefix ../../
+        npm run roledetails --prefix ../../
+        npm run role_skills_ms --prefix ../../
+        npm run skill_details_ms --prefix../../
 
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
