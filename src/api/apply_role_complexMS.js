@@ -181,7 +181,8 @@ app.post('/role_applications', async (req, res) => {
   //     }
   // }); 
 
-  app.get('/roleIds', async (req, res) => {
+  // main function that will be called by the front end
+  app.get(`/apply_role/${staffId}`, async (req, res) => {
     try
       {
         const staffId = 8857;
