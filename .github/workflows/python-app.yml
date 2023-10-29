@@ -45,6 +45,9 @@ jobs:
         npm init -y
         rm -rf node_modules
         npm install
+        
+        # cd to root
+        cd /
 
         MS_PATH=src/api
 
