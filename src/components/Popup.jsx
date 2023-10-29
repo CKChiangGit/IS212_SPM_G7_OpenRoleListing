@@ -54,8 +54,8 @@ const columns = [
                                 {moment.utc(role.role_listing_close).format("DD/MM/YY")}
                             </p>
                         </div>
-                        <p className="flex items-center font-semibold">
-                            <div className="">{role.role_listing_id}</div>   
+                        <p className="flex items-center font-bold">
+                            <div className="">Open Role ID: {role.role_listing_id}</div>   
                         </p>
                         <div className="">Creator: {role.role_listing_creator}</div>
                         <div className="">Updater: {role.role_listing_updater}</div>

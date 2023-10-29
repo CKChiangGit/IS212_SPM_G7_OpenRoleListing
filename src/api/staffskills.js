@@ -71,6 +71,19 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
   }
 });
 
+// // create  new skill for staff
+// app.post('/set_staff_skills', async (req, res) => {
+  
+//   try {
+//     const setNewSkills = await SkillNames.create(req.body);
+//     res.json(setNewSkills);
+//   } catch (error) {
+//     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+//   }
+// });
+
+
+
 app.listen(PORT, async () => {
   try {
     await sequelize.sync({ force: false });
