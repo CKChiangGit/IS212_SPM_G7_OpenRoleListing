@@ -68,10 +68,15 @@ export default function Home() {
 
                     {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
-                            {key}: {value}
-                        </p>
+                        {key}: {key === 'staff_skill' ? 
+                            value.length === 0 ? "No skills" : value.map((skill) => (
+                                skill.skill_name
+                            )).join(", ")
+                            : value
+                        }
+                    </p>
                     ))}
-                    <div className="">Home</div>
+                    
                     {tableData.length > 0 ? (
                         <><Table
                             caption="Open roles available for applications."
@@ -87,9 +92,12 @@ export default function Home() {
                     )}
                 </div>
             ) : (
-                <div>
-                <p>You are not authenticated.</p>
+                <div className="flex justify-center">
+                    <div>
+                        <p>You are not authenticated.</p>
+                    </div>
                 </div>
+                
             )}
 
         </div>
