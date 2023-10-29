@@ -39,5 +39,13 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
+    - name: Start microservices
+      run: |
+        npm run apply_role_complexMS
+        npm run roledetails
+        npm run role_skills_ms
+        npm run skill_details_ms
+        npm start
+
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
