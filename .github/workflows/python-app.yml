@@ -47,13 +47,15 @@ jobs:
         
         
         cd src/api
-        # print list of all files in current directory
-        ls -la
 
-        node apply_role_complexMS.js --prefix ../../
-        node  roledetails.js --prefix ../../
-        node  role_skills_ms.js --prefix ../../
-        node  skill_details_ms.js --prefix../../
+        # & allows ms to run in background
+        node apply_role_complexMS.js --prefix ../../ &
+        node  roledetails.js --prefix ../../ &
+        node  role_skills_ms.js --prefix ../../ &
+        node  skill_details_ms.js --prefix../../ &
+
+        # Wait for the microservices to start
+        sleep 10
 
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
