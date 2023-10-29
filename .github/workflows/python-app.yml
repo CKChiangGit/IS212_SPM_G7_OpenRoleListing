@@ -41,7 +41,6 @@ jobs:
         
     - name: Start microservices
       run: |
-        cd src/api
         npm init -y
         rm -rf node_modules
         npm install
