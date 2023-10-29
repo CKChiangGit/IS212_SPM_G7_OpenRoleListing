@@ -40,4 +40,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
     - name: Run tests
-      run: python -m unittest test_complexMS.py
+      run: python -m unittest src/tests/test_complexMS.py
