@@ -50,7 +50,7 @@ jobs:
         
         cd src/api
         # console log to see the path
-        console.log(process.cwd());
+        pwd
         
         npm run apply_role_complexMS
         npm run roledetails
