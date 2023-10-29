@@ -213,7 +213,7 @@ app.post('/role_applications', async (req, res) => {
             console.log(`test`)
             console.log(roleSkillsBigArray[x])
             console.log(roleSkillsBigArray[x].length)
-            if (roleSkillsBigArray[x].length == 0)
+            if (roleSkillsBigArray[x].length === 0)
             {
               skillsMatchPercent = 0.00;
               console.log(`Matching Percentage is invalid for this role id.`);
