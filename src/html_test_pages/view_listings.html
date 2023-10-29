@@ -25,7 +25,7 @@
 
   <script>
     async function fetchData() {
-      const response = await fetch('http://localhost:3001/openroles');
+      const response = await fetch('http://localhost:3003/openroles');
       const data = await response.json();
 
       const dataBody = document.getElementById('data-body');
