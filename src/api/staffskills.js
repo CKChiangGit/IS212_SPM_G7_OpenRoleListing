@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('../../models/ConnectionManager');
 const StaffDetails = require('../../models/staff_skills');
+const SkillNames = require('../models/skill_details');
 const cors = require('cors');
 
 const app = express();
