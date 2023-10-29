@@ -41,7 +41,8 @@ jobs:
         
     - name: Start microservices
       run: |
-        npm inint -y
+        npm init -y
+        rm -rf node_modules
         npm install
 
         MS_PATH=src/api
