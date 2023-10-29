@@ -43,10 +43,10 @@ jobs:
       run: |
         MS_PATH=src/api
 
-        npm run MS_PATH/apply_role_complexMS
-        npm run MS_PATH/roledetails
-        npm run MS_PATH/role_skills_ms
-        npm run MS_PATH/skill_details_ms
+        npm run ${MS_PATH}/apply_role_complexMS
+        npm run ${MS_PATH}/roledetails
+        npm run ${MS_PATH}/role_skills_ms
+        npm run ${MS_PATH}/skill_details_ms
 
     - name: Run tests
       run: python -m unittest src/tests/test_complexMS.py
