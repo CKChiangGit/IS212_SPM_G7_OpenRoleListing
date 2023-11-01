@@ -98,24 +98,30 @@ export default function Profile() {
     }
     async function onSubmit() {
         try {
-            console.log(fname, lname)
+            console.log("submit ", fname, lname)
             if(Object.values(formData).every((val) => val !== '')) {
                 // get skill_id from skill_name
-                const skill_id = await viewUserSkill(staff_id);
-                console.log("skill id is " + skill_id.skill_id)
+                let skill_id = []
+                try {
+                    skill_id = await viewUserSkill(staff_id);
+                    console.log("skill id is " + skill_id)
+                } catch (error) {
+                    // user has no skills
+                    console.error(error);
+                }
 
-                // // send post data to backend '/staff_details/:id'
-                // console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id])
-                // await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id);
-                // toast.success("Profile details updated");
+                // send post data to backend '/staff_details/:id'
+                console.log("sending "+ [staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id])
+                await editUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, staff_id);
+                toast.success("Profile details updated");
 
-                // authenticateUser(email, pw);
+                authenticateUser(email, pw);
 
-                // // update name in formData
-                // setFormData((prevState) => ({
-                //     ...prevState,
-                //     name: fname + " " + lname,
-                // }));
+                // update name in formData
+                setFormData((prevState) => ({
+                    ...prevState,
+                    name: fname + " " + lname,
+                }));
             }
         } catch (error) {
             toast.error("Could not update the profile details. " + error.message);

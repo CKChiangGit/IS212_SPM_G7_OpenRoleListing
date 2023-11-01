@@ -77,9 +77,9 @@ export default function EditStaff() {
         try {
             // check if all formData is not null
             if(Object.values(formData).every((val) => val !== '')) {
-                // check if HR edited own profile
-                console.log("comparing ", token.staff_id, decodedToken.staff_id)
-                console.log(token.staff_id === decodedToken.staff_id)
+                // // check if HR edited own profile
+                // console.log("comparing ", token.staff_id, decodedToken.staff_id)
+                // console.log(token.staff_id === decodedToken.staff_id)
                 const editOwnProfile = token.staff_id === decodedToken.staff_id;
 
                 console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill, decodedToken.staff_id);
@@ -93,14 +93,16 @@ export default function EditStaff() {
                     try {
                         await authenticateUser(email, pw);
                         console.log("jwt has been resigned");
-                        setToken({}); 
-                        localStorage.removeItem('staff_edit'); 
+                        // setToken({}); 
+                        // localStorage.removeItem('staff_edit'); 
                     } catch (error) {
                       console.log("Error during authentication:", error);
                     }
-                } else {
-                    navigate('/staff_list');
-                }
+                } 
+                setToken({}); 
+                localStorage.removeItem('staff_edit');
+                // navigate('/staff_edit');
+                
             }
         } catch (error) {
             console.log(error);
@@ -257,7 +259,7 @@ export default function EditStaff() {
                             <form className="py-4" onSubmit={onSubmit}>
                                 {type === "details" ? (
                                     <>
-                                        <label className="flex text-xl w-40 mr-6 font-semibold" htmlFor="staff_id">Staff ID</label>
+                                        {/* <label className="flex text-xl w-40 mr-6 font-semibold" htmlFor="staff_id">Staff ID</label>
                                         <div className="flex items-center align-items-center mb-4 ">
                                             <input 
                                                 className='flex-1 px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out w-full' 
@@ -268,7 +270,7 @@ export default function EditStaff() {
                                                 placeholder="ID Number"
                                                 required
                                             />
-                                        </div>
+                                        </div> */}
                                         <label className="text-lg font-semibold" htmlFor="fname">Staff Name</label>
                                         <div className="mb-4 w-full flex justify-between ">
                                                 <input 
