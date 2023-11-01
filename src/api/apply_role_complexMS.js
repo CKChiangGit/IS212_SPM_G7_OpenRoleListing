@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 // const role_skills=require('../../models/role_skills.js'); 
 const role_details=require('../../models/role_details.js');
 const staff_details=require('../../models/staff_details.js');
-const role_application_ids=require('../../models/role_applications.js'); 
 
 async function getStaffSkills(staffId) {
   console.log(staffId);
@@ -131,39 +130,58 @@ function calculateMatchingPercentage(staffSkills, roleSkills) {
 
 
 //viewing role applications for HR
-app.get('/role_applications', async (req, res) => {
-    try {
-      const role_applications = await RoleApplications.findAll();
-      res.json(role_applications);
-    } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
-    }
-  }); 
+// app.get('/role_applications', async (req, res) => {
+//     try {
+//       const role_applications = await RoleApplications.findAll();
+//       res.json(role_applications);
+//     } catch (error) {
+//       res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
+//     }
+//   }); 
 
 
 //var staff_skills=skills_results;
 //var role_skills_needed=role_skills; 
-var role_details1=role_details;
-var staff_details1=staff_details;
-var role_applications=[]
-var role_app_ids=role_application_ids
-var application_id=role_app_ids[-1]+1 
-app.post('/role_applications', async (req, res) => {
-    try {
-      //const role_applications = await RoleApplications.create(req.body);
-      //res.json(role_applications);
-      role_applications.append(role_details1['role_listing_id'])
-      role_applications.append(staff_details1['staff_id'])
-      role_applications.append(application_id)
+// var role_details1=role_details;
+// var staff_details1=staff_details;
+// var role_applications=[]
+// app.post('/role_applications', async (req, res) => {
+//     try {
+//       const role_applications = await RoleApplications.create(req.body);
+//       res.json(role_applications);
+//       role_applications.append(role_details1['role_listing_id'])
+//       role_applications.append(staff_details1['staff_id'])
+//       role_applications.append(application_id)
 
-      res.json(JSON.stringify(role_applications)) //change this array to json
+//       res.json(JSON.stringify(role_applications)) //change this array to json
       
 
-    } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
-    }
-  });  
+//     } catch (error) {
+//       res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
+//     }
+//   });  
 
+  app.post('/role_applications', async (req, res) => {
+    try {
+      // role_app_id = 12;
+      // role_listing_id = 531;
+      const role_app_ts_create= new Date();
+      pm.environment.set('role_app_ts_create', dateNow.toISOString());
+      console.log(role_app_ts_create);
+      const { staff_id, role_listing_id } = req.body;
+      const test = {
+        role_app_id: role_app_id,
+        role_listing_id: role_listing_id,
+        staff_id: staff_id,
+        role_app_status: 'applied',
+        role_app_ts_create: role_app_ts_create
+      }
+      // console.log(test)
+      const role_application = await RoleApplications.create(test);
+    } catch (error) {
+        res.status(500).json({ error: `Internal server error in '/role_applications' endpoint `});
+    }
+  });
   // app.get('/skill_match', async (req, res) => {
   //   const staffId = 8857;
   //   const roleId = '27431';

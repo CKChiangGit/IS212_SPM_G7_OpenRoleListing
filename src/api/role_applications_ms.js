@@ -37,7 +37,75 @@ app.get('/role_applications_ids', async (req, res) => {
     }
   }); 
 
+  app.post('/role_applications_staff', async (req, res) => {
+    // try {
+    //   // role_app_id = 12;
+    //   // role_listing_id = 531;
+    //   const role_app_ts_create= new Date();
+    //   pm.environment.set('role_app_ts_create', dateNow.toISOString());
+    //   console.log(role_app_ts_create);
+    //   const { staff_id, role_listing_id } = req.body;
+    //   const test = {
+    //     role_app_id: role_app_id,
+    //     role_listing_id: role_listing_id,
+    //     staff_id: staff_id,
+    //     role_app_status: 'applied',
+    //     role_app_ts_create: role_app_ts_create
+    //   }
+    //   // console.log(test)
+    //   const role_application = await RoleApplications.create(test);
+    // } catch (error) {
+    //     res.status(500).json({ error: `Internal server error in '/role_applications' endpoint `});
+    // }
+    try {
+      const { staff_id, role_listing_id } = req.body;
+      
+      // Create a new role application
+      const role_application = await RoleApplications.create({
+        staff_id,
+        role_listing_id,
+        role_app_status: 'applied',
+        role_app_ts_create: new Date().toISOString(),
+      });
+  
+      res.status(201).json(role_application); // Respond with the newly created role application
+    } catch (error) {
+      console.error('Error creating role application:', error);
+      res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
+    }
+  });
 
+
+  app.put('/role_applications/:role_app_id', async (req, res) => {
+    try {
+      const { role_app_id } = req.params; // Extract the role_app_id from the URL parameters
+      const { newStatus } = req.body; // Define a newStatus field in the request body
+  
+      // Check if the newStatus is one of the allowed values ('withdrawn', 'accepted', 'rejected')
+      if (newStatus === 'withdrawn' || newStatus === 'accepted' || newStatus === 'rejected') {
+        const roleApplication = await RoleApplications.findOne({
+          where: { role_app_id },
+        });
+  
+        if (roleApplication) {
+          // Update the role_app_status with the newStatus
+          roleApplication.role_app_status = newStatus;
+  
+          // Save the updated role application to the database
+          await roleApplication.save();
+  
+          res.status(200).json(roleApplication); // Respond with the updated role application
+        } else {
+          res.status(404).json({ error: 'Role application not found' });
+        }
+      } else {
+        res.status(400).json({ error: 'Invalid newStatus value' });
+      }
+    } catch (error) {
+      console.error('Error updating role application status:', error);
+      res.status(500).json({ error: 'Internal server error in updating role application status' });
+    }
+  });
 
 app.listen(PORT, async () => {
     try {
