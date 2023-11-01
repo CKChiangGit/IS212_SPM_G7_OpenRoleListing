@@ -139,8 +139,8 @@ export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_a
 };
 
 // sends request to view open role details
-export const viewRole = async () => {
-    const response = await fetch(`http://localhost:3003/openroles`, {
+export const viewRole = async (staff_id) => {
+    const response = await fetch(`http://localhost:5001/apply_role/${staff_id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',

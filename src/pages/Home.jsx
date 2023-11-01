@@ -43,22 +43,30 @@ export default function Home() {
         // { label: 'Role Updater', accessor: 'role_listing_updater', sortable: true },
         // { label: 'Role Create Date', accessor: 'role_listing_ts_create', sortable: true },
         // { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
-        { label: 'Skill Match', accessor: 'role_listing_id', sortable: true },
+        { label: 'Skill Match %', accessor: 'skill_match', sortable: true },
     ];
     
     // update table data with viewRole() and setTableData()
     const [tableData, setTableData] = useState([])
-    const updateTableData = async () => {
-        try {            
-            setTableData(await viewRole());
-            console.log("table data updated")
-        } catch (error) {
-            console.error(error);
-        }
-    };
     useEffect(() => {
+        const updateTableData = async () => {
+            if (!token) {
+                console.log("Token is not set yet");
+                return;
+            }
+        
+            try {            
+                const data = await viewRole(token.staff_id);
+                setTableData(data);
+                console.log("table data updated")
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    
         updateTableData();
-    }, []);
+    }, [token]);
+
 
     return (
         <div>

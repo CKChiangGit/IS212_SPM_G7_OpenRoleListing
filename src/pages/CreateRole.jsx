@@ -1,9 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // for making http requests to ConnectionManager.js
-import { stringify } from 'postcss';
-// import api from './api/posts'
 
 export default function CreateRole() {
 
@@ -75,6 +74,9 @@ export default function CreateRole() {
         }
     }
 
+    const navigate = useNavigate();
+
+
     // // checkcingigngg
     // async function handleSubmit() {
     //     try {
@@ -88,6 +90,21 @@ export default function CreateRole() {
     return (
         <main className="max-w-md px-2 mx-auto">
             <h1 className="text-3xl text-center mt-6 font-bold">Create a Listing</h1>
+            <div className="flex justify-center m-6" cursor="pointer"
+                onClick={() => navigate('/profile')}>
+                <RiArrowGoBackFill
+                    className="text-3xl mr-3 font-bold text-gray-600 hover:text-gray-700 focus:outline-none focus:text-gray-700"
+                    type="button"
+                    cursor="pointer"
+                />             
+                <button
+                    className="text-xl font-bold text-gray-600 hover:text-gray-700 focus:outline-none focus:text-gray-700"
+                    type="button"
+                >
+                    Go Back
+                </button>
+                
+            </div>
             <form>
                 {/* <p className="text-lg mt-6 font-semibold">Sell / Rent</p>
                 <div className="flex">

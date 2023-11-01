@@ -60,6 +60,7 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
     if (skillIds.length) {    
       res.status(200).json({
         staff_id: staff_id,
+        skill_ids: skillIds,
         skill_names: skillNames
       });
     } else {

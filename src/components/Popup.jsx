@@ -45,11 +45,13 @@ const columns = [
                             {role.role_listing_desc}
                         </p>
                         <div className="flex justify-start items-center space-x-4 w-[75%]">
+                            
                             <BsCalendar3WeekFill className="text-6xl" style={{ color: "#3377cc" }}/>
-                            <p className="bg-[#3377cc] w-full max-w-[200px] rounded-md p-1 text-white text-center font-semibold shadow-md">
+                            <p className="mr-2">From </p> 
+                            <p className={`w-full max-w-[200px] ${new Date(role.role_listing_close) < new Date() ? 'bg-green-800' : 'bg-[#3377cc]'} rounded-md p-1 text-white text-center font-semibold shadow-md`}>
                                 {moment.utc(role.role_listing_open).format("DD/MM/YY")}
                             </p>
-                            
+                            <p className="mr-2">To </p> 
                             <p className={`w-full max-w-[200px] ${new Date(role.role_listing_close) < new Date() ? 'bg-green-800' : 'bg-[#3377cc]'} rounded-md p-1 text-white text-center font-semibold shadow-md`}>
                                 {moment.utc(role.role_listing_close).format("DD/MM/YY")}
                             </p>
