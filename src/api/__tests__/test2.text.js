@@ -12,7 +12,7 @@ test('testing for posting staff creation', async () => {
         biz_address:"biz_address",
         sys_role:"sys_role",
         pw:"pw"
-    })
+    }) 
     expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
 });
 
