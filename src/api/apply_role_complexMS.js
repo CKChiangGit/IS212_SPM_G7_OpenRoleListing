@@ -40,9 +40,9 @@ async function getRoleSkills(roleId) {
   try {
     const response = await axios.get(`http://localhost:5005/role_skills/${roleId}`);
     const roleSkillsData = response.data;
-    console.log(roleSkillsData);
+    // console.log(roleSkillsData);
     const roleSkillIds = roleSkillsData.map(entry => entry.skill_id);
-    console.log(roleSkillIds);
+    // console.log(roleSkillIds);
     return roleSkillIds;
   } catch (error) {
     console.error('Error retrieving role skills:', error);
@@ -50,19 +50,55 @@ async function getRoleSkills(roleId) {
   }
 }
 
-async function getListofRoleIds() {
+// // sends request to view open role details
+// async function getRoleListings(staffId) {
+//     console.log(staffId);
+//     try {
+//         const response = await fetch(`http://localhost:3003/openroles`, {
+//             method: 'GET',
+//             headers: {
+//             'Content-Type': 'application/json',
+//             },
+//         });
+//         const roleListing = response.data;
+//         console.log(roleListing);
+//         return roleListing;
+//     } catch (error) {
+//         console.error('Error retrieving role listings:', error);
+//         return [];
+//     }
+// }
+
+// get role listing table
+async function getRoleListing() {
   try {
-    const response = await axios.get(`http://localhost:3004/roledetails`);
+    // const response = await axios.get(`http://localhost:3004/roledetails`);
+    const response = await axios.get(`http://localhost:3003/openroles`);
     const RoleDetailsData = response.data;
     console.log(RoleDetailsData);
-    const RoleIds = RoleDetailsData.map(entry => entry.role_id);
-    console.log(RoleIds);
-    return RoleIds;
+    return (RoleDetailsData)
+    // const RoleIds = RoleDetailsData.map(entry => entry.role_id);
+    // console.log(RoleIds);
+    // return RoleIds;
   } catch (error) {
-    console.error('Error retrieving role Ids from roledetails:', error);
+    console.error('Error retrieving role listings:', error);
     return [];
   }
 }
+
+// get role details table
+async function getRoleDetails() {
+    try {
+      const response = await axios.get(`http://localhost:3004/role_details`);
+      const RoleDetailsData = response.data;
+      console.log(RoleDetailsData);
+      return (RoleDetailsData)
+      
+    } catch (error) {
+      console.error('Error retrieving role details:', error);
+      return [];
+    }
+  }
 
 async function getSkillDetails(skillId) {
   try {
@@ -148,21 +184,22 @@ var staff_details1=staff_details;
 var role_applications=[]
 var role_app_ids=role_application_ids
 var application_id=role_app_ids[-1]+1 
+
 app.post('/role_applications', async (req, res) => {
     try {
-      //const role_applications = await RoleApplications.create(req.body);
-      //res.json(role_applications);
-      role_applications.append(role_details1['role_listing_id'])
-      role_applications.append(staff_details1['staff_id'])
-      role_applications.append(application_id)
+        //const role_applications = await RoleApplications.create(req.body);
+        //res.json(role_applications);
+        role_applications.append(role_details1['role_listing_id'])
+        role_applications.append(staff_details1['staff_id'])
+        role_applications.append(application_id)
 
-      res.json(JSON.stringify(role_applications)) //change this array to json
+        res.json(JSON.stringify(role_applications)) //change this array to json
       
 
     } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
+        res.status(500).json({ error: `Internal server error in '/role_applications' endpoint` });
     }
-  });  
+});  
 
   // app.get('/skill_match', async (req, res) => {
   //   const staffId = 8857;
@@ -181,72 +218,51 @@ app.post('/role_applications', async (req, res) => {
   //     }
   // }); 
 
-  // main function that will be called by the front end
-  app.get('/apply_role/:staffId', async (req, res) => {
-    try
-      {
-        // const staffId = 8857;
+// main function that will be called by the front end
+app.get('/apply_role/:staffId', async (req, res) => {
+    try {
         const staffId = req.params.staffId;
-        const result = [];
-        roleSkillsBigArray = [];
-        roleIdsArray = await getListofRoleIds();
-        console.log(roleIdsArray)
-        for (roleId in roleIdsArray)
-        {
-          console.log(roleIdsArray[roleId])
-          roleSkillsArray = await getRoleSkills(roleIdsArray[roleId]);
-          console.log(roleSkillsArray)  
-          // if (roleSkillsArray == null)
-          // {
-          //   roleSkillsArray = ['Null'];
-          //   console.log(roleSkillsArray)
-          // }
-          roleSkillsBigArray.push(roleSkillsArray);
-        }
-        console.log(roleSkillsBigArray)
-        staffskillsArray = await getStaffSkills(staffId)
-        console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
-        for (x in roleSkillsBigArray)
-        {
-          console.log(roleSkillsBigArray[x])
-          try
-          {
-            console.log(`test`)
-            console.log(roleSkillsBigArray[x])
-            console.log(roleSkillsBigArray[x].length)
-            if (roleSkillsBigArray[x].length === 0)
-            {
-              skillsMatchPercent = 0.00;
-              console.log(`Matching Percentage is invalid for this role id.`);
-            }
-            else 
-              {
-                skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsBigArray[x]);
-                console.log(`Matching Percentage for role id {roleIdsArray[${x}]} is: ${skillMatchPercent}%`);
-                const skillNamelist = await getSkillNames(roleIdsArray[x]);
-                result.push({
-                  skill_id: roleIdsArray[x],
-                  skill_names: skillNamelist,
-                  skill_match: skillMatchPercent,
-                });  
-              }
-            } 
-          catch (error) {
-            console.error('Error doing skill matching algorithm.', error);
-            res.status(500).json({ error: 'Internal Server Error' });
-          }
-        }
-        console.log(result)
 
-      } catch (error) {
-        console.error('Error in /skill_match:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
-      // return json({
-      //   skill_name: skillName
-      //   skill_match : skillMatchPercent
-      // });
-  }); 
+        let roleListingArray = await getRoleListing();
+        let roleDetails = await getRoleDetails();
+        
+        console.log("roleDetails ", roleDetails)
+        // console.log("roleIdsArray ", roleIdsArray)
+        let staffskillsArray = await getStaffSkills(staffId)
+        console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
+        
+        if (staffskillsArray && roleListingArray) {
+            for (let y in roleListingArray) {
+                console.log("roleList is ", roleListingArray[y]);
+
+                let roleSkillsArray = await getRoleSkills(roleListingArray[y].role_id);
+                console.log(roleSkillsArray);
+
+                console.log("staffskillsArray ", staffskillsArray);
+                let skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsArray);
+                console.log(`Matching Percentage for role id is: ${skillMatchPercent}%`);
+
+                if (isNaN(skillMatchPercent)) {
+                    roleListingArray[y].skill_match = 0.00;
+                } else {
+                    roleListingArray[y].skill_match = skillMatchPercent;
+                }
+                
+            }
+            // console.log("roleSkillsBigArray ", roleSkillsBigArray)
+        }
+        console.log("result ", roleListingArray)
+        res.status(200).json(roleListingArray);
+        
+    } catch (error) {
+    console.error('Error in /skill_match:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    }
+    // return json({
+    //   skill_name: skillName
+    //   skill_match : skillMatchPercent
+    // });
+}); 
 
   // app.get('/getSkillNames', async (req, res) => {
   //   try

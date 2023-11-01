@@ -18,8 +18,9 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
             window.dispatchEvent(new Event("edit_event"));
             // navigate('/')
         } else if (type === "apply") {
-            alert("show open role details")
-            window.dispatchEvent(new Event("role_details"));
+            // alert("show open role details")
+            localStorage.setItem("staff_edit", JSON.stringify(data))
+            window.dispatchEvent(new Event("edit_event"));
         } else {
             console.log("clicked")
         }
