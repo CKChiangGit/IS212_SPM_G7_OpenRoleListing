@@ -77,9 +77,9 @@ export default function EditStaff() {
         try {
             // check if all formData is not null
             if(Object.values(formData).every((val) => val !== '')) {
-                // check if HR edited own profile
-                console.log("comparing ", token.staff_id, decodedToken.staff_id)
-                console.log(token.staff_id === decodedToken.staff_id)
+                // // check if HR edited own profile
+                // console.log("comparing ", token.staff_id, decodedToken.staff_id)
+                // console.log(token.staff_id === decodedToken.staff_id)
                 const editOwnProfile = token.staff_id === decodedToken.staff_id;
 
                 console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill, decodedToken.staff_id);
@@ -93,14 +93,16 @@ export default function EditStaff() {
                     try {
                         await authenticateUser(email, pw);
                         console.log("jwt has been resigned");
-                        setToken({}); 
-                        localStorage.removeItem('staff_edit'); 
+                        // setToken({}); 
+                        // localStorage.removeItem('staff_edit'); 
                     } catch (error) {
                       console.log("Error during authentication:", error);
                     }
-                } else {
-                    navigate('/staff_list');
-                }
+                } 
+                setToken({}); 
+                localStorage.removeItem('staff_edit');
+                // navigate('/staff_edit');
+                
             }
         } catch (error) {
             console.log(error);

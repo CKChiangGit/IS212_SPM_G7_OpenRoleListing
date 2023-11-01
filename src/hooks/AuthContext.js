@@ -121,7 +121,7 @@ export const createUser = async (staff_id, fname, lname, dept, email, phone, biz
 
 // sends request to edit staff details
 export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, old_staff_id) => {
-    const response = await fetch(`http://localhost:5007/staff_details/${staff_id}`, {
+    const response = await fetch(`http://localhost:5007/staff_details`, {
         method: 'PUT',
         headers: {
         'Content-Type': 'application/json',
