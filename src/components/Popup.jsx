@@ -5,11 +5,15 @@ import Table from "../components/Table";
 import tableData from "../tableData3.json";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
-const Popup = ({ role }) => {
-  const togglePopup = () => {
-    localStorage.removeItem('staff_edit'); 
-    window.dispatchEvent(new Event("edit_event"));
-  };
+const Popup = ({ role, type_name }) => {
+    const togglePopup = () => {
+        localStorage.removeItem('staff_edit'); 
+        window.dispatchEvent(new Event("edit_event"));
+    };
+    // set type
+    const [type, setType] = useState(type_name);
+
+
 
 // table data
 const columns = [
@@ -88,13 +92,18 @@ const columns = [
                     </div>
                     
                 </div>
-                <Table
-                    caption=""
-                    data={tableData}
-                    columns={columns}
-                    pageSize={6}
-                    type="" 
-                />
+                {type !== "apply" ? (
+                    ""
+                ) : (
+                    <Table
+                        caption=""
+                        data={tableData}
+                        columns={columns}
+                        pageSize={6}
+                        type="" 
+                    />
+                )}
+                
             </div>
         </div>
     </div>

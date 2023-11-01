@@ -68,6 +68,22 @@ export default function Home() {
     }, [token]);
 
 
+    // update staff_edit token when event detected
+    const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+          const newToken = JSON.parse(localStorage.getItem('staff_edit')) || {};
+          setRole(newToken);
+        //   alert(role ? "role is " + JSON.stringify(role) : "role is empty");
+        };
+      
+        window.addEventListener('edit_event', handleStorageChange);
+        return () => {
+            window.removeEventListener('edit_event', handleStorageChange);
+        }
+      }, [role]);
+
     return (
         <div>
             {token ? (
@@ -86,15 +102,15 @@ export default function Home() {
                     ))}
                     
                     {tableData.length > 0 ? (
-                        <><Table
-                            caption="Open roles available for applications."
-                            data={tableData}
-                            columns={columns}
-                            pageSize={3}
-                            type="apply" /><Popup role={{
-                                "name": 1,
-                                "description": "Wendall Gripton",
-                            }} /></>
+                        <>
+                            <Table
+                                caption="Open roles available for applications."
+                                data={tableData}
+                                columns={columns}
+                                pageSize={3}
+                                type="apply" />
+                            <Popup role={role} type_name="apply"/>
+                        </>
                     ) : (
                         <div>Loading...</div>
                     )}

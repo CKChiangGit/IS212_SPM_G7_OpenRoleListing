@@ -68,6 +68,8 @@ async function getRoleSkills(roleId) {
 //         return [];
 //     }
 // }
+
+// get role listing table
 async function getRoleListing() {
   try {
     // const response = await axios.get(`http://localhost:3004/roledetails`);
@@ -79,10 +81,24 @@ async function getRoleListing() {
     // console.log(RoleIds);
     // return RoleIds;
   } catch (error) {
-    console.error('Error retrieving role Ids from roledetails:', error);
+    console.error('Error retrieving role listings:', error);
     return [];
   }
 }
+
+// get role details table
+async function getRoleDetails() {
+    try {
+      const response = await axios.get(`http://localhost:3004/role_details`);
+      const RoleDetailsData = response.data;
+      console.log(RoleDetailsData);
+      return (RoleDetailsData)
+      
+    } catch (error) {
+      console.error('Error retrieving role details:', error);
+      return [];
+    }
+  }
 
 async function getSkillDetails(skillId) {
   try {
@@ -205,66 +221,12 @@ app.post('/role_applications', async (req, res) => {
 // main function that will be called by the front end
 app.get('/apply_role/:staffId', async (req, res) => {
     try {
-        // // const staffId = 8857;
-        // const staffId = req.params.staffId;
-        // const result = [];
-        // let roleSkillsBigArray = [];
-        // let roleIdsArray = await getRoleListing();
-        
-        // // console.log("roleIdsArray ", roleIdsArray)
-        // for (let roleId in roleIdsArray)
-        // {
-        //     console.log("roleIds is ", roleIdsArray[roleId])
-        //     let roleSkillsArray = await getRoleSkills(roleIdsArray[roleId]);
-        //     console.log(roleSkillsArray)  
-        //     // if (roleSkillsArray == null)
-        //     // {
-        //     //   roleSkillsArray = ['Null'];
-        //     //   console.log(roleSkillsArray)
-        //     // }
-        //     roleSkillsBigArray.push(roleSkillsArray);
-        // }
-        // console.log("roleSkillsBigArray ", roleSkillsBigArray)
-        // let staffskillsArray = await getStaffSkills(staffId)
-        // console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
-        // if (staffskillsArray) {
-        //     for (let x in roleSkillsBigArray) {
-        //         console.log(roleSkillsBigArray[x])
-                
-        //         // console.log(`test`)
-        //         // console.log(roleSkillsBigArray[x])
-        //         // console.log(roleSkillsBigArray[x].length)
-                
-        //         // const skillNamelist = await getSkillNames(roleIdsArray[x]);
-        //         if (roleSkillsBigArray[x].length === 0)
-        //         {
-        //             let skillMatchPercent = 0.00;
-        //             console.log(`Matching Percentage is invalid for this role id.`);
-        //             result.push({
-        //                 skill_id: roleIdsArray[x],
-        //                 // skill_names: skillNamelist,
-        //                 skill_match: skillMatchPercent,
-        //             });  
-                    
-        //         } else {
-        //             console.log("staffskillsArray ", staffskillsArray)
-        //             let skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsBigArray[x]);
-        //             console.log(`Matching Percentage for role id {roleIdsArray[${x}]} is: ${skillMatchPercent}%`);
-        //             result.push({
-        //                 skill_id: roleIdsArray[x],
-        //                 // skill_names: skillNamelist,
-        //                 skill_match: skillMatchPercent,
-        //             });  
-        //         }
-                
-            
-        //     }
-        // }
-    
-        // // Kheng's version
         const staffId = req.params.staffId;
 
         let roleListingArray = await getRoleListing();
+        let roleDetails = await getRoleDetails();
+        
+        console.log("roleDetails ", roleDetails)
         // console.log("roleIdsArray ", roleIdsArray)
         let staffskillsArray = await getStaffSkills(staffId)
         console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)

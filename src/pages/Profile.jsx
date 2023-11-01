@@ -160,7 +160,6 @@ export default function Profile() {
 
     // update staff_edit token when event detected
     const [role, setRole] = useState(JSON.parse(localStorage.getItem('staff_edit')) || {});
-
     useEffect(() => {
         const handleStorageChange = () => {
           const newToken = JSON.parse(localStorage.getItem('staff_edit')) || {};
@@ -400,7 +399,7 @@ export default function Profile() {
                     <h1 className='text-3xl text-center mt-6 font-bold'>
                         Open Role Applicants
                     </h1>
-                    <Popup role={role}/>
+                    <Popup role={role} type_name=""/>
                 </>
             )}
         </div>
