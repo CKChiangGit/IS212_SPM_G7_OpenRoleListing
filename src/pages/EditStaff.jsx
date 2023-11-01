@@ -259,7 +259,7 @@ export default function EditStaff() {
                             <form className="py-4" onSubmit={onSubmit}>
                                 {type === "details" ? (
                                     <>
-                                        <label className="flex text-xl w-40 mr-6 font-semibold" htmlFor="staff_id">Staff ID</label>
+                                        {/* <label className="flex text-xl w-40 mr-6 font-semibold" htmlFor="staff_id">Staff ID</label>
                                         <div className="flex items-center align-items-center mb-4 ">
                                             <input 
                                                 className='flex-1 px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out w-full' 
@@ -270,7 +270,7 @@ export default function EditStaff() {
                                                 placeholder="ID Number"
                                                 required
                                             />
-                                        </div>
+                                        </div> */}
                                         <label className="text-lg font-semibold" htmlFor="fname">Staff Name</label>
                                         <div className="mb-4 w-full flex justify-between ">
                                                 <input 
