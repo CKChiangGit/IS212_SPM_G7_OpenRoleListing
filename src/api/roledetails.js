@@ -5,8 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('../../models/ConnectionManager');
 const RoleDetails = require('../../models/role_details');
-const RoleSkills = require('../models/role_skills');
-const SkillDetails = require('../models/skill_details');
+const RoleSkills = require('../../models/role_skills');
+const SkillDetails = require('../../models/skill_details');
 const cors = require('cors');
 const app = express();
 
