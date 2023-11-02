@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from 'react'
 import Table from "../components/Table";
-// import tableData1 from "../tableData1.json";
 import Popup from '../components/Popup';
 import { viewRole } from '../hooks/AuthContext';
 const jwt = require('jsonwebtoken');
