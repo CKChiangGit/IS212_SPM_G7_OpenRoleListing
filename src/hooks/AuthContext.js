@@ -191,3 +191,49 @@ export const getActiveSkills = async (staff_id) => {
         throw new Error('Error retrieving open role details');
     }
 };
+
+// sends request to create new role listing + role details 
+export const createListing = async ({
+    role_id,
+    role_listing_id,
+    role_name,
+    role_description,
+    role_listing_desc,
+    role_status,
+    role_listing_source,
+    role_listing_open,
+    role_listing_close,
+    role_listing_creator,
+    role_listing_updater,
+    staff_skill
+
+    }) => {
+    const response = await fetch(`http://localhost:3003/createrole`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            role_id,
+            role_listing_id,
+            role_name,
+            role_description,
+            role_listing_desc,
+            role_status,
+            role_listing_source,
+            role_listing_open,
+            role_listing_close,
+            role_listing_creator,
+            role_listing_updater,
+            staff_skill
+        }),
+    })
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};

@@ -133,7 +133,7 @@ export default function Profile() {
     const [tableData, setTableData] = useState([])
     const updateTableData = async () => {
         try {            
-            setTableData(await viewRole());
+            setTableData(await viewRole(staff_id));
             console.log("table data updated")
         } catch (error) {
             console.error(error);

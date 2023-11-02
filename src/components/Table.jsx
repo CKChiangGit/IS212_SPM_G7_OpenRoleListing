@@ -55,12 +55,10 @@ export default function Table({ caption, data, columns, pageSize, type}) {
     // console.log(pageNumber + "/" + pageLimit + " and pageSizeLimit is "+ pageSize)
 
             return (
-                <div>
+                <>
                     
                     <div className="table-container">
-                        <div className="centre">
-                            <caption>{caption}</caption>
-                        </div>
+                        <p className="centre caption">{caption}</p>
                         
                         <table className="table">
                             
@@ -69,7 +67,7 @@ export default function Table({ caption, data, columns, pageSize, type}) {
                         </table>
                     </div>
                     <PageControl {...{ pageNumber, setPageNumber, pageLimit }} />
-                </div>
+                </>
 
         );
 };

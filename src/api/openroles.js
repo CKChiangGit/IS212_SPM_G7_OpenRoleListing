@@ -54,7 +54,7 @@ app.post('/createrole', bodyParser.urlencoded({ extended: true }), async (req, r
     const role = {
       role_id: req.body.role_id,
       role_name: req.body.role_name,
-      role_description: req.body.role_desc,
+      role_description: req.body.role_description,
       role_status: req.body.role_status,
     };
     
@@ -62,14 +62,16 @@ app.post('/createrole', bodyParser.urlencoded({ extended: true }), async (req, r
       role_listing_id: req.body.role_listing_id,
       role_id: req.body.role_id,
       role_listing_desc: req.body.role_name,
-      role_listing_source: req.body.manager_id,
+      role_listing_source: req.body.role_listing_source,
       role_listing_open: req.body.role_listing_open,
       role_listing_close: req.body.role_listing_close,
       role_listing_creator: req.body.role_listing_creator,
       role_listing_updater: req.body.role_listing_updater
     };
-
-    // Send data as JSON to the 'createrole' endpoint
+    // console.log("role details", role)
+    // console.log("listing details", listing)
+    // res.status(200).json(['hi'])
+    // // Send data as JSON to the 'createrole' endpoint
     const newRole = await axios.post('http://localhost:3004/createrole', JSON.stringify(role), {
       headers: {
         'Content-Type': 'application/json' // Set the content type as JSON

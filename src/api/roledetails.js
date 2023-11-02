@@ -63,9 +63,9 @@ app.get('/roledetails/:role_id', async (req, res) => {
     const skillNames = skillDetails.map(skill => skill.skill_name);
 
     res.status(200).json({
-      role_name: roleDetails.role_name,
-      role_description: roleDetails.role_description,
-      role_status: roleDetails.role_status,
+      role_name: roledetails.role_name,
+      role_description: roledetails.role_description,
+      role_status: roledetails.role_status,
       role_skills: skillNames
     })
 
