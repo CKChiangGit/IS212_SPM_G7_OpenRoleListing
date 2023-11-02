@@ -40,13 +40,33 @@ app.get('/roledetails/:role_id', async (req, res) => {
     });
     if (!roledetails) {
       res.status(404).send('<p>There is no such role.</p>');
-    } else {
-      res.status(200).json({
-        role_name: roledetails.role_name,
-        role_description: roledetails.role_description,
-        role_status: roledetails.role_status
-      });
     }
+
+    const roleSkills = await RoleSkills.findAll({
+      where: {
+        role_id: req.params.role_id
+      },
+      attributes: ['skill_id'] // Retrieve only the skill IDs associated with the role
+    });
+
+    const skillIds = roleSkills.map(roleSkill => roleSkill.skill_id);
+
+    const skillDetails = await SkillDetails.findAll({
+      where: {
+        skill_id: skillIds
+      },
+      attributes: ['skill_name']
+    });
+
+    const skillNames = skillDetails.map(skill => skill.skill_name);
+
+    res.status(200).json({
+      role_name: roleDetails.role_name,
+      role_description: roleDetails.role_description,
+      role_status: roleDetails.role_status,
+      role_skills: skillNames
+    })
+
   } catch (error) {
     console.error('Error getting role details:', error);
     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
