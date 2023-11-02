@@ -67,6 +67,7 @@ const columns = [
                         <div className="">Updater: {role.role_listing_updater}</div>
                         <div className="">Date Created: {moment.utc(role.role_listing_ts_create).format("DD/MM/YY HH:MM a")}</div>
                         <div className="pb-4">Date Updated: {moment.utc(role.role_listing_ts_update).format("DD/MM/YY HH:MM a")}</div>
+                        <div className="">Skills Required: {role.skills}</div>
 
                     </div>
                     <div className="bg-blue-300 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden">

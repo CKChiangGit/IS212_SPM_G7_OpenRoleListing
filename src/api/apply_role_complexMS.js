@@ -74,7 +74,7 @@ async function getRoleListing() {
   try {
     const response = await axios.get(`http://localhost:3003/openroles`);
     const RoleDetailsData = response.data;
-    console.log(RoleDetailsData);
+    console.log("role listing " + RoleDetailsData);
     return (RoleDetailsData)
     // const RoleIds = RoleDetailsData.map(entry => entry.role_id);
     // console.log(RoleIds);
@@ -90,7 +90,7 @@ async function getRoleDetails(role_id) {
     try {
       const response = await axios.get(`http://localhost:3003/openroles/${role_id}`);
       const RoleDetailsData = response.data;
-      console.log(RoleDetailsData);
+      console.log("role details " + RoleDetailsData);
       return (RoleDetailsData)
       
     } catch (error) {
@@ -223,12 +223,12 @@ app.get('/apply_role/:staffId', async (req, res) => {
         const staffId = req.params.staffId;
 
         let roleListingArray = await getRoleListing();
-        
+        let roleDetailsArray = await getRoleDetails(staffId);
         // console.log("roleDetails ", roleDetails)
-        // console.log("roleIdsArray ", roleIdsArray)
+        console.log("roleIdsArray ", roleDetailsArray)
         let staffskillsArray = await getStaffSkills(staffId)
         console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
-        
+        console.log("roleListingArray ", roleListingArray)
         if (staffskillsArray && roleListingArray) {
             for (let y in roleListingArray) {
                 console.log("roleList is ", roleListingArray[y]);

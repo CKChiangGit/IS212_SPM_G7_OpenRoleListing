@@ -114,8 +114,8 @@ export default function CreateStaff() {
                 
                 <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6 flex justify-center ">
                     <div className="">
-                        <h3 class="text-lg font-semibold">Skills</h3>
-                        <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <h3 className="text-lg font-semibold">Skills</h3>
+                        <ul className="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             
                             {skills.map((skill) => (
                                 <li key={skill.skill_name} name="staff_skill" className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
@@ -125,7 +125,7 @@ export default function CreateStaff() {
                                         type="checkbox" 
                                         value={skill.skill_id} 
                                         // onClick={() => {console.log(`${skill.skill_name}`)}}
-                                        onClick={handleSkillChange}
+                                        onChange={handleSkillChange}
                                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                                     />
                                     
@@ -227,9 +227,9 @@ export default function CreateStaff() {
                                 onChange={onChange} 
                                 required
                             >
-                                <option value="saab">hr</option>
-                                <option value="mercedes">manager</option>
-                                <option value="audi">staff</option>
+                                <option value="hr">HR</option>
+                                <option value="manager">Manager</option>
+                                <option value="staff">Staff</option>
                             </select>
                         </div>
                         <p className="text-lg font-semibold">Password</p>
