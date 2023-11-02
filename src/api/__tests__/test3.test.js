@@ -13,7 +13,24 @@ describe('GET /skill_details/:skill_id', () => {
       const response = await request(baseurl).get(`/skill_details/${skillId}`);
       expect(response.statusCode).toBe(200);
       expect(response.headers['content-type']).toMatch(/application\/json/); // Check that the response is a JSON string
-      expect(response.body.data.skill_details[0]).toHaveProperty('skill_name', 'Management Communication'); // Replace with the expected name of the skill
-      expect(response.body.data.skill_details[0]).toHaveProperty('skill_status', 'active'); // Replace with the expected description of the skill
+      expect(response.body).toHaveProperty('skill_name', 'Management Communication'); // Replace with the expected name of the skill
+      expect(response.body).toHaveProperty('skill_status', 'active'); // Replace with the expected description of the skill
     });
   });
+
+
+  describe('GET /skill_details/active', () => {
+    it('responds with skill details for active skills', async () => {
+      const response = await request(baseurl).get(`/skill_details/active`);
+      expect(response.statusCode).toBe(200); 
+      expect(response.headers['content-type']).toMatch(/application\/json/); // Check that the response is a JSON string
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          code: 200})
+);
+        });
+});
+
+
+
+
