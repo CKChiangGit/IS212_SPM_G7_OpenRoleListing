@@ -38,25 +38,6 @@ app.get('/role_applications_ids', async (req, res) => {
   }); 
 
   app.post('/role_applications_staff', async (req, res) => {
-    // try {
-    //   // role_app_id = 12;
-    //   // role_listing_id = 531;
-    //   const role_app_ts_create= new Date();
-    //   pm.environment.set('role_app_ts_create', dateNow.toISOString());
-    //   console.log(role_app_ts_create);
-    //   const { staff_id, role_listing_id } = req.body;
-    //   const test = {
-    //     role_app_id: role_app_id,
-    //     role_listing_id: role_listing_id,
-    //     staff_id: staff_id,
-    //     role_app_status: 'applied',
-    //     role_app_ts_create: role_app_ts_create
-    //   }
-    //   // console.log(test)
-    //   const role_application = await RoleApplications.create(test);
-    // } catch (error) {
-    //     res.status(500).json({ error: `Internal server error in '/role_applications' endpoint `});
-    // }
     try {
       const { staff_id, role_listing_id } = req.body;
       

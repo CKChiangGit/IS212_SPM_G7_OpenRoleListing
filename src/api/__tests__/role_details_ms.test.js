@@ -14,3 +14,4 @@ describe('GET /roledetails/:role_id', () => {
       expect(response.body).toHaveProperty('role_status', 'active'); 
     });
   });
+  

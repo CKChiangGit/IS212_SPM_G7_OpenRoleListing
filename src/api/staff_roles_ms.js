@@ -1,10 +1,10 @@
-const { DataTypes } = require('sequelize');
 const sequelize = require('../../models/ConnectionManager'); // Set up your Sequelize connection
 const StaffRoles = require('../../models/staff_roles'); // Import the StaffRoles model
 
 // --Microservice Portion--
 const express = require('express');
-const mysql2 = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5008;
