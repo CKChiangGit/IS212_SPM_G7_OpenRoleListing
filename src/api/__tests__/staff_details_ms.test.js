@@ -1,9 +1,13 @@
+// From Persis for Staff Details MS:
 const request = require('supertest');
+const StaffDetails = require('../../../models/staff_details');
 const baseurl='http://localhost:5007';
 
+let createdListingId;
 test('testing for posting staff creation', async () => {
+
     const response = await request(baseurl).post('/staff_creation').send({
-        staff_id:"staff_id",
+        staff_id: 125000,
         fname:"fname",
         lname:"lname",
         dept:"dept",
@@ -13,8 +17,21 @@ test('testing for posting staff creation', async () => {
         sys_role:"sys_role",
         pw:"pw"
     }) 
+    createdListingId = response.body.staff_id; // Save the ID of the created listing
     expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(response.statusCode).toBe(200);
 });
+afterEach(async () => {
+    if (createdListingId) {
+      // Delete the created listing directly from the database
+      await StaffDetails.destroy({
+        where: {
+          staff_id: createdListingId
+        }
+      });
+    }
+  });
+
 
 test('retrieving all staff details', async () => {
     const response = await request(baseurl).get('/staff_details');
@@ -41,3 +58,26 @@ describe('GET /staff_details/:staff_id', () => {
       expect(response.body.data.staff_details[0]).toHaveProperty('pw', '123123');
     });
   });
+/*
+  describe('POST /staff_details', () => {
+    let createdListingId;
+  
+    it('should create a new application and return 201 status', async () => {
+      const query = {
+        email: 'john.sim.1@all-in-one.com.sg',
+        pw: '123123'
+      };
+  
+      const response = await request(baseurl)
+        .post('/staff_details')
+        .send(query);
+  
+      createdListingId = response.body.staff_id; // Save the ID of the created listing
+      
+      expect(response.statusCode).toBe(404); 
+      expect(response.body).toHaveProperty('email');
+      expect(response.body).toHaveProperty('pw');
+*/
+      // add more assertions as needed
+    // });
+  // });
