@@ -154,22 +154,22 @@ app.post('/staff_creation', async (req, res) => {
         staff_id: staff_id, 
         ...staffDetails
     }
-    // console.log(test)
+    console.log(test)
     const staff_creation = await StaffDetails.create(test);
 
-    // console.log(staff_id, skill_id)
-    // // for each element in staff_skill array, create a new skill_name
-    // const assign_staff_skill = await Promise.all(
-    //     skill_id.map(async (id) => {
-    //         return await StaffSkills.create({
-    //             staff_id: staff_id, 
-    //             skill_id: parseInt(id), 
-    //             ss_status: 'active'
-    //         })
-    //     })
-    // )
-    // res.json(assign_staff_skill);
-    res.json(staff_creation);
+    console.log(staff_id, skill_id)
+    // for each element in staff_skill array, create a new skill_name
+    const assign_staff_skill = await Promise.all(
+        skill_id.map(async (id) => {
+            return await StaffSkills.create({
+                staff_id: staff_id, 
+                skill_id: parseInt(id), 
+                ss_status: 'active'
+            })
+        })
+    )
+    res.json(assign_staff_skill);
+    // res.json(staff_creation);
   } catch (error) {
       res.status(500).json({ error: `Internal server error in '/staff_creation' endpoint `});
   }

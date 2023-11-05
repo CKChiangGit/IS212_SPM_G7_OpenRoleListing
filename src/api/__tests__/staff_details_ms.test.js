@@ -7,15 +7,16 @@ let createdListingId;
 test('testing for posting staff creation', async () => {
 
     const response = await request(baseurl).post('/staff_creation').send({
-        staff_id: 125000,
+        staff_id: 12500,
         fname:"fname",
         lname:"lname",
         dept:"dept",
         email:"email",
         phone:"phone",
-        biz_address:"biz_address",
+        biz_address:"biz_address", 
         sys_role:"sys_role",
-        pw:"pw"
+        pw:"pw",
+        "staff_skill": [{skill_id : 6, skill_name : "Management Communication", skill_status: "active"}]
     }) 
     createdListingId = response.body.staff_id; // Save the ID of the created listing
     expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
