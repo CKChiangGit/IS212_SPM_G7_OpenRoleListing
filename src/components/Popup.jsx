@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import { BsCalendar3WeekFill } from "react-icons/bs";
 import Table from "../components/Table";
-import tableData from "../tableData3.json";
+import hardTableData from "../tableData3.json";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
 const Popup = ({ role, type_name }) => {
@@ -13,15 +13,32 @@ const Popup = ({ role, type_name }) => {
     // set type
     const [type, setType] = useState(type_name);
 
+// table data 
+const [tableData, setTableData] = useState(hardTableData);
+console.log("hardTableData", tableData);
 
-
-// table data for staff
+// table columns for staff
 const staff_columns = [
     { label: 'Full Name', accessor: 'fname', sortable: true, sortbyOrder: 'desc' },
     { label: 'Department', accessor: 'dept', sortable: true },
     { label: 'Email', accessor: 'email', sortable: true },
     { label: 'Skill Match', accessor: 'email', sortable: true },
 ];
+
+const handleCheck = (row) => {
+    // find the index of the row in tableData
+    const index = tableData.findIndex(data => data.id === row.id);
+
+    // create a new array with the updated row
+    const newTableData = [...tableData];
+    newTableData[index] = {
+        ...newTableData[index],
+        checked: !newTableData[index].checked
+    };
+
+    // update the state
+    setTableData(newTableData);
+};
 
  // toggle for details and skills editing
  const [mode, setMode] = useState("approve");

@@ -23,6 +23,17 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
             window.dispatchEvent(new Event("edit_event"));
         } else {
             console.log("clicked")
+            // append row data clicked to local storage 'selected_staff''
+            let selected_staff = JSON.parse(localStorage.getItem('selected_staff')) || [];
+            if (data) {
+                alert(data)
+                selected_staff.push(JSON.stringify(data));
+                localStorage.setItem("selected_staff", selected_staff);
+            } else {
+                console.error('Data is undefined');
+            }
+            // selected_staff.push(data);
+            // localStorage.setItem("selected_staff", JSON.stringify(selected_staff))
         }
     }
     // if type === edit, then show all columns
