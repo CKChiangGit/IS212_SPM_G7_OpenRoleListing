@@ -35,6 +35,7 @@ export default function Login() {
   
     const onSubmit = async (e) => {
         e.preventDefault();
+        // alert("Logging in. " + email)
         try {
             const token = await authenticateUser(email, password);
             login(token);
@@ -42,7 +43,7 @@ export default function Login() {
             // console.log("ive logged to " + JSON.stringify(token))
             navigate("/")
             console.log(token.email)
-            toast.success("Logging in. " + token.email)
+            toast.success("Logged in as " + token.email)
         } catch (error){
             console.log(error.message)
             toast.error("Login failed. " + error.message)

@@ -25,17 +25,16 @@ app.get('/role_applications_ids', async (req, res) => {
                 if(key==='role_app_id'){
                     role_app_ids.push(Number(jsondata1[data1][key]))
 
-                }
-            }
-        }
-        role_app_ids.sort() //sorting all existing role_app_id in database
-
-      res.json(role_app_ids);
-      module.exports=role_app_ids  
-    } catch (error) {
-      res.status(500).json({ error: `Internal server error in '/role_applications_ids' endpoint` });
-    }
-  }); 
+// Post a new role application
+app.post('/roleapplications', async (req, res) => {
+  try {
+      const { role_app_id, role_listing_id, staff_id, role_app_status } = req.body;
+      const roleApplication = await RoleApplications.create({
+      role_app_id,
+      role_listing_id,
+      staff_id,
+      role_app_status
+      });
 
   app.post('/role_applications_staff', async (req, res) => {
     try {

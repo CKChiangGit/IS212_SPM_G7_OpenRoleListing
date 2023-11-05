@@ -5,6 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('../../models/ConnectionManager');
 const RoleDetails = require('../../models/role_details');
+const RoleSkills = require('../../models/role_skills');
+const SkillDetails = require('../../models/skill_details');
 const cors = require('cors');
 const app = express();
 
@@ -40,13 +42,33 @@ app.get('/roledetails/:role_id', async (req, res) => {
     });
     if (!roledetails) {
       res.status(404).send('<p>There is no such role.</p>');
-    } else {
-      res.status(200).json({
-        role_name: roledetails.role_name,
-        role_description: roledetails.role_description,
-        role_status: roledetails.role_status
-      });
     }
+
+    const roleSkills = await RoleSkills.findAll({
+      where: {
+        role_id: req.params.role_id
+      },
+      attributes: ['skill_id'] // Retrieve only the skill IDs associated with the role
+    });
+
+    const skillIds = roleSkills.map(roleSkill => roleSkill.skill_id);
+
+    const skillDetails = await SkillDetails.findAll({
+      where: {
+        skill_id: skillIds
+      },
+      attributes: ['skill_name']
+    });
+
+    const skillNames = skillDetails.map(skill => skill.skill_name);
+
+    res.status(200).json({
+      role_name: roledetails.role_name,
+      role_description: roledetails.role_description,
+      role_status: roledetails.role_status,
+      role_skills: skillNames
+    })
+
   } catch (error) {
     console.error('Error getting role details:', error);
     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
@@ -55,13 +77,22 @@ app.get('/roledetails/:role_id', async (req, res) => {
 
 
 // Post a new role detail
-app.post('/roledetails', async (req, res) => {
+app.post('/createrole', async (req, res) => {
   try {
-    const roledetail = await RoleDetails.create(req.body);
-    res.json(roledetail);
+    const { role_id, role_name, role_description, role_status } = req.body;
+
+    // Create a new role detail entry in the RoleDetails table
+    const newRole = await RoleDetails.create({
+      role_id,
+      role_name,
+      role_description,
+      role_status
+    });
+
+    res.status(201).json(newRole); // Respond with the created role details
   } catch (error) {
     console.error('Error creating a new role listing:', error);
-    res.status(501).send(`<p>There is an error posting a new role listing, please contact the IT Department Team.</p>`);
+    res.status(500).send('Internal Server Error');
   }
 });
 

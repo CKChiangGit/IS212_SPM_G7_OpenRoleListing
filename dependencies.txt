@@ -36,10 +36,12 @@ rolelistings.js         - 3005
 
 Apply Role Complex MS   - 5001
 role applications MS    - 5002
-role details MS         - 5003
 role listings MS        - 5004
 role skills MS          - 5005
 skill details MS        - 5006
 staff details MS        - 5007
 staff roles MS          - 5008
 staff skills MS         - 5009
+
+
+-- For DB --

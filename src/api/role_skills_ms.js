@@ -14,7 +14,6 @@ app.use(cors())
 app.use(bodyParser.json());   
 
 
-
 app.get('/role_skills', async (req, res) => {
   try {
     const skill_list = await RoleSkills.findAll();

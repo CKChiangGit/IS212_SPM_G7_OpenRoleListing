@@ -54,8 +54,8 @@ export const authenticateUser = async (email, password) => {
         console.log("response ok " + JSON.stringify(data.data.staff_details[0]))
         console.log("response ok " + data.data.staff_details.length)
         if (data.data.staff_details.length > 0) {
-            // sign jwt token with no expiry date
-            // const userId = { id: 123 };
+
+            console.log("successful " + data.data.staff_details)
             console.log(data.data.staff_details[0])
             // const test = {"staff_id":2,"fname":"JACK","lname":"SIM","dept":"MANAGEMENT","email":"jack.sim.2@all-in-one.com.sg","phone":"86808357","biz_address":"65 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409065","sys_role":"hr","pw":"345345"}
             jwt.sign(data.data.staff_details[0], secret, (err, asyncToken) => {
@@ -101,14 +101,14 @@ export const getAllUser = async () => {
     }
 };
 
-// sends request to create new staff details
-export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
+// sends request to create new staff details + staff skills
+export const createUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id) => {
     const response = await fetch('http://localhost:5007/staff_creation', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw }),
+        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id})
     });
     const data = await response.json();
     if (response.ok) {
@@ -120,32 +120,114 @@ export const createUser = async (staff_id, fname, lname, dept, email, phone, biz
 };
 
 // sends request to edit staff details
-export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
-    const response = await fetch(`http://localhost:5007/staff_details/${staff_id}`, {
+export const editUser = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, old_staff_id) => {
+    const response = await fetch(`http://localhost:5007/staff_details`, {
         method: 'PUT',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw }),
+        body: JSON.stringify({ staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id, old_staff_id }),
     });
     const data = await response.json();
     if (response.ok) {
         console.log(data)
         return data;
     } else {
-        console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
-        throw new Error('Error creating new staff details');
+        console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, skill_id)
+        throw new Error('Error editing staff details');
     }
 };
 
 // sends request to view open role details
-export const viewRole = async (staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw) => {
-    const response = await fetch(`http://localhost:3003/openroles`, {
+export const viewRole = async (staff_id) => {
+    const response = await fetch(`http://localhost:5001/apply_role/${staff_id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
         },
     });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};
+
+// sends request to view user's skills 
+export const viewUserSkill = async (staff_id) => {
+    const response = await fetch(`http://localhost:3007/staff_skills/${staff_id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};
+
+// sends request to get all active skills 
+export const getActiveSkills = async (staff_id) => {
+    const response = await fetch(`http://localhost:5006/skill_details/active`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+};
+
+// sends request to create new role listing + role details 
+export const createListing = async ({
+    role_id,
+    role_listing_id,
+    role_name,
+    role_description,
+    role_listing_desc,
+    role_status,
+    role_listing_source,
+    role_listing_open,
+    role_listing_close,
+    role_listing_creator,
+    role_listing_updater,
+    staff_skill
+
+    }) => {
+    const response = await fetch(`http://localhost:3003/createrole`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            role_id,
+            role_listing_id,
+            role_name,
+            role_description,
+            role_listing_desc,
+            role_status,
+            role_listing_source,
+            role_listing_open,
+            role_listing_close,
+            role_listing_creator,
+            role_listing_updater,
+            staff_skill
+        }),
+    })
     const data = await response.json();
     if (response.ok) {
         console.log(data)

@@ -55,6 +55,13 @@ export default function Header() {
         }
     }
 
+    // get log out function from AuthContext
+    const { logout } = useContext(AuthContext);
+    const handleLogout = () => {
+        console.log("logging out")
+        logout();
+        navigate('/');
+    };
 
     return (
         <div className='bg-white border-b shadow-sm sticky top-0 z-0'>
@@ -91,6 +98,13 @@ export default function Header() {
                                 Edit Staff
                             </li>
                         )}
+
+                        {pageState === "Profile" && (
+                             <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] text-gray-400 border-b-transparent`} onClick={handleLogout}>
+                                Log Out
+                            </li>
+                        )}
+                       
                         
                     </ul>
                 </div>

@@ -27,13 +27,25 @@ app.get('/rolelistings', async (req, res) => {
 });
 
 // Post a new role listing
-app.post('/rolelistings', async (req, res) => {
+app.post('/createlistings', async (req, res) => {
   try {
-    const rolelisting = await RoleListings.create(req.body);
-    res.json(rolelisting);
+    const { role_listing_id, role_id, role_listing_desc, role_listing_source, role_listing_open, role_listing_close, role_listing_creator, role_listing_updater } = req.body;
+    // Create a new role listing entry in the RoleDetails table
+    const newListing = await RoleListings.create({
+      role_listing_id, 
+      role_id, 
+      role_listing_desc, 
+      role_listing_source, 
+      role_listing_open, 
+      role_listing_close, 
+      role_listing_creator, 
+      role_listing_updater
+    });
+
+    res.status(201).json(newListing); // Respond with the created role details
   } catch (error) {
     console.error('Error creating a new role listing:', error);
-    res.status(501).send(`<p>There is an error posting a new role listing, please contact the IT Department Team.</p>`);
+    res.status(500).send('Internal Server Error');
   }
 });
 

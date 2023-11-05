@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('../../models/ConnectionManager');
 const StaffDetails = require('../../models/staff_skills');
+const SkillNames = require('../../models/skill_details');
 const cors = require('cors');
 
 const app = express();
@@ -49,10 +50,18 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
     const staffSkills = await StaffDetails.findAll({ where: { staff_id} });
     const skillIds = staffSkills.filter(skill => skill.ss_status === "active").map(skill => skill.skill_id);
 
+
+    const skillNames = await Promise.all(skillIds.map(async skill_id => {
+      const skillName = await SkillNames.findOne({ where: { skill_id } });
+      return skillName.skill_name;
+    }
+    ));
+
     if (skillIds.length) {    
       res.status(200).json({
         staff_id: staff_id,
-        skill_ids: skillIds
+        skill_ids: skillIds,
+        skill_names: skillNames
       });
     } else {
       res.status(404).send('<p>There are no active skills available for this staff.</p>');
@@ -62,6 +71,19 @@ app.get('/staff_skills/:staff_id', async (req, res) => {
     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
   }
 });
+
+// // create  new skill for staff
+// app.post('/set_staff_skills', async (req, res) => {
+  
+//   try {
+//     const setNewSkills = await SkillNames.create(req.body);
+//     res.json(setNewSkills);
+//   } catch (error) {
+//     res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+//   }
+// });
+
+
 
 app.listen(PORT, async () => {
   try {

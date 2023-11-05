@@ -1,20 +1,14 @@
 import React from 'react'
-import { useState } from 'react'
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
-// import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-// import { db } from "../firebase"
-// import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// // SQL AUTHENTICATION START HERE
-import { createUser } from '../hooks/AuthContext';
+import { createUser, getActiveSkills } from '../hooks/AuthContext';
+import { on } from 'events';
+const jwt = require('jsonwebtoken');
 
-export default function SignUp() {
-    const [showPassword, setShowPassword] = useState(false);
-
-    // // SQL AUTHENTICATION START HERE
+export default function CreateStaff() {
     const [formData, setFormData] = useState({
-        staff_id: "99",
+        staff_id: "9",
         fname: "asd",
         lname: "asd",
         dept: "asd",
@@ -23,6 +17,7 @@ export default function SignUp() {
         biz_address: "99",
         sys_role: "hr",
         pw: "99",
+        staff_skill: [],
     })
     // const [formData, setFormData] = useState({
     //     staff_id: "",
@@ -34,12 +29,25 @@ export default function SignUp() {
     //     biz_address: "",
     //     sys_role: "",
     //     password: "",
+    //     staff_skill: [],
     // })
-    const { staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw } = formData
-    // const { login } = useContext(AuthContext);
+    const { staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill} = formData
+
     const navigate = useNavigate()
 
-    // sets the input element's id to the its value (whatever typed in)
+    // // get login token    
+    const jwt_token = localStorage.getItem('jwt_token');
+    const secret = 'mysecretkey';
+    const decodedToken = jwt.verify(jwt_token, secret);
+    console.log("decoded: " + JSON.stringify(decodedToken));
+    useEffect(() => {
+        if (decodedToken.sys_role !== "hr") {
+            toast.warning('You are not authorized to view this page');
+            navigate('/');
+        }
+    })
+
+    // updates the form data state onclick
     function onChange(e){
         console.log(e.target.value)
         setFormData((prevState)=>({
@@ -47,13 +55,45 @@ export default function SignUp() {
             [e.target.id]: e.target.value,
         }))
     }
-  
+    const handleSkillChange = (e) => {
+        console.log(e.target.value)
+        const skillId = e.target.value;
+        const isChecked = e.target.checked;
+
+        // Update the staff_skill array based on the checked state of the checkbox
+        if (isChecked) {
+          setFormData((prevState) => ({
+            ...prevState,
+            staff_skill: [...prevState.staff_skill, skillId],
+          }));
+        } else {
+          setFormData((prevState) => ({
+            ...prevState,
+            staff_skill: prevState.staff_skill.filter((id) => id !== skillId),
+          }));
+        }
+      };
+      useEffect(() => {
+        console.log(formData.staff_skill);
+      }, [formData.staff_skill]);
+
+    // retrieve all active skills from async function
+    const [skills, setSkills] = useState([]);
+    useEffect(() => {
+        const getSkills = async () => {
+            const activeSkills = await getActiveSkills();
+            setSkills(activeSkills.data.skill_details);
+            console.log(activeSkills.data.skill_details)
+        }
+        getSkills();
+    }, [])
+
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
             console.log(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw)
-            const token = await createUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw);
-            // navigate('/editSkills')
+            console.log("skills " + staff_skill)
+            const token = await createUser(staff_id, fname, lname, dept, email, phone, biz_address, sys_role, pw, staff_skill);
             toast.success("Created staff " + token)
         } catch (error){
             console.log(error.message)
@@ -61,58 +101,9 @@ export default function SignUp() {
         }
         
     }
-    // // SQL AUTHENTICATION ENDS HERE
 
-    // const [formData, setFormData] = useState({
-    //     name: "",
-    //     email: "",
-    //     password: "",
-    // })
-    // const { name, email, password } = formData
-    // const navigate = useNavigate()
 
-    // // sets the input element's id to the its value (whatever typed in)
-    // function onChange(e){
-    //     console.log(e.target.value)
-    //     setFormData((prevState)=>({
-    //         ...prevState,
-    //         [e.target.id]: e.target.value,
-    //     }))
-    // }
 
-    // // called when register button is clicked 
-    // async function onSubmit(e) {
-    //     // prevent refreshing on form submit
-    //     e.preventDefault()
-
-    //     try {
-    //         const auth = getAuth();
-    //         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    //         updateProfile(auth.currentUser, {
-    //             displayName: name,
-    //         })
-    //         const user = userCredential.user
-    //         console.log(user)
-
-    //         // Prep formData for saving. Remove password to avoid hackers getting access
-    //         const formDataCopy = {...formData}
-    //         delete formDataCopy.password
-    //         formDataCopy.timestamp = serverTimestamp()
-
-    //         // Save formData to db
-    //         await setDoc(doc(db, "users", user.uid), formDataCopy)
-    //         console.log(name + " has been registered.")
-    //         toast.success("Registration has been registered")
-
-    //     } catch (error){
-    //         const errorMsg = {
-    //             "Firebase: Error (auth/email-already-in-use).": "Email is already in use.",
-    //             "Firebase: Password should be at least 6 characters.": "Password is too short. Min 6 characters.",
-    //         }
-    //         console.log(error.message)
-    //         toast.error("Registration failed. " + errorMsg[error.message])
-    //     }
-    // }
 
     return (
         <section>
@@ -120,10 +111,34 @@ export default function SignUp() {
                 Register User
             </h1>
             <div className="flex justify-center flex-wrap items-center px-6 py-0 max-w-6xl mx-auto">
-                <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6">
-                    <img src="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80" alt="key" className='w-full rounded-2xl'/>
+                
+                <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6 flex justify-center ">
+                    <div className="">
+                        <h3 className="text-lg font-semibold">Skills</h3>
+                        <ul className="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            
+                            {skills.map((skill) => (
+                                <li key={skill.skill_name} name="staff_skill" className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                    <div className="flex items-center px-3">
+                                    <input 
+                                        id={`${skill.skill_name}-checkbox`} 
+                                        type="checkbox" 
+                                        value={skill.skill_id} 
+                                        // onClick={() => {console.log(`${skill.skill_name}`)}}
+                                        onChange={handleSkillChange}
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                    />
+                                    
+                                    <label htmlFor={`${skill.skill_name}-checkbox`} className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{skill.skill_name}</label>
+                                    </div>
+                                </li>
+                            ))}
+                            
+                        </ul>
+                    </div>
+
                 </div>
-                <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
+                <div className="w-full md:w-[67%] lg:w-[40%] lg:mr-20">
                     <form onSubmit={onSubmit}>
                         <p className="text-lg mt-6 font-semibold">Staff ID</p>
                         <input 
@@ -133,6 +148,7 @@ export default function SignUp() {
                             value={staff_id} 
                             onChange={onChange} 
                             placeholder="ID Number"
+                            required
                         />
                         <p className="text-lg font-semibold">Staff Name</p>
                         <div className="mb-6 w-full flex justify-between ">
@@ -144,6 +160,7 @@ export default function SignUp() {
                                     value={fname} 
                                     onChange={onChange} 
                                     placeholder="First Name"
+                                    required
                                 />
                             </div>
                             <div className="">
@@ -154,6 +171,7 @@ export default function SignUp() {
                                     value={lname} 
                                     onChange={onChange} 
                                     placeholder="Last Name"
+                                    required
                                 />
                             </div>
                         </div>
@@ -165,6 +183,7 @@ export default function SignUp() {
                             value={dept} 
                             onChange={onChange} 
                             placeholder="Department"
+                            required
                         />
                         <p className="text-lg font-semibold">Email Address</p>
                         <input 
@@ -174,6 +193,7 @@ export default function SignUp() {
                             value={email} 
                             onChange={onChange} 
                             placeholder="Email"
+                            required
                         />
                         <p className="text-lg font-semibold">Phone Number</p>
                         <div className="relative mb-6">
@@ -184,6 +204,7 @@ export default function SignUp() {
                                 value={phone} 
                                 onChange={onChange} 
                                 placeholder="Phone"
+                                required
                             />
                         </div>
                         <p className="text-lg font-semibold">Business Address</p>
@@ -199,14 +220,17 @@ export default function SignUp() {
                         </div>
                         <p className="text-lg font-semibold">Role</p>
                         <div className="relative mb-6">
-                            <input 
+                            <select 
                                 className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out' 
-                                type="text"
                                 id="sys_role" 
-                                value={sys_role} 
+                                name={sys_role} 
                                 onChange={onChange} 
-                                placeholder="Role"
-                            />
+                                required
+                            >
+                                <option value="hr">HR</option>
+                                <option value="manager">Manager</option>
+                                <option value="staff">Staff</option>
+                            </select>
                         </div>
                         <p className="text-lg font-semibold">Password</p>
                         <div className="relative mb-6">
@@ -217,6 +241,7 @@ export default function SignUp() {
                                 value={pw} 
                                 onChange={onChange} 
                                 placeholder="Password"
+                                required
                             />
                         </div>
                         
@@ -232,6 +257,7 @@ export default function SignUp() {
                     </form>
                     
                 </div>
+                
             </div>
         </section>
     )

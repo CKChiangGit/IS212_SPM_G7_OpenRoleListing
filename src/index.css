@@ -32,12 +32,14 @@ For sortable table
 .table {
     width: 100%;
     border-spacing: 0;
+    
 }
 
-caption {
+.caption {
     font-style: italic;
     font-size: 90%;
     margin-bottom: 10px;
+    
 }
 
 .table th {
@@ -83,4 +85,39 @@ th.down {
 
 .table tbody tr:nth-child(2n) td {
     background: #fff;
+}
+
+.table tbody td {
+    position: relative;
+    height:10vh;
+}
+
+.page-size-controls {
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow_button {
+    position: relative;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    /* left: ${props => props.direction === "left" ? "-20px" : "20px"}; */
+    right: 10px;
+}
+
+.centre {
+    display: flex; 
+    justify-content: center;
+}
+
+.moment {
+    white-space: nowrap;
+}
+
+.truncated {
+    overflow: hidden ;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
