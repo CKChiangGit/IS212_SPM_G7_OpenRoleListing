@@ -19,7 +19,7 @@ const RoleApplications = sequelize.define('RoleApplications', {
     allowNull: false,
   },
   role_app_status: {
-    type: DataTypes.ENUM('applied', 'withdrawn', 'accepted', 'rejected'),
+    type: DataTypes.ENUM('applied', 'accepted', 'rejected'),
     allowNull: false,
   },
   role_app_ts_create: {
