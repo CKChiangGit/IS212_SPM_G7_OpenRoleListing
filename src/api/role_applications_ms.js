@@ -24,7 +24,13 @@ app.get('/role_applications_ids', async (req, res) => {
             for(var key in jsondata1[data1]){
                 if(key==='role_app_id'){
                     role_app_ids.push(Number(jsondata1[data1][key]))
-
+                }
+              }
+            }
+    } catch (error) {
+      res.status(500).send(`Internal server error in '/role_applications_ids' endpoint`);
+    }
+  });
 // Post a new role application
 app.post('/roleapplications', async (req, res) => {
   try {
@@ -35,6 +41,11 @@ app.post('/roleapplications', async (req, res) => {
       staff_id,
       role_app_status
       });
+    } catch (error) { 
+      console.error('Error creating role application:', error);
+      res.status(500).json({ error: `Internal server error in '/roleapplications' endpoint` });
+    }
+  });
 
   app.post('/role_applications_staff', async (req, res) => {
     try {
@@ -97,5 +108,4 @@ app.listen(PORT, async () => {
     } catch (error) {
       console.error('Error syncing the model:', error);
     }
-  });  
-
+  }); 
