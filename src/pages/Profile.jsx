@@ -399,7 +399,7 @@ export default function Profile() {
                     <h1 className='text-3xl text-center mt-6 font-bold'>
                         Open Role Applicants
                     </h1>
-                    <Popup role={role} type_name=""/>
+                    <Popup role={role} type_name="view_applicant"/>
                 </>
             )}
         </div>

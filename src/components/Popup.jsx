@@ -15,13 +15,16 @@ const Popup = ({ role, type_name }) => {
 
 
 
-// table data
-const columns = [
+// table data for staff
+const staff_columns = [
     { label: 'Full Name', accessor: 'fname', sortable: true, sortbyOrder: 'desc' },
     { label: 'Department', accessor: 'dept', sortable: true },
     { label: 'Email', accessor: 'email', sortable: true },
     { label: 'Skill Match', accessor: 'email', sortable: true },
 ];
+
+ // toggle for details and skills editing
+ const [mode, setMode] = useState("approve");
 
   return (
     <div>
@@ -43,7 +46,7 @@ const columns = [
       
         <div className="popup">
             <div className="popup-content m-4 max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
-                <div className="flex flex-col md:flex-row ">
+                <div className="flex flex-col md:flex-row h-full justify-center items-center">
                     <div className="w-full">
                         <p className="text-2xl font-bold mb-1 text-blue-900">
                             {role.role_listing_desc}
@@ -70,40 +73,75 @@ const columns = [
                         <div className="">Skills Required: {role.skills}</div>
 
                     </div>
-                    <div className="bg-blue-300 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden">
-                        
-                        {/* <div className="m-4 flex flex-col md:flex-row ">
+                    <div className="flex justify-center items-center space-x-4 w-full h-full">
                             
-                            <div className="flex flex-col w-[30vw] max-w-[250px]">
-                                <div className="truncated">
-                                    Chiang Kheng Hean Siang Crystsl Chiang Wai
-                                </div>  
-                                <div className="max-w-[300px] truncated">
-                                    jack.sim.2@all-in-one.com.sg
-                                </div> 
-                            </div>
-
-                            <div className="flex items-center">
-                                <p className=" bg-[#3377cc] w-50 max-w-[200px] rounded-md p-1 ml-3 text-white  font-semibold shadow-md">
-                                    <div className="ml-3">50%</div> 
+                        {type !== "view_applicant" ? (
+                            <div className="m-4 flex flex-col items-center justify-center w-full">
+                                <p className="flex items-center font-bold">
+                                    Skill Match (%): {role.skill_match}
                                 </p>
+                                
+                                <br></br>
+                                {/* Application Status:  <p className={`w-full max-w-[200px] ${new Date(role.role_listing_close) < new Date() ? 'bg-green-800' : 'bg-[#3377cc]'} rounded-md p-1 text-white text-center font-semibold shadow-md`}>
+                                    Applied
+                                </p>
+                                <br /> */}
+                                <button className={`w-full max-w-[200px] rounded-md p-5 bg-blue-600 text-white text-center font-semibold shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg`}>
+                                    APPLY NOW
+                                </button>
                             </div>
-                        </div> */}
-                      
+                        ) : (
+                            <div className="flex mt-2 flex-col items-center justify-center w-full">
+                                
+                                <div className="flex flex-row">
+                                    <button
+                                        type="button"
+                                        id="type"
+                                        value="details"
+                                        onClick={() => setMode("reject")}
+                                        className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
+                                        mode === "approve"
+                                            ? "bg-white text-black"
+                                            : "bg-slate-600 text-zinc-500" 
+                                        }`}
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="type"
+                                        value="skills"
+                                        onClick={() => setMode("approve")}
+                                        className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
+                                        mode !== "approve"
+                                            ? "bg-white text-black"
+                                            : "bg-slate-600 text-zinc-500"
+                                        }`}
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                                <div className="caption mt-2">Select applicants to {mode}</div>
+                                
+                            </div>
+                        )}
+                        
                     </div>
                     
+                    
                 </div>
-                {type !== "apply" ? (
-                    ""
-                ) : (
-                    <Table
-                        caption=""
-                        data={tableData}
-                        columns={columns}
-                        pageSize={6}
-                        type="" 
-                    />
-                )}
+                    {type === "apply" ? (
+                        ""
+                    ) : (
+                        <Table
+                            caption=""
+                            data={tableData}
+                            columns={staff_columns}
+                            pageSize={6}
+                            type="" 
+                        />
+                    )}
+                    
                 
             </div>
         </div>

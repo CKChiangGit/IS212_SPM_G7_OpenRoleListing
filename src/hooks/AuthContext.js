@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token3');
         localStorage.removeItem('userId');
         localStorage.removeItem('jwt_token');
+        localStorage.removeItem('staff_edit');
     };
 
     return (
