@@ -14,6 +14,11 @@ const Popup = ({ role, type_name }) => {
     const [type, setType] = useState(type_name);
 
 // table data 
+hardTableData = hardTableData.map(item => ({
+    ...item,
+    checked: "N"
+
+}));
 const [tableData, setTableData] = useState(hardTableData);
 console.log("hardTableData", tableData);
 
@@ -23,22 +28,18 @@ const staff_columns = [
     { label: 'Department', accessor: 'dept', sortable: true },
     { label: 'Email', accessor: 'email', sortable: true },
     { label: 'Skill Match', accessor: 'email', sortable: true },
+    { label: 'Selected', accessor: 'checked', sortable: true },
 ];
 
-const handleCheck = (row) => {
-    // find the index of the row in tableData
-    const index = tableData.findIndex(data => data.id === row.id);
+const [selectedRows, setSelectedRows] = useState([]);
 
-    // create a new array with the updated row
-    const newTableData = [...tableData];
-    newTableData[index] = {
-        ...newTableData[index],
-        checked: !newTableData[index].checked
+    const handleRowClick = (row) => {
+        if (selectedRows.find(selectedRow => selectedRow.id === row.id)) {
+            setSelectedRows(selectedRows.filter(selectedRow => selectedRow.id !== row.id));
+        } else {
+            setSelectedRows([...selectedRows, row]);
+        }
     };
-
-    // update the state
-    setTableData(newTableData);
-};
 
  // toggle for details and skills editing
  const [mode, setMode] = useState("approve");
@@ -156,6 +157,7 @@ const handleCheck = (row) => {
                             columns={staff_columns}
                             pageSize={6}
                             type="" 
+                            handleRowClick={handleRowClick}
                         />
                     )}
                     

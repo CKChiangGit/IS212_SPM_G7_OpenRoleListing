@@ -45,7 +45,7 @@ const PageControl = ({ pageNumber, setPageNumber, pageLimit }) => {
 };
 
 // export default function Table({ caption, data, columns, pageNumber, pageSize, setPageNumber}) {
-export default function Table({ caption, data, columns, pageSize, type}) {
+export default function Table({ caption, data, columns, pageSize, type , handleRowClick}) {
     console.log("data received is "+ JSON.stringify(data) + " and pageSizeLimit received is "+ pageSize)   
     const [tableData, handleSorting] = useSortableTable(data, columns);
 
@@ -63,7 +63,7 @@ export default function Table({ caption, data, columns, pageSize, type}) {
                         <table className="table">
                             
                             <TableHead {...{ columns, handleSorting }} />
-                            <TableBody {...{ columns, tableData, pageNumber, pageSize, type}} />
+                            <TableBody {...{ columns, tableData, pageNumber, pageSize, type, handleRowClick}} />
                         </table>
                     </div>
                     <PageControl {...{ pageNumber, setPageNumber, pageLimit }} />
