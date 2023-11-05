@@ -26,7 +26,7 @@ CREATE TABLE `role_applications` (
   `role_app_id` int NOT NULL AUTO_INCREMENT,
   `role_listing_id` int NOT NULL,
   `staff_id` int NOT NULL,
-  `role_app_status` enum('applied','withdrawn','accepted','rejected') NOT NULL,
+  `role_app_status` enum('applied','accepted','rejected') NOT NULL,
   `role_app_ts_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`role_app_id`),
   KEY `ROLE_APPLICATIONS_fk1` (`role_listing_id`),
