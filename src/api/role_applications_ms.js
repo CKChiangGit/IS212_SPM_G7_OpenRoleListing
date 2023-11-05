@@ -49,20 +49,20 @@ app.post('/roleapplications', async (req, res) => {
 
 // Post a new role application
 app.post('/createroleapplications', async (req, res) => {
-    try {
-        const { role_app_id, role_listing_id, staff_id, role_app_status } = req.body;
-        const roleApplication = await RoleApplications.create({
-        role_app_id,
-        role_listing_id,
-        staff_id,
-        role_app_status
-        });
+  try {
+      const { role_app_id, role_listing_id, staff_id, role_app_status } = req.body;
+      const roleApplication = await RoleApplications.create({
+      role_app_id,
+      role_listing_id,
+      staff_id,
+      role_app_status
+      });
 
-        res.status(201).json(roleApplication);
-    } catch (error) {
-        console.error('Error creating a new role application:', error);
-        res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
-    }
+      res.status(201).json(roleApplication);
+  } catch (error) {
+      console.error('Error creating a new role application:', error);
+      res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+  }
 });
 
 
