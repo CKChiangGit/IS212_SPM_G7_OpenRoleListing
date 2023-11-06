@@ -3,9 +3,10 @@
 // Import the necessary modules and database models to use
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('../models/ConnectionManager');
-const RoleApplications = require('../models/role_applications');
-const RoleListings = require('../models/role_listings');
+const sequelize = require('../../models/ConnectionManager');
+const RoleApplications = require('../../models/role_applications');
+const RoleListings = require('../../models/role_listings');
+const StaffDetails = require('../../models/staff_details');
 const cors = require('cors');
 const app = express();
 
