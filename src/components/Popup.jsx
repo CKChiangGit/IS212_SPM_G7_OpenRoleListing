@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { BsCalendar3WeekFill } from "react-icons/bs";
 import Table from "../components/Table";
@@ -33,6 +33,29 @@ const staff_columns = [
 
  // toggle for details and skills editing
  const [mode, setMode] = useState("approve");
+
+//  get applicants from selected_staff local storage
+let [applicants, setApplicants] = useState(JSON.parse(localStorage.getItem('selected_staff')) || []);
+
+// update browser whenever selected_staff is updated using useEffect
+const selected_staff = localStorage.getItem('selected_staff');
+useEffect(() => {
+    let selectedStaff = JSON.parse(localStorage.getItem('selected_staff')) || [];
+    // merge both fname and lname into full_name
+    let updatedApplicants = selectedStaff.map(item => ({
+        ...item,
+        full_name: item.fname + " " + item.lname
+    }));
+    setApplicants(updatedApplicants);
+    console.log("applicants", updatedApplicants);
+}, [selected_staff]); // dependency array
+
+// clear applicants when popup is closed
+useEffect(() => {
+    return () => {
+        localStorage.removeItem('selected_staff'); 
+    };
+}, []);
 
   return (
     <div>
@@ -101,12 +124,12 @@ const staff_columns = [
                         ) : (
                             <div className="flex mt-2 flex-col items-center justify-center w-full">
                                 
-                                <div className="flex flex-row">
+                                <div className="flex flex-row ">
                                     <button
                                         type="button"
                                         id="type"
                                         value="details"
-                                        onClick={() => setMode("reject")}
+                                        onClick={() => setMode("approve")}
                                         className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
                                         mode === "approve"
                                             ? "bg-white text-black"
@@ -119,7 +142,7 @@ const staff_columns = [
                                         type="button"
                                         id="type"
                                         value="skills"
-                                        onClick={() => setMode("approve")}
+                                        onClick={() => setMode("reject")}
                                         className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
                                         mode !== "approve"
                                             ? "bg-white text-black"
@@ -129,7 +152,20 @@ const staff_columns = [
                                         Reject
                                     </button>
                                 </div>
-                                <div className="caption mt-2">Select applicants to {mode}</div>
+                                <div className="caption mt-2">Selected applicants to {mode}</div>
+                                <div className="caption max-h-40 w-full flex justify-center overflow-auto">
+                                    
+                                    {applicants.length === 0 ? (
+                                        "No applicants selected"
+                                    ) : (
+                                        <div className="w-full flex justify-center overflow-auto ">
+                                            <div>
+                                                {applicants.map(applicant => `${applicant.fname} ${applicant.lname}`).join(', ')}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
                                 
                             </div>
                         )}

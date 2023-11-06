@@ -11,7 +11,7 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
     const navigate = useNavigate()
 
     const handleClick = (data) => {
-        if (type === "edit" || type === "show") {
+        if (type === "edit_staff" || type === "show_applicant") {
             // // alert("show dashboard of staff")
             // alert("set local storage 'staff' to row data clicked")
             localStorage.setItem("staff_edit", JSON.stringify(data))
@@ -23,10 +23,15 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
             window.dispatchEvent(new Event("edit_event"));
         } else {
             console.log("clicked")
+            window.dispatchEvent(new Event("edit_event"));
             // append row data clicked to local storage 'selected_staff''
             let selected_staff = JSON.parse(localStorage.getItem('selected_staff')) || [];
-            
-            selected_staff.push(data);
+            // if data.staff_id already exists in selected_staff, then remove it
+            if (selected_staff.some(staff => staff.staff_id === data.staff_id)) {
+                selected_staff = selected_staff.filter(staff => staff.staff_id !== data.staff_id)
+            } else {
+                selected_staff.push(data);
+            }
             localStorage.setItem("selected_staff", JSON.stringify(selected_staff))
         }
     }

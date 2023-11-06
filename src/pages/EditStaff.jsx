@@ -185,7 +185,7 @@ export default function EditStaff() {
                         data={tableData}
                         columns={columns}
                         pageSize={5}
-                        type="edit"
+                        type="edit_staff"
                     />
                 </div>
             ) : (
