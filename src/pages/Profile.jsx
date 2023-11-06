@@ -96,10 +96,27 @@ export default function Profile() {
           [e.target.id]: e.target.value,
         }));
     }
-    async function onSubmit() {
+    async function onSubmit() { 
+
         try {
             console.log("submit ", fname, lname)
             if(Object.values(formData).every((val) => val !== '')) {
+                // Check if 'phone' is not 8 digits
+                if(formData.phone && formData.phone.toString().length > 8) {
+                    toast.error(`Phone number is too long. Phone numbers should have 8 digits`);
+                    return;
+                } else if(formData.phone && formData.phone.toString().length < 8) {
+                    toast.error('Phone number is too short. Phone numbers should have 8 digits.');
+                    return;
+                }
+
+                // Check if 'email' is valid
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    toast.error('Invalid email address');
+                    return
+                }
+
                 // get skill_id from skill_name
                 let skill_id = []
                 try {
@@ -122,7 +139,12 @@ export default function Profile() {
                     ...prevState,
                     name: fname + " " + lname,
                 }));
+                setChangeDetail((prevState) => !prevState);
+                
+            } else {
+                toast.error('Please fill out all required fields.');
             }
+            
         } catch (error) {
             toast.error("Could not update the profile details. " + error.message);
         }
@@ -142,6 +164,7 @@ export default function Profile() {
     useEffect(() => {
         updateTableData();
     }, []);
+    
     // console.log("table is " + JSON.stringify(tableData))
 
     // // update skill data with viewUserSkill() and setSkillData()
@@ -325,12 +348,14 @@ export default function Profile() {
 
                                 <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
                                     <p className="flex items-center ">
-                                        Do you want to change your details?
+                                        Change your details?
                                         <span
                                             onClick={() => {
-                                                // if changing details, next click will be onSumbit
+                                                // setChangeDetail((prevState) => !prevState);
+                                                setChangeDetail(true);
+                                                // if changing details, next click will be onSubmit
                                                 changeDetail && onSubmit();
-                                                setChangeDetail((prevState) => !prevState);
+                                                
                                             }}                           
                                             className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
                                         >
@@ -377,7 +402,7 @@ export default function Profile() {
                                             data={tableData}
                                             columns={columns}
                                             pageSize={3}
-                                            type="show" 
+                                            type="show_applicant" 
                                         />
                                         
                                             
@@ -399,7 +424,7 @@ export default function Profile() {
                     <h1 className='text-3xl text-center mt-6 font-bold'>
                         Open Role Applicants
                     </h1>
-                    <Popup role={role} type_name=""/>
+                    <Popup role={role} type_name="view_applicant"/>
                 </>
             )}
         </div>
