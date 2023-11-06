@@ -4,6 +4,9 @@ import { BsCalendar3WeekFill } from "react-icons/bs";
 import Table from "../components/Table";
 import hardTableData from "../tableData3.json";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { toast } from "react-toastify";
+import { createRoleApplication } from '../hooks/AuthContext';
+const jwt = require('jsonwebtoken');
 
 const Popup = ({ role, type_name }) => {
     const togglePopup = () => {
@@ -56,6 +59,35 @@ useEffect(() => {
         localStorage.removeItem('selected_staff'); 
     };
 }, []);
+
+// // get login token    
+const [token, setToken] = useState(null);
+const jwt_token = localStorage.getItem('jwt_token');
+const secret = 'mysecretkey';
+useEffect(() => {
+    if (jwt_token !== null) {
+        const decodedToken = jwt.verify(jwt_token, secret);
+        setToken(decodedToken);
+        console.log("decoded " + JSON.stringify(decodedToken));
+    } else {
+        setToken()
+    }
+}, [jwt_token, secret]);
+
+
+// apply role function
+const apply_role = async () => {
+    // alert("apply_role event detected");
+    try {
+        console.log("100", token.staff_id, JSON.stringify(role.role_listing_id))
+        // role_app_id, role_listing_id, staff_id
+        const apply_response = createRoleApplication(102, role.role_listing_id, token.staff_id)
+        toast.success("Role successfully applied.");
+    } catch (error) {
+        console.error(error);
+        toast.error("Could not update the profile details. " + error.message);
+    }
+};
 
   return (
     <div>
@@ -117,7 +149,10 @@ useEffect(() => {
                                     Applied
                                 </p>
                                 <br /> */}
-                                <button className={`w-full max-w-[200px] rounded-md p-5 bg-blue-600 text-white text-center font-semibold shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg`}>
+                                <button 
+                                    className={`w-full max-w-[200px] rounded-md p-5 bg-blue-600 text-white text-center font-semibold shadow-md hover:bg-blue-800 transition duration-150 ease-in-out hover:shadow-lg`} 
+                                    onClick={apply_role}
+                                >
                                     APPLY NOW
                                 </button>
                             </div>
