@@ -1,37 +1,43 @@
 // From Persis for Staff Details MS:
 const request = require('supertest');
 const StaffDetails = require('../../../models/staff_details');
+const StaffSkills = require('../../../models/staff_skills');
 const baseurl='http://localhost:5007';
-
+  
 let createdListingId;
 test('testing for posting staff creation', async () => {
-
-    const response = await request(baseurl).post('/staff_creation').send({
-        staff_id: 12500,
-        fname:"fname",
-        lname:"lname",
-        dept:"dept",
-        email:"email",
-        phone:"phone",
-        biz_address:"biz_address", 
-        sys_role:"sys_role",
-        pw:"pw",
-        "staff_skill": [{skill_id : 6, skill_name : "Management Communication", skill_status: "active"}]
-    }) 
-    createdListingId = response.body.staff_id; // Save the ID of the created listing
-    expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
-    expect(response.statusCode).toBe(200);
-});
-afterEach(async () => {
-    if (createdListingId) {
-      // Delete the created listing directly from the database
-      await StaffDetails.destroy({
-        where: {
-          staff_id: createdListingId
-        }
-      });
-    }
+      const response = await request(baseurl).post('/staff_creation').send({
+          staff_id: 123123,
+          fname:"test",
+          lname:"tests",
+          dept:"dept",
+          email:"test@gmail.com",
+          phone:"12345678",
+          biz_address:"80 Stamford Rd, Singapore 178902", 
+          sys_role:"staff",
+          pw:"123123",
+          skill_id: ["6" , "10"]
+      }) 
+      createdListingId = response.body[0].staff_id;
+      console.log(createdListingId) // Save the ID of the created listing
+      expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
+      expect(response.statusCode).toBe(200);
   });
+  afterEach(async () => {
+      if (createdListingId) {
+        // Delete the created listing directly from the database
+        await StaffSkills.destroy({
+          where: {
+            staff_id: createdListingId
+          }
+        });
+        await StaffDetails.destroy({
+          where: {
+            staff_id: createdListingId
+          }
+        });
+      }
+    });
 
 
 test('retrieving all staff details', async () => {
@@ -59,26 +65,18 @@ describe('GET /staff_details/:staff_id', () => {
       expect(response.body.data.staff_details[0]).toHaveProperty('pw', '123123');
     });
   });
-/*
+
   describe('POST /staff_details', () => {
-    let createdListingId;
-  
     it('should create a new application and return 201 status', async () => {
       const query = {
-        email: 'john.sim.1@all-in-one.com.sg',
-        pw: '123123'
+        email: 'anna.sng.8857@all-in-one.com.sg',
+        password: '123123'
       };
-  
       const response = await request(baseurl)
         .post('/staff_details')
         .send(query);
-  
-      createdListingId = response.body.staff_id; // Save the ID of the created listing
-      
-      expect(response.statusCode).toBe(404); 
-      expect(response.body).toHaveProperty('email');
-      expect(response.body).toHaveProperty('pw');
-*/
+      expect(response.statusCode).toBe(200); 
+      expect(response.body).toHaveProperty('data');
       // add more assertions as needed
-    // });
-  // });
+    });
+  });
