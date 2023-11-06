@@ -68,27 +68,6 @@ app.get('/staff_details', async (req, res) => {
 
 app.get('/staff_details/:staff_id', async (req, res) => {
   const staff_id = req.params.staff_id;
-  // Trying to figure out how to use query parameters. - Mervin
-  // const { fname, lname, dept, email } = req.query;
-  // const whereClause = {};
-
-  // Build the WHERE clause based on provided parameters
-  // if (staff_id) {
-  //   whereClause.staff_id = staff_id;
-  // }
-  // if (fname) {
-  //   whereClause.fname = fname;
-  // }
-  // if (lname) {
-  //   whereClause.lname = { [Op.like]: `%${lname}%` };
-  // }
-  // if (dept) {
-  //   whereClause.dept = dept;
-  // }
-  // if (email) {
-  //   whereClause.email = email;
-  // }
-
   try {
     const staff_details = await StaffDetails.findAll({ where: {staff_id} });
 
