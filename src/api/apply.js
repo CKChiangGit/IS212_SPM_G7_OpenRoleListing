@@ -72,13 +72,15 @@ app.get('/staffroleapp/:staff_id', async (req, res) => {
 app.get('/hrroleapp/:staff_id', async (req, res) => {
     // Check if staff is hr/manager
     const staff_id = req.params.staff_id;
-    const staff = await StaffDetails.findOne({
+    const staffDetail = await StaffDetails.findOne({
         where: {
             staff_id
         }
     });
-    const staffRole = staff.sys_role;
-    if (staffRole !== "hr" || staffRole !== "manager") {
+    const staffRole = staffDetail.sys_role
+    
+    if (staffRole != "hr" && staffRole != "manager") {
+        console.log(staffRole);
         res.status(403).json ({message: "You are not authorized to view this page."});
     } else {
         try {
@@ -134,6 +136,15 @@ app.get('/hrroleapp/:staff_id', async (req, res) => {
 // Post a new role application
 app.post('/createroleapplications/:staff_id', async (req, res) => {
     try {
+        const roleApplyCheck = await RoleApplications.findAll({
+            where: {
+                staff_id: req.params.staff_id
+            }
+        });
+        if (roleApplyCheck.role_app_status == "applied") {
+            res.status(403).json({message: "You have already applied for this role."});
+        }
+        
         const { role_app_id, role_listing_id, staff_id, role_app_status } = req.body;
         const roleApplication = await RoleApplications.create({
         role_app_id,
@@ -141,9 +152,7 @@ app.post('/createroleapplications/:staff_id', async (req, res) => {
         staff_id,
         role_app_status
         });
-        if (roleApplication.role_app_status == "applied") {
-            res.status(500).json({message: "You have already applied for this role."});
-        }     
+            
 
         res.status(201).json(roleApplication);
     } catch (error) {
@@ -151,6 +160,7 @@ app.post('/createroleapplications/:staff_id', async (req, res) => {
         res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
     }
 });
+
 
 // Update a role application
 app.put('/updateroleapplications/:role_app_id', async (req, res) => {
