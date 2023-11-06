@@ -82,6 +82,7 @@ export default function Home() {
             window.removeEventListener('edit_event', handleStorageChange);
         }
       }, [role]);
+    
 
     return (
         <div>
