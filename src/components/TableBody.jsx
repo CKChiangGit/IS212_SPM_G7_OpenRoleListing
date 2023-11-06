@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Moment from 'react-moment';
 import moment from "moment";
 
-const TableBody = ({ tableData, columns, pageNumber, pageSize, type, handleRowClick}) => {
+const TableBody = ({ tableData, columns, pageNumber, pageSize, type}) => {
     // console.log("received " + pageNumber + " and " + pageSize)
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -23,17 +23,11 @@ const TableBody = ({ tableData, columns, pageNumber, pageSize, type, handleRowCl
             window.dispatchEvent(new Event("edit_event"));
         } else {
             console.log("clicked")
-            handleRowClick(data)
-            // // append row data clicked to local storage 'selected_staff''
-            // let selected_staff = JSON.parse([localStorage.getItem('selected_staff')]) || [];
-            // if (data) {
-            //     selected_staff.push(data.staff_id);
-            //     localStorage.setItem("selected_staff", JSON.stringify(selected_staff));
-            // } else {
-            //     console.error('Data is undefined');
-            // }
-            // // selected_staff.push(data);
-            // // localStorage.setItem("selected_staff", JSON.stringify(selected_staff))
+            // append row data clicked to local storage 'selected_staff''
+            let selected_staff = JSON.parse(localStorage.getItem('selected_staff')) || [];
+            
+            selected_staff.push(data);
+            localStorage.setItem("selected_staff", JSON.stringify(selected_staff))
         }
     }
     // if type === edit, then show all columns

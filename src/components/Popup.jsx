@@ -31,16 +31,6 @@ const staff_columns = [
     { label: 'Selected', accessor: 'checked', sortable: true },
 ];
 
-const [selectedRows, setSelectedRows] = useState([]);
-
-    const handleRowClick = (row) => {
-        if (selectedRows.find(selectedRow => selectedRow.id === row.id)) {
-            setSelectedRows(selectedRows.filter(selectedRow => selectedRow.id !== row.id));
-        } else {
-            setSelectedRows([...selectedRows, row]);
-        }
-    };
-
  // toggle for details and skills editing
  const [mode, setMode] = useState("approve");
 
@@ -157,7 +147,6 @@ const [selectedRows, setSelectedRows] = useState([]);
                             columns={staff_columns}
                             pageSize={6}
                             type="" 
-                            handleRowClick={handleRowClick}
                         />
                     )}
                     
