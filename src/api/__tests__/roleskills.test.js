@@ -2,7 +2,7 @@ const request = require('supertest');
 const baseurl='http://localhost:5005';
 
 
-test('testing for retreiving role skills', async () => {
+test('testing to retrieve role skills', async () => {
     const response = await request(baseurl).get('/role_skills'); 
     expect(response.statusCode).toBe(200);
 });

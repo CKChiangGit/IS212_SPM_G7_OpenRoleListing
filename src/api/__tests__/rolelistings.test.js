@@ -5,7 +5,7 @@ const RoleListings = require('../../../models/role_listings');
 test('testing for retreiving role skills', async () => {
     const response = await request(baseurl).get('/rolelistings'); 
     expect(response.statusCode).toBe(200);
-});
+}); 
 
 describe('POST /createlistings', () => {
   let createdListingId;
