@@ -85,7 +85,7 @@ app.post('/createrole', bodyParser.urlencoded({ extended: true }), async (req, r
       }
     });
 
-    res.status(200).json(newRole.data); // Respond with the data received
+    // res.status(200).json(newRole.data); // Respond with the data received
     res.status(200).json(newListing.data); // Respond with the data received
   } catch (error) {
     res.status(500).send(`<p>There is an internal error creating a new role, please contact the IT Department Team.</p>`);
