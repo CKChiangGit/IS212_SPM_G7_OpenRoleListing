@@ -68,6 +68,7 @@ app.get('/staffroleapp/:staff_id', async (req, res) => {
 
         if (!roleApplications.length) {
             res.status(404).send('<p>There are no role applications.</p>');
+            return
         }
 
         res.status(200).json({

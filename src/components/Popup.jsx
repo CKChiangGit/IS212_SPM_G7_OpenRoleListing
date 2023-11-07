@@ -80,11 +80,14 @@ const apply_role = async () => {
     try {
         console.log("100", token.staff_id, JSON.stringify(role.role_listing_id))
         // role_app_id, role_listing_id, staff_id
-        const apply_response = createRoleApplication(102, role.role_listing_id, token.staff_id)
+        const seed = Date.now();
+        const randomNumber = Math.random() * seed;
+        const apply_response = await createRoleApplication(randomNumber, role.role_listing_id, token.staff_id)
+        // alert("apply_response " + JSON.stringify(apply_response))
         toast.success("Role successfully applied.");
     } catch (error) {
         console.error(error);
-        toast.error("Could not update the profile details. " + error.message);
+        toast.error("Could not apply for the role." + error.message);
     }
 };
 
@@ -132,7 +135,17 @@ const apply_role = async () => {
                         <div className="">Updater: {role.role_listing_updater}</div>
                         <div className="">Date Created: {moment.utc(role.role_listing_ts_create).format("DD/MM/YY HH:MM a")}</div>
                         <div className="pb-4">Date Updated: {moment.utc(role.role_listing_ts_update).format("DD/MM/YY HH:MM a")}</div>
-                        <div className="">Skills Required: {role.skills}</div>
+                        <div>
+                            <div>
+                                <b>Description: </b> {role.role_details_desc.role_description}
+                            </div>
+                            <br></br>
+                            <div>
+                                <b>Skills: </b> {role.role_details_desc.role_skills.join(", ")}
+                            </div>
+                        </div>
+                        {/* <div className="">Description : {role.role_details_desc}</div> */}
+                        {/* <div className="">Skills Required: {role.role_details_desc.role_skills}</div> */}
 
                     </div>
                     <div className="flex justify-center items-center space-x-4 w-full h-full">
