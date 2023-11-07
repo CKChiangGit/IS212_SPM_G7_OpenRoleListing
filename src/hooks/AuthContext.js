@@ -296,3 +296,41 @@ export const getApplicationStatus = async (staff_id) => {
         throw new Error('Error retrieving open role details');
     }
 }
+
+// get application statuses
+export const getApplicationStatusHR = async (staff_id) => {
+    const response = await fetch(`http://localhost:5002/hrroleapp/${staff_id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+}
+
+// send application to localhost/updateroleapplications
+export const updateRoleApplication = async (role_app_id, role_app_status) => {
+    console.log("updateRoleApplication", JSON.stringify({ role_app_id, role_app_status }))
+    const response = await fetch(`http://localhost:5002/updateroleapplications/${role_app_id}`, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role_app_status })
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log("update role is", data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+}
