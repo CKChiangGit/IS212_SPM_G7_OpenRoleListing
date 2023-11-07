@@ -253,6 +253,42 @@ export const createRoleApplication = async (role_app_id, role_listing_id, staff_
     });
     const data = await response.json();
     if (response.ok) {
+        console.log("create role is", data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+}
+
+// sends request to get all role applicants for a role listing
+export const getRoleApplicants = async (role_listing_id) => {
+    const response = await fetch(`http://localhost:5002/roleapp/${role_listing_id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+}
+
+// get application statuses
+export const getApplicationStatus = async (staff_id) => {
+    const response = await fetch(`http://localhost:5002/staffroleapp/${staff_id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (response.ok) {
         console.log(data)
         return data;
     } else {

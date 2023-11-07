@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import Table from "../components/Table";
 import Popup from '../components/Popup';
-import { viewRole } from '../hooks/AuthContext';
+import { viewRole, getApplicationStatus } from '../hooks/AuthContext';
 const jwt = require('jsonwebtoken');
 
 // table data
@@ -44,6 +44,11 @@ export default function Home() {
         // { label: 'Role Update Date', accessor: 'role_listing_ts_update', sortable: true },
         { label: 'Skill Match %', accessor: 'skill_match', sortable: true },
     ];
+
+    const applyColumns = [
+        { label: 'Role Name', accessor: 'role_listing_desc', sortable: true, sortbyOrder: 'desc' },
+        { label: 'Application Status', accessor: 'application_status', sortable: true },
+    ];
     
     // update table data with viewRole() and setTableData()
     const [tableData, setTableData] = useState([])
@@ -83,14 +88,41 @@ export default function Home() {
         }
       }, [role]);
     
+    
+    // update application table data
+    const [applyData, setApplyData] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        const updateApplyData = async () => {
+            if (!token) {
+                console.log("Token is not set yet");
+                return;
+            }
+        
+            try {            
+                const data = await getApplicationStatus(token.staff_id);
+                setApplyData(data.roleApplicationList);
+                console.log("application data updated", data);
+                setIsLoading(false); // Set loading to false after data is fetched
+            } catch (error) {
+                console.error(error);
+                setIsLoading(false); // Also set loading to false if there's an error
+            }
+        };
+    
+        window.addEventListener('edit_event', updateApplyData);
+        return () => {
+            window.removeEventListener('edit_event', updateApplyData);
+        }
+    }, [token]);
 
     return (
         <div>
             {token ? (
                 
-                <div>
+                <div className='mt-2'>
 
-                    {Object.entries(token).map(([key, value]) => (
+                    {/* {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
                         {key}: {key === 'staff_skill' ? 
                             value.length === 0 ? "No skills" : value.map((skill) => (
@@ -99,17 +131,40 @@ export default function Home() {
                             : value
                         }
                     </p>
-                    ))}
+                    ))} */}
+                    {applyData.length > 0 && !isLoading ? (
+                        <div className='mb-12'>
+                            <Table
+                            caption="Your role applications."
+                            data={applyData}
+                            columns={applyColumns}
+                            pageSize={3}
+                            type="" />
+                            
+                            
+                        </div>
+                        
+                    ) : (
+                        
+                        <div className="mb-12">
+                            <div className='flex justify-center caption '>You've not applied for any roles</div>
+                        </div>
+                    )}
                     
                     {tableData.length > 0 ? (
                         <>
-                            <Table
+                            {Object.keys(role).length === 0. ? (
+                                <Table
                                 caption="Open roles available for applications."
                                 data={tableData}
                                 columns={columns}
                                 pageSize={3}
                                 type="apply" />
-                            <Popup role={role} type_name="apply"/>
+                            ) : (
+                                <Popup role={role} type_name="apply"/>
+                            )}
+                            {/* <Popup role={role} type_name="apply"/> */}
+                            
                         </>
                     ) : (
                         <div>Loading...</div>

@@ -51,6 +51,26 @@ async function getRoleSkills(roleId) {
 }
 
 
+// sends request to view open role details
+async function getRoleDetails(roleId) {
+    console.log("roleId " + roleId);
+    try {
+        const response = await fetch(`http://localhost:3003/openroles/${roleId}`, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        const roleListingDetails = response.json()
+        console.log(roleListingDetails);
+        return roleListingDetails;
+    } catch (error) {
+        console.error('Error retrieving role listings:', error);
+        return [];
+    }
+}
+
+
 // get role listing table
 async function getRoleListing() {
   try {
@@ -67,19 +87,19 @@ async function getRoleListing() {
   }
 }
 
-// get role details for specific role id
-async function getRoleDetails(role_id) {
-    try {
-      const response = await axios.get(`http://localhost:3003/openroles/${role_id}`);
-      const RoleDetailsData = response.data;
-      console.log("role details " + RoleDetailsData);
-      return (RoleDetailsData)
+// // get role details for specific role id
+// async function getRoleDetails(role_id) {
+//     try {
+//       const response = await axios.get(`http://localhost:3003/openroles/${role_id}`);
+//       const RoleDetailsData = response.data;
+//       console.log("role details " + RoleDetailsData);
+//       return (RoleDetailsData)
       
-    } catch (error) {
-      console.error('Error retrieving role details:', error);
-      return [];
-    }
-  }
+//     } catch (error) {
+//       console.error('Error retrieving role details:', error);
+//       return [];
+//     }
+//   }
 
 async function getSkillDetails(skillId) {
   try {
@@ -168,9 +188,7 @@ app.get('/apply_role/:staffId', async (req, res) => {
         const staffId = req.params.staffId;
 
         let roleListingArray = await getRoleListing();
-        let roleDetailsArray = await getRoleDetails(staffId);
-        // console.log("roleDetails ", roleDetails)
-        console.log("roleIdsArray ", roleDetailsArray)
+
         let staffskillsArray = await getStaffSkills(staffId)
         console.log(`Staff Skills for staff id ${staffId} are: ` + staffskillsArray)
         console.log("roleListingArray ", roleListingArray)
@@ -184,10 +202,10 @@ app.get('/apply_role/:staffId', async (req, res) => {
                 console.log("staffskillsArray ", staffskillsArray);
                 let skillMatchPercent = calculateMatchingPercentage(staffskillsArray, roleSkillsArray);
                 console.log(`Matching Percentage for role id is: ${skillMatchPercent}%`);
-
+                
                 let role_de = await getRoleDetails(roleListingArray[y].role_id);
-                roleListingArray[y].role_details_desc = role_de.role_description;
-        
+                roleListingArray[y].role_details_desc = role_de
+                console.log("role_de are" , role_de)
                 if (isNaN(skillMatchPercent)) {
                     roleListingArray[y].skill_match = 0.00;
                 } else {

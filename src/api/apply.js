@@ -17,6 +17,16 @@ const PORT = process.env.PORT || 5002;
 app.use(bodyParser.json());
 app.use(cors());
 
+// find all applicants to a role listing
+app.get('/roleapp/:listing_id', async (req, res) => {
+    try {
+        const roleApplications = await RoleListings.findAll();
+        res.status(200).json(roleApplications);
+    } catch (error) {
+        console.error('Error getting all role applications:', error);
+        res.status(500).send(`<p>There is an internal error, please contact the IT Department Team.</p>`);
+    }
+});
 
 app.get('/staffroleapp/:staff_id', async (req, res) => {
     try {
@@ -58,6 +68,7 @@ app.get('/staffroleapp/:staff_id', async (req, res) => {
 
         if (!roleApplications.length) {
             res.status(404).send('<p>There are no role applications.</p>');
+            return
         }
 
         res.status(200).json({
