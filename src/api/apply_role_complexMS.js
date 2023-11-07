@@ -50,6 +50,7 @@ async function getRoleSkills(roleId) {
   }
 }
 
+
 // sends request to view open role details
 async function getRoleDetails(roleId) {
     console.log("roleId " + roleId);
@@ -68,6 +69,7 @@ async function getRoleDetails(roleId) {
         return [];
     }
 }
+
 
 // get role listing table
 async function getRoleListing() {
@@ -118,19 +120,7 @@ async function getSkillDetails(skillId) {
     return null; // Handle the error accordingly
   }
 }
-// async function getSkillDetails(skillId) {
-//   try {
-//     const response = await axios.get(`http://localhost:5006/skill_details/${skillId}`);
-//     const skillDetailsData = response.data;
-//     console.log(skillDetailsData);
-//     const SkillNames = skillDetailsData.map(entry => entry.skill_name);
-//     console.log(SkillNames);
-//     return SkillNames;
-//   } catch (error) {
-//     console.error('Error retrieving skill names from skill details:', error);
-//     return [];
-//   }
-// }
+
 async function getSkillNames(roleId) {
   try {
     const skillNamelist = [];
@@ -154,15 +144,7 @@ function calculateMatchingPercentage(staffSkills, roleSkills) {
     return matchingPercentage.toFixed(2); 
 }
 
-// async function getRoleIdFromRoleDetails(roleName) {
-//   try {
-//     const response = await axios.get(`http://localhost:5005/role_skills/${roleName});
-//     return response.data.role_id;
-//   } catch (error) {
-//     console.error('Error retrieving role details:', error);
-//     return null;
-//   }
-// }
+
 
 
 //viewing role applications for HR
@@ -176,8 +158,6 @@ app.get('/role_applications', async (req, res) => {
   }); 
 
 
-//var staff_skills=skills_results;
-//var role_skills_needed=role_skills; 
 var role_details1=role_details;
 var staff_details1=staff_details;
 var role_applications=[]
@@ -200,22 +180,7 @@ app.post('/role_applications', async (req, res) => {
     }
 });  
 
-  // app.get('/skill_match', async (req, res) => {
-  //   const staffId = 8857;
-  //   const roleId = '27431';
-  //   try{
-  //       staffskillsArray = await getStaffSkills(staffId);
-  //       roleskillsArray = await getRoleSkills(roleId);
-  //       console.log(staffskillsArray)
-  //       console.log(roleskillsArray)
-  //       const matchingPercentage = calculateMatchingPercentage(staffskillsArray, roleskillsArray);
-  //       console.log(`Matching Percentage: ${matchingPercentage}%`);
 
-  //     } catch (error) {
-  //       console.error('Error in /skill_match:', error);
-  //       res.status(500).json({ error: 'Internal Server Error' });
-  //     }
-  // }); 
 
 // main function that will be called by the front end
 app.get('/apply_role/:staffId', async (req, res) => {
@@ -258,40 +223,17 @@ app.get('/apply_role/:staffId', async (req, res) => {
     console.error('Error in /skill_match:', error);
     res.status(500).json({ error: 'Internal Server Error' });
     }
-    // return json({
-    //   skill_name: skillName
-    //   skill_match : skillMatchPercent
-    // });
 }); 
 
-  // app.get('/getSkillNames', async (req, res) => {
-  //   try
-  //   {
-  //     skillNamelist = [];
-  //     skillIdsArray = await getRoleSkills('27431');
-  //     console.log(skillIdsArray)
-  //     for (y in skillIdsArray)
-  //     {
-  //       console.log(skillIdsArray[y])
-  //       skillName = await getSkillDetails(skillIdsArray[y]);
-  //       console.log(skillName);
-  //       skillNamelist.push(skillName);
-  //     }
-  //     console.log(skillNamelist);
-  //   }
-  //   catch (error) {
-  //     console.error('Error in /getSkillNames:', error);
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // });
-  app.listen(PORT, async () => {
-    try {
-      // Sync the model with the database
-      await sequelize.sync({ force: false });
-      console.log('Model synchronized with the database.');
-  
-      console.log(`Server is running on port ${PORT}`);
-    } catch (error) {
-      console.error('Error syncing the model:', error);
-    }
-  });
+
+app.listen(PORT, async () => {
+  try {
+    // Sync the model with the database
+    await sequelize.sync({ force: false });
+    console.log('Model synchronized with the database.');
+
+    console.log(`Server is running on port ${PORT}`);
+  } catch (error) {
+    console.error('Error syncing the model:', error);
+  }
+});

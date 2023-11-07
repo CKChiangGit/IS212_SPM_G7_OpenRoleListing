@@ -100,43 +100,14 @@ app.get('/hrroleapp/:staff_id', async (req, res) => {
                 where: {
                     role_app_status: "applied"
                 }
-            });
-            
-            const appIds = roleApplications.map(app => app.role_listing_id);
-            const getroleListings = await RoleListings.findAll({
-                where: {
-                    role_listing_id: appIds
-                },
-                attributes: ['role_id', 'role_listing_desc', 'role_listing_source', 'role_listing_open', 'role_listing_close']
-            });      
+            });  
     
-            const map_list = {
-                application_id: roleApplications.map(app => app.role_app_id),
-                staff_applied: roleApplications.map(app => app.staff_id),
-                role_id: getroleListings.map(roleListing => roleListing.role_id),
-                role_listing_desc: getroleListings.map(roleListing => roleListing.role_listing_desc),
-                role_listing_source: getroleListings.map(roleListing => roleListing.role_listing_source),
-                role_listing_open: getroleListings.map(roleListing => roleListing.role_listing_open),
-                role_listing_close: getroleListings.map(roleListing => roleListing.role_listing_close),
-                application_status: roleApplications.map(app => app.role_app_status)
-            }
-    
-            const roleApplicationList = [];
-            // Count the number of values in map_list[0][1] and create the same number of objects in roleApplicationList
-            for (let i = 0; i < map_list.application_id.length; i++) {
-                roleApplicationList[i] = {};
-                // For each object in roleApplicationList, assign the key as the key in map_list and the value as the value in map_list[key][i]
-                for (const key in map_list) {
-                    roleApplicationList[i][key] = map_list[key][i];
-                }
-            }
-
             if (!roleApplications.length) {
                 res.status(404).send('<p>There are no role applications.</p>');
             }
 
             res.status(200).json({
-                roleApplicationList
+                roleApplications
             });
         }  catch (error) {
             console.error('Error getting all role applications:', error);
