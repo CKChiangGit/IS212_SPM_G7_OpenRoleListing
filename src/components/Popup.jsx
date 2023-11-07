@@ -16,12 +16,11 @@ const Popup = ({ role, type_name }) => {
     // set type
     const [type, setType] = useState(type_name);
 
-// table data 
-hardTableData = hardTableData.map(item => ({
-    ...item,
-    checked: "N"
-
-}));
+// // table data 
+// hardTableData = hardTableData.map(item => ({
+//     ...item,
+//     checked: "N"
+// }));
 const [tableData, setTableData] = useState(hardTableData);
 console.log("hardTableData", tableData);
 
@@ -30,8 +29,8 @@ const staff_columns = [
     { label: 'Full Name', accessor: 'fname', sortable: true, sortbyOrder: 'desc' },
     { label: 'Department', accessor: 'dept', sortable: true },
     { label: 'Email', accessor: 'email', sortable: true },
-    { label: 'Skill Match', accessor: 'email', sortable: true },
-    { label: 'Selected', accessor: 'checked', sortable: true },
+    { label: 'Skill Match', accessor: 'skill_match', sortable: true },
+    { label: 'Status', accessor: 'role_app_status', sortable: true },
 ];
 
  // toggle for details and skills editing

@@ -16,30 +16,30 @@ export default function CreateRole() {
     console.log("decoded: " + JSON.stringify(decodedToken));
 
     const [formData, setFormData] = useState({
-        // role_id: "",
-        // role_listing_id: "",
-        // role_name: "",
-        // role_description: "",
-        // role_status: "",
-        // role_listing_source: "",
-        // role_listing_open: "",
-        // role_listing_close: "",
+        role_id: "",
+        role_listing_id: "",
+        role_name: "",
+        role_description: "",
+        role_status: "",
+        role_listing_source: "",
+        role_listing_open: "",
+        role_listing_close: "",
+        role_listing_creator: "",
+        role_listing_updater: "",
+        staff_skill: [],
+
+        // // create dummy data for testing
+        // role_id: "100",
+        // role_name: "test",
+        // role_description: "test",
+        // role_status: "active",
+        // role_listing_id: "100",
+        // role_listing_source: "8857", // manager_id
+        // role_listing_open: "2021-08-01",
+        // role_listing_close: "2022-08-01",
         // role_listing_creator: decodedToken.staff_id,
         // role_listing_updater: decodedToken.staff_id,
         // staff_skill: [],
-
-        // create dummy data for testing
-        role_id: "100",
-        role_name: "test",
-        role_description: "test",
-        role_status: "active",
-        role_listing_id: "100",
-        role_listing_source: "2049", // manager_id
-        role_listing_open: "2021-08-01",
-        role_listing_close: "2024-08-01",
-        role_listing_creator: decodedToken.staff_id,
-        role_listing_updater: decodedToken.staff_id,
-        staff_skill: ["6", "10"],
 
       });
 
@@ -91,18 +91,25 @@ export default function CreateRole() {
         getSkills();
     }, [])
 
-    // updates the form data state onclick
+    // // updates the form data state onclick
     function onChange(e){
         console.log(e.target.value)
         setFormData((prevState)=>({
             ...prevState,
-            // if target id is role_description, then set the same value for role_description and role_listing_desc
-            [e.target.id]: e.target.id === "role_description" ? 
-                {role_description: e.target.value, role_listing_desc: e.target.value} :
-                // else, set the value of the target id to the target value
-                {[e.target.id]: e.target.value}
+            [e.target.id]: e.target.value,
         }))
     }
+    // function onChange(e){
+    //     console.log(e.target.value)
+    //     setFormData((prevState)=>({
+    //         ...prevState,
+    //         // if target id is role_description, then set the same value for role_description and role_listing_desc
+    //         [e.target.id]: e.target.id === "role_description" ? 
+    //             {role_description: e.target.value, role_listing_desc: e.target.value} :
+    //             // else, set the value of the target id to the target value
+    //             {[e.target.id]: e.target.value}
+    //     }))
+    // }
     
     // send data to backend
     const config = {
@@ -111,8 +118,24 @@ export default function CreateRole() {
 
     async function handleSubmit(e) {
         e.preventDefault()
+        // role_listing_close has to be greater than role_listing_open
+        if (role_listing_close < role_listing_open) {
+            toast.error("Role listing close date cannot be before role listing open date")
+            return
+        }
+        // role_listing_open has to be greater than current date
+        if (role_listing_open < new Date().toISOString().slice(0, 10)) {
+            toast.error("Role listing open date cannot be before current date")
+            return
+        }
+
         try {
-            // console log json stringify testData
+            // set role_listing_creator and role_listing_updater to the decoded token
+            setFormData((prevState)=>({
+                ...prevState,
+                role_listing_creator: decodedToken.staff_id,
+                role_listing_updater: decodedToken.staff_id,
+            }))
             console.log(JSON.stringify(formData))
             const response = await createListing(formData)
             toast.success("Created role " + response)
@@ -179,7 +202,7 @@ export default function CreateRole() {
                         <p className="text-lg mt-6 font-semibold">Manager ID</p>
                         <input
                             type="number"
-                            id="role_id"
+                            id="role_listing_source"
                             value={role_listing_source}
                             onChange={onChange}
                             placeholder="ID"
