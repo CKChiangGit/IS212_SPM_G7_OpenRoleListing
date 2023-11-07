@@ -88,9 +88,9 @@ export default function Home() {
         <div>
             {token ? (
                 
-                <div>
+                <div className='mt-2'>
 
-                    {Object.entries(token).map(([key, value]) => (
+                    {/* {Object.entries(token).map(([key, value]) => (
                         <p key={key}>
                         {key}: {key === 'staff_skill' ? 
                             value.length === 0 ? "No skills" : value.map((skill) => (
@@ -99,17 +99,22 @@ export default function Home() {
                             : value
                         }
                     </p>
-                    ))}
+                    ))} */}
                     
                     {tableData.length > 0 ? (
                         <>
-                            <Table
+                            {Object.keys(role).length === 0. ? (
+                                <Table
                                 caption="Open roles available for applications."
                                 data={tableData}
                                 columns={columns}
                                 pageSize={3}
                                 type="apply" />
-                            <Popup role={role} type_name="apply"/>
+                            ) : (
+                                <Popup role={role} type_name="apply"/>
+                            )}
+                            {/* <Popup role={role} type_name="apply"/> */}
+                            
                         </>
                     ) : (
                         <div>Loading...</div>
