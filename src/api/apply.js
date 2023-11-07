@@ -94,7 +94,7 @@ app.get('/hrroleapp/:staff_id', async (req, res) => {
             const appIds = roleApplications.map(app => app.role_listing_id);
             const getroleListings = await RoleListings.findAll({
                 where: {
-                    role_listing_id: appIds
+                    role_listing_id: appIds,
                 },
                 attributes: ['role_id', 'role_listing_desc', 'role_listing_source', 'role_listing_open', 'role_listing_close']
             });      
