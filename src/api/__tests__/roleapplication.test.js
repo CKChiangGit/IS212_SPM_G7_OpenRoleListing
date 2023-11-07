@@ -56,7 +56,7 @@ describe('POST /createroleapplications', () => {
   
   });
 
-  describe('POST /roleapplications', () => {
+  describe('POST /roleapplications  - role_app_status = "accepted"', () => {
     let createdListingId;
     const staff_id = 1;
     it('Check staff_id has already accepted for role: Status 403', async () => {
@@ -79,7 +79,7 @@ describe('POST /createroleapplications', () => {
   });
 
 
-  describe('POST /roleapplications', () => {
+  describe('POST /roleapplications - role_app_status = "applied"', () => {
     let createdListingId;
     const staff_id = 2;
     it('Check staff_id has already applied for role: Status 403', async () => {
