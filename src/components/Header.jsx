@@ -61,6 +61,7 @@ export default function Header() {
         console.log("logging out")
         logout();
         navigate('/');
+        window.location.reload(); // clear local cache
     };
 
     return (

@@ -31,6 +31,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token3');
         localStorage.removeItem('userId');
         localStorage.removeItem('jwt_token');
+        localStorage.removeItem('staff_edit');
+        localStorage.removeItem('selected_staff');
     };
 
     return (
@@ -237,3 +239,24 @@ export const createListing = async ({
         throw new Error('Error retrieving open role details');
     }
 };
+
+// sends request to get create new role listings / application to /createroleapplications/:staff_id
+export const createRoleApplication = async (role_app_id, role_listing_id, staff_id) => {
+    console.log("createRoleApplication", JSON.stringify({ role_app_id, role_listing_id, staff_id, role_app_status: 'applied' }));
+    const response = await fetch(`http://localhost:5002/createroleapplications/${staff_id}`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        // set role_app_status to 'pending' by default
+        body: JSON.stringify({ role_app_id, role_listing_id, staff_id, role_app_status: 'applied' })
+    });
+    const data = await response.json();
+    if (response.ok) {
+        console.log(data)
+        return data;
+    } else {
+        // console.log("Error retrieving open role details")
+        throw new Error('Error retrieving open role details');
+    }
+}
