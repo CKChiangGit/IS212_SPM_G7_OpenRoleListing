@@ -65,4 +65,7 @@ This will take a short minute to load all react.js components.
 
 Ctrl + C to keyboard interrupt to exit the npm start to stop the frontend react.js
 ![stopping react.js frontend w/ ctrl + c](/img/npm_start_stop_process.png)
+
+
+
 ------END OF README-------
