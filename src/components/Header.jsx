@@ -1,6 +1,7 @@
 import { React, useContext, useEffect, useState }  from 'react'
 import { useLocation, useNavigate} from "react-router-dom"
 import { AuthContext } from '../hooks/AuthContext';
+import logo from '../images/Logo.png';
 const jwt = require('jsonwebtoken');
 
 // import { getAuth, onAuthStateChanged } from 'firebase/auth'
@@ -67,8 +68,8 @@ export default function Header() {
     return (
         <div className='bg-white border-b shadow-sm sticky top-0 z-0'>
             <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>
-                <div>
-                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="logo" className='h-5 cursor-pointer' onClick={()=>navigate('/')}/>
+                <div style={{ position:'relative'}}>
+                    <img src={logo} alt="logo" style={{ height: '20%', width: '20%'}} className='h-5 cursor-pointer' onClick={()=>navigate('/')}/>
                 </div>
                 <div>
                     <ul className="flex space-x-10">
@@ -86,14 +87,14 @@ export default function Header() {
                         </li>
 
                         {token && token.sys_role === "hr" && (
-                            <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
+                            <li className={`w-24 cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
                                 pathMatchRoute("/staff_creation") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
                             }`} onClick={()=>navigate('/staff_creation')}>
                                 Register Staff
                             </li>
                         )}
                         {token && token.sys_role === "hr" && (
-                            <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
+                            <li className={`w-16 cursor-pointer py-3 text-sm font-semibold border-b-[3px] ${
                                 pathMatchRoute("/staff_edit") ? "text-black border-b-red-500" : "text-gray-400 border-b-transparent"
                             }`} onClick={()=>navigate('/staff_edit')}>
                                 Edit Staff
@@ -101,7 +102,7 @@ export default function Header() {
                         )}
 
                         {pageState === "Profile" && (
-                             <li className={`cursor-pointer py-3 text-sm font-semibold border-b-[3px] text-gray-400 border-b-transparent`} onClick={handleLogout}>
+                             <li className={`w-16 cursor-pointer py-3 text-sm font-semibold border-b-[3px] text-gray-400 border-b-transparent`} onClick={handleLogout}>
                                 Log Out
                             </li>
                         )}

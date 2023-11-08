@@ -3,28 +3,34 @@ const RoleApplications = require('../../../models/role_applications');
 
 const baseurl = 'http://localhost:5002'; // Remove '/role_applications_staff' from the base URL
 
+test('testing for find all applicants to a role listing', async () => {
+  const listing_id = 531
+  const response = await request(baseurl).get(`/roleapp/${listing_id}`);
+  expect(response.statusCode).toBe(200);
+});
+
 test('testing for retrieving role applications for staff', async () => {
     const staff_id = 3498
     const response = await request(baseurl).get(`/staffroleapp/${staff_id}`);
     expect(response.statusCode).toBe(200);
 });
 
-test('testing for retrieving role applications for hr', async () => {
+test('testing for retrieving role _idapplications for hr', async () => {
   const staff_id = 2
   const response = await request(baseurl).get(`/hrroleapp/${staff_id}`);
   expect(response.statusCode).toBe(200);
 });
 
 
-describe('POST /roleapplications', () => {
+describe('POST /createroleapplications', () => {
     let createdListingId;
-    const staff_id = 12500;
+    const staff_id = 6516;
     it('should create a new application and return 201 status', async () => {
       const roleapp = {
-        application_id: 1,
+        role_app_id: 17890,
         role_listing_id: 531,
         staff_id : staff_id,
-        role_app_status: 'applied',
+        role_app_status: 'applied'
       };
   
       const response = await request(baseurl)
@@ -48,6 +54,51 @@ describe('POST /roleapplications', () => {
       }
     });
   
+  });
+
+  describe('POST /roleapplications  - role_app_status = "accepted"', () => {
+    let createdListingId;
+    const staff_id = 1;
+    it('Check staff_id has already accepted for role: Status 403', async () => {
+      const roleapp = {
+        role_app_id: 17890,
+        role_listing_id: 531,
+        staff_id : staff_id,
+        role_app_status: 'applied'
+      };
+  
+      const response = await request(baseurl)
+        .post(`/createroleapplications/${staff_id}`)
+        .send(roleapp);
+  
+      createdListingId = response.body.staff_id; // Save the ID of the created listing
+      console.log(createdListingId)
+      expect(response.statusCode).toBe(403); 
+      // add more assertions as needed
+    });
+  });
+
+
+  describe('POST /roleapplications - role_app_status = "applied"', () => {
+    let createdListingId;
+    const staff_id = 2;
+    it('Check staff_id has already applied for role: Status 403', async () => {
+      const roleapp = {
+        role_app_id: 17890,
+        role_listing_id: 531,
+        staff_id : staff_id,
+        role_app_status: 'applied'
+      };
+  
+      const response = await request(baseurl)
+        .post(`/createroleapplications/${staff_id}`)
+        .send(roleapp);
+  
+      createdListingId = response.body.staff_id; // Save the ID of the created listing
+      console.log(createdListingId)
+      expect(response.statusCode).toBe(403); 
+      // add more assertions as needed
+    });
   });
 
 it('update the status of the specified role application to the specified newStatus', async () => {

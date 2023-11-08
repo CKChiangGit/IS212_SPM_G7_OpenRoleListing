@@ -171,9 +171,9 @@ export default function Home() {
                     )}
                 </div>
             ) : (
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-2">
                     <div>
-                        <p>You are not authenticated.</p>
+                        <p>You are not authenticated. Please log in</p>
                     </div>
                 </div>
                 

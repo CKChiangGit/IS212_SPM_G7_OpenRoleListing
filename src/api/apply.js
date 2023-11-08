@@ -124,8 +124,16 @@ app.post('/createroleapplications/:staff_id', async (req, res) => {
                 staff_id: req.params.staff_id
             }
         });
-        if (roleApplyCheck.role_app_status === "applied") {
-            res.status(403).json({message: "You have already applied for this role."});
+
+        const hasApplied = roleApplyCheck.some(roleApplyCheck => {
+            if (roleApplyCheck.role_app_status === "applied" || roleApplyCheck.role_app_status === "accepted") {
+                res.status(403).json({message: "You have already applied for this role."});
+                return true;
+            }
+            return false;
+        });
+        if (hasApplied) {
+            return;
         }
         
         const { role_app_id, role_listing_id, staff_id, role_app_status } = req.body;

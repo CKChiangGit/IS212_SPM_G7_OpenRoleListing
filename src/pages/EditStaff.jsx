@@ -50,8 +50,8 @@ export default function EditStaff() {
 
     const columns = [
         { label: 'Staff ID', accessor: 'staff_id', sortable: true },
-        { label: 'First Name', accessor: 'fname', sortable: true },
-        { label: 'Last Name', accessor: 'lname', sortable: true },
+        { label: 'Full Name', accessor: 'fname', sortable: true },
+        // { label: 'Last Name', accessor: 'lname', sortable: true },
         { label: 'Department', accessor: 'dept', sortable: true, sortbyOrder: 'desc' },
         { label: 'Email', accessor: 'email', sortable: true },
         { label: 'Phone', accessor: 'phone', sortable: true },
