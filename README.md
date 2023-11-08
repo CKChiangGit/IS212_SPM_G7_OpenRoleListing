@@ -44,7 +44,7 @@ node staffskills.js
 
 ![Microservice Steup Example - 1 Microservice -> 1 Terminal](/img/microservice_setup.png)
 
-![Microservice Port Numbers. from depenencies.txt](/img/microservice_port_numbers.png)
+![Microservice Port Numbers. from depenencies.txt](/img/ms_port_numbers.png)
 
 
 After running all microservices, open a new terminal and type the code below to test all unit testing TDD for microservices in our code. It should return 7 passed for files and 22 passed for tests.
