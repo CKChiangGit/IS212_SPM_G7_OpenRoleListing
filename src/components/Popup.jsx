@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { createRoleApplication, getApplicationStatusHR, getAllUser, updateRoleApplication } from '../hooks/AuthContext';
 const jwt = require('jsonwebtoken');
 
+
 const Popup = ({ role, type_name }) => {
     const togglePopup = () => {
         localStorage.removeItem('staff_edit'); 
@@ -64,7 +65,11 @@ const Popup = ({ role, type_name }) => {
         }
     }, [jwt_token, secret]);
 
-
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
     // apply role function
     const apply_role = async () => {
         // alert("apply_role event detected");
@@ -72,7 +77,7 @@ const Popup = ({ role, type_name }) => {
             console.log("100", token.staff_id, JSON.stringify(role.role_listing_id))
             // role_app_id, role_listing_id, staff_id
             const seed = Date.now();
-            const randomNumber = Math.random() * seed;
+            const randomNumber = getRandomInt(1, 99999)
             const apply_response = await createRoleApplication(randomNumber, role.role_listing_id, token.staff_id)
             // alert("apply_response " + JSON.stringify(apply_response))
             toast.success("Role successfully applied.");
