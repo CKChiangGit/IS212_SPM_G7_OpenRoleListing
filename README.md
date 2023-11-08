@@ -1,6 +1,7 @@
 # IS212_SPM_G7_OpenRoleListing
+![branch structure](img/gitbranch.png)
 
-SPM Group 7 GitHub Repo Link: ![branch structure](img/gitbranch.png)
+SPM Group 7 GitHub Repo Link: 
 https://github.com/CKChiangGit/IS212_SPM_G7_OpenRoleListing.git
 
 SQL files are uploaded in the repository to download for the models to test the microservices.
