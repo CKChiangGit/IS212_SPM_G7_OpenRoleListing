@@ -28,20 +28,17 @@ npm install jsonify
 npm install body-parser
 
 
--- Microservice Port numbers (add them in as we go) --
+-- Microservice Port numbers--
 
-openrole.js              - 3003
-roledetails.js           - 3004
-rolelistings.js         - 3005
+openroles.js                      - 3003
+roledetails.js                    - 3004
+rolelistings.js                   - 3005
+staffskills.js                    - 3007       
 
-Apply Role Complex MS   - 5001
-role applications MS    - 5002
-role listings MS        - 5004
-role skills MS          - 5005
-skill details MS        - 5006
-staff details MS        - 5007
-staff roles MS          - 5008
-staff skills MS         - 5009
+apply_role_complexMS.js           - 5001
+apply.js (Role Application MS)    - 5002
+role listings MS                  - 5004
+role_skills_ms.js                 - 5005
+skill_details_ms.js               - 5006
+staff_details_ms.js               - 5007
 
-
--- For DB --
