@@ -51,7 +51,7 @@ After running all microservices, open a new terminal and type the code below to 
 ```cd spm-t3\Scripts && call activate && cd ../../```
 ```npm test a```
 
-![Running TDD](/img/tdd_testing.png)
+![Running TDD](/img/TDD_testing.png)
 
 ![TDD intended results](/img/TDD_results.png)
 
