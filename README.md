@@ -38,7 +38,7 @@ node role_skills_ms.js
 node roledetails.js
 node apply.js
 node rolelistings.js
-node skill_details_ms
+node skill_details_ms.js
 node staffskills.js
 ```
 
